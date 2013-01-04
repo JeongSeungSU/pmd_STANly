@@ -9,7 +9,7 @@ import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 
 public class EfferentCoupling extends AbstractJavaRule {
 	
-	@Override
+	/*@Override
     public Object visit(ASTMethodDeclaration node, Object data) {
     	ASTBlock ast_block = node.getFirstChildOfType(ASTBlock.class);
     	System.out.println(ast_block.getImage());
@@ -29,5 +29,5 @@ public class EfferentCoupling extends AbstractJavaRule {
     	//ASTBlock ast_block = node.getFirstChildOfType(ASTBlock.class);
     	//System.out.println(ast_block.getImage());
     	return super.visit(node, data);
-    }
+    }*/
 }
