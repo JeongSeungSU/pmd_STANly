@@ -29,7 +29,41 @@ Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
           since="1.2"
           message="The {0} ''{1}'' has a Cyclomatic Complexity of {2}."
           class="net.sourceforge.pmd.lang.java.rule.matrics.CyclomaticComplexity"
-          externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#BooleanInstantiation">
+          externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#CyclomaticComplexity">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="NumberOfParameters"
+          since="1.2"
+          message="The {0} ''{1}'' has a Number of Parameters of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.NumberOfParameters"
+          externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#NumberOfParameters">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+   
+   <rule name="NestedBlockDepth"
+          since="1.2"
+          message="The {0} ''{1}'' has a Nested Block Depth of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.NestedBlockDepth"
+          externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#NestedBlockDepth">
    <description>
 Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
    </description>

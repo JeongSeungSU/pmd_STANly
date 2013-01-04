@@ -50,8 +50,12 @@ public class CyclomaticComplexity extends AbstractJavaRule {
 			decisionPoints += size;
 		}
 
-		public int getComplexityAverage() {
-			return (double) methodCount == 0 ? 1 : (int) Math.rint( (double) decisionPoints / (double) methodCount );
+		//public int getComplexityAverage() {
+			//return (double) methodCount == 0 ? 1 : (int) Math.rint( (double) decisionPoints / (double) methodCount );
+		//}
+		
+		public double getComplexityAverage() {
+			return (double) methodCount == 0 ? 1 : (double)( (double) decisionPoints / (double) methodCount );
 		}
 	}
 
