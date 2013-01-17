@@ -84,11 +84,6 @@ public class CyclomaticComplexity extends AbstractJavaRule {
 		return children;
 	}
 
-	@Override
-	public Object visit(ASTCompilationUnit node, Object data) {
-		
-		return super.visit( node, data );
-	}
 	
 	@Override
 	public Object visit(ASTIfStatement node, Object data) {
