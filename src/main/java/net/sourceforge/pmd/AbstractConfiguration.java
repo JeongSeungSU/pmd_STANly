@@ -9,7 +9,14 @@ public abstract class AbstractConfiguration {
 	private boolean debug;
 
 	protected AbstractConfiguration() {
+
 		super();
+		
+		
+		int i = 10;
+		if(i == 10)	{
+			//
+		}
 	}
 
 	/**

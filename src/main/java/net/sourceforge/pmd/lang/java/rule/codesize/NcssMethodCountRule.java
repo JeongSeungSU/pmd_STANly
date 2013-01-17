@@ -15,7 +15,7 @@ public class NcssMethodCountRule extends AbstractNcssCountRule {
      */
     public NcssMethodCountRule() {
 	super(ASTMethodDeclaration.class);
-	setProperty(MINIMUM_DESCRIPTOR, 100d);
+	setProperty(MINIMUM_DESCRIPTOR, 1d);
     }
 
     @Override

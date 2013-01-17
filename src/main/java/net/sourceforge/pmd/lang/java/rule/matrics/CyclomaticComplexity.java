@@ -7,7 +7,7 @@ import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTBlockStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTCatchStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
-import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
+//import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalAndExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
@@ -61,7 +61,7 @@ public class CyclomaticComplexity extends AbstractJavaRule {
 
 	private Stack<Entry> entryStack = new Stack<Entry>();
 
-	public static int sumExpressionComplexity(ASTExpression expr) {
+	public static int sumExpressionComplexity(ASTExpression expr){
 		if (expr == null) {
 			return 0;
 		}
@@ -264,5 +264,4 @@ public class CyclomaticComplexity extends AbstractJavaRule {
 		}
 		return data;
 	}
-
 }
