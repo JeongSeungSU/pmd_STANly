@@ -1,0 +1,37 @@
+package net.sourceforge.pmd.lang.java.rule.matrics.HyeSeong;
+
+import java.util.Stack;
+
+import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
+import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+
+public class NumberOfClasses  extends AbstractJavaRule{
+
+	
+	private int count;
+
+	
+	public NumberOfClasses()
+	{
+		count=0;
+	}
+	@Override
+	public Object visit(ASTCompilationUnit node, Object data) {
+		
+	
+		Object obj = super.visit(node, data);
+			System.out.println("클래수 갯수: "+count);
+		return obj;
+	}
+
+	@Override
+	public Object visit(ASTClassOrInterfaceDeclaration node, Object data) {
+		
+		if(!node.isInterface())
+			count++;
+		
+		return super.visit(node, data);
+	}
+
+}

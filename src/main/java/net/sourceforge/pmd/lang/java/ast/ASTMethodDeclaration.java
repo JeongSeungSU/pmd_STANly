@@ -53,6 +53,7 @@ public class ASTMethodDeclaration extends AbstractJavaAccessNode {
         if (isInterfaceMember()) {
             return true;
         }
+        
         return super.isAbstract();
     }
 
