@@ -10,7 +10,7 @@ The Matrics ruleset contains a collection of good practices which should be foll
 
     <rule name="EfferentCoupling"
           since="1.2"
-          message="Avoid instantiating Boolean objects; reference Boolean.TRUE or Boolean.FALSE or call Boolean.valueOf() instead."
+          message="The {0} ''{1}'' has a Efferent Coupling of {2}."
           class="net.sourceforge.pmd.lang.java.rule.matrics.EfferentCoupling"
           externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#BooleanInstantiation">
    <description>
@@ -64,6 +64,40 @@ Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
           message="The {0} ''{1}'' has a Nested Block Depth of {2}."
           class="net.sourceforge.pmd.lang.java.rule.matrics.NestedBlockDepth"
           externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#NestedBlockDepth">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="DepthOfInheritanceTree"
+          since="1.2"
+          message="The {0} ''{1}'' has a Depth Of Inheritance Tree of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.DepthOfInheritanceTree"
+          externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="LinesOfCode"
+          since="1.2"
+          message="The {0} ''{1}'' has a Lines of Code of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.LinesOfCode"
+          externalInfoUrl="${pmd.website.baseurl}/rules/java/matrics.html#BooleanInstantiation">
    <description>
 Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
    </description>

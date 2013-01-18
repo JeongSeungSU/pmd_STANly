@@ -24,7 +24,7 @@ public class NumberOfParameters extends AbstractJavaRule {
 		
 		public double getNumberOfParameterAverage() {
 			return (double) methodCount == 0 ? 1 : (double)( (double) parameterCount / (double) methodCount );
-		}		
+		}
 	}
 	private Stack<Entry> entryStack = new Stack<Entry>();
 

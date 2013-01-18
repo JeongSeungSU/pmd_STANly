@@ -1,7 +1,7 @@
 package net.sourceforge.pmd.lang.java.rule.matrics;
 
 import java.util.Stack;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTCatchStatement;
@@ -51,7 +51,7 @@ public class NestedBlockDepth extends AbstractJavaRule {
 	}
 
 	private Stack<Entry> entryStack = new Stack<Entry>();
-	private Logger logger = Logger.getLogger("AppLogging1");
+	//private Logger logger = Logger.getLogger("AppLogging1");
 	
 	@Override
 	public Object visit(ASTIfStatement node, Object data) {
@@ -136,7 +136,7 @@ public class NestedBlockDepth extends AbstractJavaRule {
 			return data;
 		}
 
-		logger.info("안녕하세요! Test입니다");
+//		logger.info("안녕하세요! Test입니다");
 		entryStack.push( new Entry( node ) );
 		super.visit( node, data );
 		Entry classEntry = entryStack.pop();
