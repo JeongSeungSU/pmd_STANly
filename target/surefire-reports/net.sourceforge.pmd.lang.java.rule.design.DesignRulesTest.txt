@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: net.sourceforge.pmd.lang.java.rule.design.DesignRulesTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 1.368 sec

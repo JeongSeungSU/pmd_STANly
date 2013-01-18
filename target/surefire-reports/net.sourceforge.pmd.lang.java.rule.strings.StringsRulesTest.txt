@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: net.sourceforge.pmd.lang.java.rule.strings.StringsRulesTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.3 sec

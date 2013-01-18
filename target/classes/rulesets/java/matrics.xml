@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+
+<ruleset name="Matrics"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+  <description>
+The Matrics ruleset contains a collection of good practices which should be followed.
+  </description>
+
+    <rule name="EfferentCoupling"
+          since="1.2"
+          message="The {0} ''{1}'' has a Efferent Coupling of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.EfferentCoupling"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="CyclomaticComplexity"
+          since="1.2"
+          message="The {0} ''{1}'' has a Cyclomatic Complexity of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.CyclomaticComplexity"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#CyclomaticComplexity">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="NumberOfParameters"
+          since="1.2"
+          message="The {0} ''{1}'' has a Number of Parameters of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.NumberOfParameters"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#NumberOfParameters">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+   
+   <rule name="NestedBlockDepth"
+          since="1.2"
+          message="The {0} ''{1}'' has a Nested Block Depth of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.NestedBlockDepth"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#NestedBlockDepth">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="DepthOfInheritanceTree"
+          since="1.2"
+          message="The {0} ''{1}'' has a Depth Of Inheritance Tree of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.DepthOfInheritanceTree"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+	<rule name="LinesOfCode"
+          since="1.2"
+          message="The {0} ''{1}'' has a Lines of Code of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.LinesOfCode"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+   
+   <rule name="WeightedMethodsPerClass"
+          since="1.2"
+          message="The {0} ''{1}'' has a WeightedMethodsPerClass of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.WeightedMethodsPerClass"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+
+</ruleset>
