@@ -8,6 +8,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTCatchStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTDoStatement;
+import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFinallyStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTForStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTIfStatement;
@@ -184,9 +185,26 @@ public class NestedBlockDepth extends AbstractJavaRule {
 		//}
 		return data;
 	}
+	@Override
+	public Object visit(ASTEnumDeclaration node, Object data) {
+
+		entryStack.push( new Entry( node ) );
+		super.visit( node, data );
+		Entry classEntry = entryStack.pop();
+		//if ( classEntry.getNumberOfParameterAverage() >= reportLevel
+		//		|| classEntry.highestDecisionPoints >= reportLevel ) {
+		addViolation( data, node, new String[] {
+				"enum",
+				node.getImage(),
+				classEntry.getNBDAverage() + " (Highest = "
+						+ classEntry.highestNestedBlockDepth + ')' } );
+		//}
+		return data;
+	}
 	
 	@Override
 	public Object visit(ASTConstructorDeclaration node, Object data) {
+		//if(data.getClass())
 		entryStack.push( new Entry( node ) );
 		entryStack.peek().pushNestedBlockDepth();
 		super.visit( node, data );

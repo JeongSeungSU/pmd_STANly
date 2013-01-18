@@ -13,7 +13,7 @@ import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 
 public class EfferentCoupling extends AbstractJavaRule {
 	
-	
+	/*
 	private static class Entry {
 		private Node node;
 		private int efferent;
@@ -74,6 +74,6 @@ public class EfferentCoupling extends AbstractJavaRule {
     public Object visit(ASTImplementsList node, Object data) {
     	entryStack.peek().efferent += node.jjtGetNumChildren();
     	return super.visit(node, data);
-    }
-
+	}
+	*/
 }

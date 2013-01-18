@@ -6,6 +6,7 @@ import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFormalParameter;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
@@ -54,6 +55,23 @@ public class NumberOfParameters extends AbstractJavaRule {
 		//		|| classEntry.highestDecisionPoints >= reportLevel ) {
 		addViolation( data, node, new String[] {
 				"class",
+				node.getImage(),
+				classEntry.getNumberOfParameterAverage() + " (Highest = "
+						+ classEntry.highestNumberOfParam + ')' } );
+		//}
+		return data;
+	}
+	
+	@Override
+	public Object visit(ASTEnumDeclaration node, Object data) {
+
+		entryStack.push( new Entry( node ) );
+		super.visit( node, data );
+		Entry classEntry = entryStack.pop();
+		//if ( classEntry.getNumberOfParameterAverage() >= reportLevel
+		//		|| classEntry.highestDecisionPoints >= reportLevel ) {
+		addViolation( data, node, new String[] {
+				"enum",
 				node.getImage(),
 				classEntry.getNumberOfParameterAverage() + " (Highest = "
 						+ classEntry.highestNumberOfParam + ')' } );
