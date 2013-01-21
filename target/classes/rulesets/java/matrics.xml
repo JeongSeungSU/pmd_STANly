@@ -126,5 +126,38 @@ Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
    ]]>
    </example>
    </rule>
+   
+   <rule name="NumberOfAttributes"
+          since="1.2"
+          message="The {0} ''{1}'' has a NumberOfAttributes of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.NumberOfAttributes"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
+   <rule name="NumberOfStaticAttributes"
+          since="1.2"
+          message="The {0} ''{1}'' has a NumberOfStaticAttributes of {2}."
+          class="net.sourceforge.pmd.lang.java.rule.matrics.NumberOfStaticAttributes"
+          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.1/rules/java/matrics.html#BooleanInstantiation">
+   <description>
+Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+   </description>
+      <priority>2</priority>
+   <example>
+   <![CDATA[
+Boolean bar = new Boolean("true");		// unnecessary creation, just reference Boolean.TRUE;
+Boolean buz = Boolean.valueOf(false);	// ...., just reference Boolean.FALSE;
+   ]]>
+   </example>
+   </rule>
 
 </ruleset>
