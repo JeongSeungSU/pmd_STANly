@@ -1,5 +1,6 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,6 +30,6 @@ public abstract class StanlyNode {
 	{
 		this.type = type;
 		this.name = name;
-		this.children = new LinkedList<StanlyNode>();
+		this.children = new ArrayList<StanlyNode>();
 	}
 }

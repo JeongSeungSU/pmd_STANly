@@ -1,5 +1,6 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -23,7 +24,7 @@ public class StanlyMap extends AbstractJavaRule {
 	
 	public StanlyMap()
 	{
-		folderNode = new LinkedList<StanlyFolderNode>();
+		folderNode = new ArrayList<StanlyFolderNode>();
 	}
 	public Object visit(ASTCompilationUnit node, Object data)
 	{
@@ -45,6 +46,7 @@ public class StanlyMap extends AbstractJavaRule {
 		}
 		if(currentFolderNode == null)
 		{
+			System.out.println("new folder node : " + folderName);
 			currentFolderNode = new StanlyFolderNode(StanlyNode.FOLDER,folderName);
 			folderNode.add(currentFolderNode);
 		}
@@ -59,7 +61,8 @@ public class StanlyMap extends AbstractJavaRule {
 		}
 		if(currentPackageNode == null)
 		{
-			currentPackageNode = new StanlyPackageNode(StanlyNode.FOLDER,folderName);
+			System.out.println("    new package node : " + packageName);
+			currentPackageNode = new StanlyPackageNode(StanlyNode.FOLDER,packageName);
 			currentFolderNode.children.add(currentPackageNode);
 		}
 		
@@ -78,8 +81,16 @@ public class StanlyMap extends AbstractJavaRule {
 		StanlyNode thisNode;
 		StanlyNode parent = stack.peek();
 		String name = node.getImage();
-		if(node.isInterface())		thisNode = new StanlyInterfaceNode(StanlyNode.INTERFACE, name);
-		else						thisNode = new StanlyClassNode(StanlyNode.CLASS, name);
+		if(node.isInterface())
+		{
+			thisNode = new StanlyInterfaceNode(StanlyNode.INTERFACE, name);
+			System.out.println("        new interface node : " + name);
+		}
+		else	
+		{
+			thisNode = new StanlyClassNode(StanlyNode.CLASS, name);
+			System.out.println("        new class node : " + name);
+		}
 		
 		parent.children.add(thisNode);
 		stack.push(thisNode);
@@ -94,6 +105,7 @@ public class StanlyMap extends AbstractJavaRule {
 		StanlyNode parent = stack.peek();
 		String name = node.getImage();
 		thisNode = new StanlyEnumNode(StanlyNode.ENUM, name);
+		System.out.println("        new enum node : " + name);
 		
 		parent.children.add(thisNode);
 		stack.push(thisNode);
@@ -110,6 +122,7 @@ public class StanlyMap extends AbstractJavaRule {
 		String name = node.getVariableName();
 		
 		thisNode = new StanlyAttributeNode(StanlyNode.ATTRIBUTE, name);
+		System.out.println("            new attribute node : " + name);
 		
 		parent.children.add(thisNode);
 		stack.push(thisNode);
@@ -126,6 +139,7 @@ public class StanlyMap extends AbstractJavaRule {
 		String name = stack.peek().name;
 		
 		thisNode = new StanlyConstructorNode(StanlyNode.CONSTRUCTOR, name);
+		System.out.println("            new constructor node : " + name);
 		
 		parent.children.add(thisNode);
 		stack.push(thisNode);
@@ -142,6 +156,7 @@ public class StanlyMap extends AbstractJavaRule {
 		String name = node.getMethodName();
 		
 		thisNode = new StanlyMethodNode(StanlyNode.METHOD, name);
+		System.out.println("            new method node : " + name);
 		
 		parent.children.add(thisNode);
 		stack.push(thisNode);
