@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.032" errors="0" skipped="0" tests="17" name="net.sourceforge.pmd.ConfigurationTest">
+<testsuite failures="0" time="0.044" errors="0" skipped="0" tests="17" name="net.sourceforge.pmd.ConfigurationTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf6709602424258744918.tmp"/>
+    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf1734157347805205855.tmp"/>
     <property name="sun.jnu.encoding" value="US-ASCII"/>
     <property name="java.library.path" value="/Users/YHCRetinaPro/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B test"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="ko"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -61,21 +61,21 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testThreads"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testLanguageVersionDiscoverer"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testRuleSets"/>
+  <testcase time="0.003" classname="net.sourceforge.pmd.ConfigurationTest" name="testThreads"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.ConfigurationTest" name="testLanguageVersionDiscoverer"/>
+  <testcase time="0.003" classname="net.sourceforge.pmd.ConfigurationTest" name="testRuleSets"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testMinimumPriority"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testSourceEncoding"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testInputPaths"/>
+  <testcase time="0.003" classname="net.sourceforge.pmd.ConfigurationTest" name="testInputPaths"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testSuppressMarker"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testReportShortNames"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testReportFormat"/>
-  <testcase time="0.009" classname="net.sourceforge.pmd.ConfigurationTest" name="testCreateRenderer"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testReportFormat"/>
+  <testcase time="0.006" classname="net.sourceforge.pmd.ConfigurationTest" name="testCreateRenderer"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testReportFile"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testShowSuppressedViolations"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testReportProperties"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testDebug"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testShowSuppressedViolations"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testReportProperties"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testDebug"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testStressTest"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testBenchmark"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.ConfigurationTest" name="testSuppressMarker"/>
-  <testcase time="0.002" classname="net.sourceforge.pmd.ConfigurationTest" name="testClassLoader"/>
+  <testcase time="0.003" classname="net.sourceforge.pmd.ConfigurationTest" name="testClassLoader"/>
 </testsuite>

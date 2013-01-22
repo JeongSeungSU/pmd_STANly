@@ -48,7 +48,7 @@ public class NumberOfAttributes extends AbstractJavaRule {
 	
 	@Override
 	public Object visit(ASTEnumDeclaration node, Object data) {
-
+		
 		entryStack.push( new Entry( node ) );
 		super.visit( node, data );
 		Entry classEntry = entryStack.pop();

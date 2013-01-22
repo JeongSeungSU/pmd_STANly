@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.175" errors="0" skipped="0" tests="33" name="net.sourceforge.pmd.ast.JDKVersionTest">
+<testsuite failures="0" time="0.173" errors="0" skipped="0" tests="33" name="net.sourceforge.pmd.ast.JDKVersionTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf6709602424258744918.tmp"/>
+    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf1734157347805205855.tmp"/>
     <property name="sun.jnu.encoding" value="US-ASCII"/>
     <property name="java.library.path" value="/Users/YHCRetinaPro/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B test"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="ko"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -65,33 +65,33 @@
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testEnumAsIdentifierShouldPassWith14"/>
   <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testEnumAsKeywordShouldPassWith15"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testEnumAsIdentifierShouldFailWith15"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsKeywordVariantsSucceedWith1_4"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsVariableDeclIdentifierFailsWith1_4"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsMethodNameIdentifierFailsWith1_4"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsIdentifierSucceedsWith1_3"/>
-  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsKeywordFailsWith1_3"/>
-  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testVarargsShouldPassWith15"/>
-  <testcase time="0.008" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testVarargsShouldFailWith14"/>
-  <testcase time="0.007" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15ForLoopSyntaxShouldPassWith15"/>
-  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15ForLoopSyntaxWithModifiers"/>
+  <testcase time="0.007" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsKeywordVariantsSucceedWith1_4"/>
+  <testcase time="0.007" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsVariableDeclIdentifierFailsWith1_4"/>
+  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsMethodNameIdentifierFailsWith1_4"/>
+  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsIdentifierSucceedsWith1_3"/>
+  <testcase time="0.008" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsKeywordFailsWith1_3"/>
+  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testVarargsShouldPassWith15"/>
+  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testVarargsShouldFailWith14"/>
+  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15ForLoopSyntaxShouldPassWith15"/>
+  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15ForLoopSyntaxWithModifiers"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15ForLoopShouldFailWith14"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15GenericsSyntaxShouldPassWith15"/>
-  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testVariousParserBugs"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testJDK15GenericsSyntaxShouldPassWith15"/>
+  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testVariousParserBugs"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testNestedClassInMethodBug"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testGenericsInMethodCall"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testGenericINAnnotation"/>
   <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testGenericReturnType"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testMultipleGenerics"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAnnotatedParams"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAnnotatedLocals"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsIdentifierSucceedsWith1_3_test2"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testMultipleGenerics"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAnnotatedParams"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAnnotatedLocals"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testAssertAsIdentifierSucceedsWith1_3_test2"/>
   <testcase time="0.007" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testBinaryAndUnderscoresInNumericalLiterals"/>
-  <testcase time="0.008" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testStringInSwitch"/>
+  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testStringInSwitch"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testGenericDiamond"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testTryWithResources"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testTryWithResourcesSemi"/>
   <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testTryWithResourcesMulti"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testTryWithResourcesWithAnnotations"/>
   <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testMulticatch"/>
-  <testcase time="0.006" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testMulticatchWithAnnotations"/>
+  <testcase time="0.005" classname="net.sourceforge.pmd.ast.JDKVersionTest" name="testMulticatchWithAnnotations"/>
 </testsuite>

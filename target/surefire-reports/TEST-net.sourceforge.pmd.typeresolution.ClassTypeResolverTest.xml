@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.041" errors="0" skipped="0" tests="14" name="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest">
+<testsuite failures="0" time="0.029" errors="0" skipped="0" tests="14" name="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf6709602424258744918.tmp"/>
+    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf1734157347805205855.tmp"/>
     <property name="sun.jnu.encoding" value="US-ASCII"/>
     <property name="java.library.path" value="/Users/YHCRetinaPro/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B test"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="ko"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -61,18 +61,18 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
+  <testcase time="0.001" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testExtraTopLevelClass"/>
+  <testcase time="0.001" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testInnerClass"/>
+  <testcase time="0.001" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testAnonymousInnerClass"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testLiterals"/>
+  <testcase time="0" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="acceptanceTest"/>
   <testcase time="0" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testClassNameExists"/>
-  <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testAnonymousInnerClass"/>
-  <testcase time="0.003" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testLiterals"/>
-  <testcase time="0.006" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testUnaryNumericPromotion"/>
-  <testcase time="0.008" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testBinaryNumericPromotion"/>
-  <testcase time="0.005" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testBinaryStringPromotion"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testUnaryNumericPromotion"/>
+  <testcase time="0.005" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testBinaryNumericPromotion"/>
+  <testcase time="0.004" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testBinaryStringPromotion"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testUnaryLogicalOperators"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testBinaryLogicalOperators"/>
-  <testcase time="0.004" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testUnaryNumericOperators"/>
+  <testcase time="0.003" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testUnaryNumericOperators"/>
   <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testBinaryNumericOperators"/>
-  <testcase time="0.003" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testAssignmentOperators"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testExtraTopLevelClass"/>
-  <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testInnerClass"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="acceptanceTest"/>
+  <testcase time="0.002" classname="net.sourceforge.pmd.typeresolution.ClassTypeResolverTest" name="testAssignmentOperators"/>
 </testsuite>

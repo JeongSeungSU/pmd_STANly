@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf6709602424258744918.tmp"/>
+    <property name="classworlds.conf" value="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/.metadata/.plugins/org.eclipse.m2e.core/launches/m2conf1734157347805205855.tmp"/>
     <property name="sun.jnu.encoding" value="US-ASCII"/>
     <property name="java.library.path" value="/Users/YHCRetinaPro/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B test"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="ko"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -64,5 +64,5 @@
   <testcase time="0" classname="net.sourceforge.pmd.lang.xml.XmlParserOptionsTest" name="testConstructor"/>
   <testcase time="0" classname="net.sourceforge.pmd.lang.xml.XmlParserOptionsTest" name="testDefaults"/>
   <testcase time="0" classname="net.sourceforge.pmd.lang.xml.XmlParserOptionsTest" name="testSetters"/>
-  <testcase time="0.001" classname="net.sourceforge.pmd.lang.xml.XmlParserOptionsTest" name="testEqualsHashcode"/>
+  <testcase time="0" classname="net.sourceforge.pmd.lang.xml.XmlParserOptionsTest" name="testEqualsHashcode"/>
 </testsuite>

@@ -11,6 +11,7 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/YHCRetinaPro/Desktop/eclipse-jee-indigo-SR2/workspace/pmd_STANly/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/google-gson-2.2.2/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
