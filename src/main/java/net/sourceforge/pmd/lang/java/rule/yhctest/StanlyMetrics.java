@@ -1,27 +1,42 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest;
 
+import java.util.HashMap;
+
 public class StanlyMetrics {
-	public StanlyMetricValue CyclomaticComplexity;
-	public StanlyMetricValue NumberOfParameters;
-	public StanlyMetricValue NestedBlockDepth;
-	public StanlyMetricValue WeightedMethodsPerClass;
-	public StanlyMetricValue NumberOfAttributes;
-	public StanlyMetricValue NumberOfStaticAttributes;
-	public StanlyMetricValue NumberOfMethods;
-	public StanlyMetricValue NumberOfStaticMethods;
-	public StanlyMetricValue NumberOfClasses;
-	public StanlyMetricValue NumberOfInterfaces;
-	public StanlyMetricValue NumberOfPackages;
-	public StanlyMetricValue MethodLinesOfCode;
-	public StanlyMetricValue TotalLinesOfCode;
-	public StanlyMetricValue AfferentCoupling;
-	public StanlyMetricValue EfferentCoupling;
-	public StanlyMetricValue Instability;
-	public StanlyMetricValue NormalizedDistance;
-	public StanlyMetricValue Abstractness;
-	public StanlyMetricValue DepthOfInheritanceTree;
-	public StanlyMetricValue NumberOfChildren;
-	public StanlyMetricValue NumberOfOverriddenMethods;
-	public StanlyMetricValue SpecializationIndex;
-	public StanlyMetricValue LackOfCohesionOfMethods;
+	
+	private HashMap<String,StanlyMetricValue> metric;
+
+	public StanlyMetrics(){
+		metric = new HashMap<String,StanlyMetricValue>();
+		metric.put("CyclomaticComplexity", new StanlyMetricValue());
+		metric.put("NumberOfParameters", new StanlyMetricValue());
+		metric.put("NestedBlockDepth", new StanlyMetricValue());
+		metric.put("WeightedMethodsPerClass", new StanlyMetricValue());
+		metric.put("NumberOfAttributes", new StanlyMetricValue());
+		metric.put("NumberOfStaticAttributes", new StanlyMetricValue());
+		metric.put("NumberOfMethods", new StanlyMetricValue());
+		metric.put("NumberOfStaticMethods", new StanlyMetricValue());
+		metric.put("NumberOfClasses", new StanlyMetricValue());
+		metric.put("NumberOfInterfaces", new StanlyMetricValue());
+		metric.put("NumberOfPackages", new StanlyMetricValue());
+		metric.put("MethodLinesOfCode", new StanlyMetricValue());
+		metric.put("TotalLinesOfCode", new StanlyMetricValue());
+		metric.put("AfferentCoupling", new StanlyMetricValue());
+		metric.put("EfferentCoupling", new StanlyMetricValue());
+		metric.put("Instability", new StanlyMetricValue());
+		metric.put("NormalizedDistance", new StanlyMetricValue());
+		metric.put("Abstractness", new StanlyMetricValue());
+		metric.put("DepthOfInheritanceTree", new StanlyMetricValue());
+		metric.put("NumberOfChildren", new StanlyMetricValue());
+		metric.put("NumberOfOverriddenMethods", new StanlyMetricValue());
+		metric.put("SpecializationIndex", new StanlyMetricValue());
+		metric.put("LackOfCohesionOfMethods", new StanlyMetricValue());
+	}
+	
+	public StanlyMetricValue getMetric(String key)
+	{
+		return metric.get(key);
+	}
+	
+	
 }

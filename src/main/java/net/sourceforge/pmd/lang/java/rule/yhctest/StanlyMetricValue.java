@@ -6,4 +6,10 @@ public class StanlyMetricValue {
 	public float stddev;
 	public float maximum;
 	public String cause;
+	
+	public StanlyMetricValue()
+	{
+		maximum = stddev = mean = total = 0.0f;
+		cause = null;
+	}
 }
