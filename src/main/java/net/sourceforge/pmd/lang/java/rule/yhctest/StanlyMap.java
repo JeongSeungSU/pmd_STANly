@@ -28,6 +28,7 @@ public class StanlyMap extends AbstractJavaRule {
 	}
 	public Object visit(ASTCompilationUnit node, Object data)
 	{
+		System.out.println("운영체제 종류: " + System.getProperty("os.name") );
 		StanlyFolderNode currentFolderNode = null;
 		StanlyPackageNode currentPackageNode = null;
 		//Iterator it = topNode.iterator();
