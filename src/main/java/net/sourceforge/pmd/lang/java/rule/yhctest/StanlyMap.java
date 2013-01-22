@@ -1,12 +1,10 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-//import com.google.gson.Gson;
-
+import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
@@ -14,7 +12,16 @@ import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
-import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyMethodNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyNodeType;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyAttributeNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyClassNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyConstructorNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyEnumNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyFolderNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyInterfaceNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyNode;
+import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyPackageNode;
 
 public class StanlyMap extends AbstractJavaRule {
 	private List<StanlyFolderNode> folderNode;
@@ -38,7 +45,7 @@ public class StanlyMap extends AbstractJavaRule {
 		
 		for(StanlyNode a : folderNode)
 		{
-			if(a.name.equals(folderName))
+			if(a.getName().equals(folderName))
 			{
 				currentFolderNode = (StanlyFolderNode)a;
 				break;
@@ -47,13 +54,13 @@ public class StanlyMap extends AbstractJavaRule {
 		if(currentFolderNode == null)
 		{
 			System.out.println("new folder node : " + folderName);
-			currentFolderNode = new StanlyFolderNode(StanlyNode.FOLDER,folderName);
+			currentFolderNode = new StanlyFolderNode(StanlyNodeType.FOLDER,folderName);
 			folderNode.add(currentFolderNode);
 		}
 		
-		for(StanlyNode a : currentFolderNode.children)
+		for(StanlyNode a : currentFolderNode.getChildren())
 		{
-			if(a.name.equals(packageName))
+			if(a.getName().equals(packageName))
 			{
 				currentPackageNode = (StanlyPackageNode)a;
 				break;
@@ -62,8 +69,8 @@ public class StanlyMap extends AbstractJavaRule {
 		if(currentPackageNode == null)
 		{
 			System.out.println("    new package node : " + packageName);
-			currentPackageNode = new StanlyPackageNode(StanlyNode.FOLDER,packageName);
-			currentFolderNode.children.add(currentPackageNode);
+			
+			currentFolderNode.addChildren(StanlyNodeType.PACKAGE,packageName);
 		}
 		
 		stack.push(currentPackageNode);
@@ -78,22 +85,22 @@ public class StanlyMap extends AbstractJavaRule {
 	
 	public Object visit(ASTClassOrInterfaceDeclaration node, Object data)
 	{
-		StanlyNode thisNode;
+
 		StanlyNode parent = stack.peek();
 		String name = node.getImage();
 		if(node.isInterface())
 		{
-			thisNode = new StanlyInterfaceNode(StanlyNode.INTERFACE, name);
+			parent.addChildren(StanlyNodeType.INTERFACE, name);
 			System.out.println("        new interface node : " + name);
 		}
 		else	
 		{
-			thisNode = new StanlyClassNode(StanlyNode.CLASS, name);
+			parent.addChildren(StanlyNodeType.CLASS, name);
 			System.out.println("        new class node : " + name);
 		}
 		
-		parent.children.add(thisNode);
-		stack.push(thisNode);
+	
+		stack.push(parent.getLastChild());
 		super.visit(node,data);
 		stack.pop();
 		return data;
@@ -104,11 +111,12 @@ public class StanlyMap extends AbstractJavaRule {
 		StanlyNode thisNode;
 		StanlyNode parent = stack.peek();
 		String name = node.getImage();
-		thisNode = new StanlyEnumNode(StanlyNode.ENUM, name);
+
 		System.out.println("        new enum node : " + name);
 		
-		parent.children.add(thisNode);
-		stack.push(thisNode);
+		
+		parent.addChildren(StanlyNodeType.ENUM, name);
+		stack.push(parent.getLastChild());
 		super.visit(node,data);
 		stack.pop();
 		
@@ -121,11 +129,11 @@ public class StanlyMap extends AbstractJavaRule {
 		StanlyNode parent = stack.peek();
 		String name = node.getVariableName();
 		
-		thisNode = new StanlyAttributeNode(StanlyNode.ATTRIBUTE, name);
+		parent.addChildren(StanlyNodeType.ATTRIBUTE, name);
 		System.out.println("            new attribute node : " + name);
 		
-		parent.children.add(thisNode);
-		stack.push(thisNode);
+
+		stack.push(parent.getLastChild());
 		super.visit(node, data);
 		stack.pop();
 		
@@ -136,13 +144,12 @@ public class StanlyMap extends AbstractJavaRule {
 	{
 		StanlyNode thisNode;
 		StanlyNode parent = stack.peek();
-		String name = stack.peek().name;
+		String name = stack.peek().getName();
 		
-		thisNode = new StanlyConstructorNode(StanlyNode.CONSTRUCTOR, name);
+		parent.addChildren(StanlyNodeType.CONSTRUCTOR, name);
 		System.out.println("            new constructor node : " + name);
-		
-		parent.children.add(thisNode);
-		stack.push(thisNode);
+	
+		stack.push(parent.getLastChild());
 		super.visit(node, data);
 		stack.pop();
 		
@@ -155,11 +162,10 @@ public class StanlyMap extends AbstractJavaRule {
 		StanlyNode parent = stack.peek();
 		String name = node.getMethodName();
 		
-		thisNode = new StanlyMethodNode(StanlyNode.METHOD, name);
+		parent.addChildren(StanlyNodeType.METHOD, name);
 		System.out.println("            new method node : " + name);
 		
-		parent.children.add(thisNode);
-		stack.push(thisNode);
+		stack.push(parent.getLastChild());
 		super.visit(node, data);
 		stack.pop();
 		
