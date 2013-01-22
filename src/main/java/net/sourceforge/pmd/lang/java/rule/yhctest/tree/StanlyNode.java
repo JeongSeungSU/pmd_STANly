@@ -1,7 +1,6 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest.tree;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.pmd.lang.java.rule.yhctest.StanlyMetrics;
@@ -41,6 +40,12 @@ public abstract class StanlyNode {
 		return type;
 	}
 
+	public String getFullName() {
+		if(parent.type == StanlyNodeType.FOLDER)	
+			return name;
+		return parent.getFullName() + '.' + name;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -56,7 +61,7 @@ public abstract class StanlyNode {
 	{
 		return children.get(ChildrenCount-1);
 	}
-	public boolean addChildren(StanlyNodeType type, String name)
+	public StanlyNode addChildren(StanlyNodeType type, String name)
 	{
 		StanlyNode newNode = null;
 		switch(type)
@@ -95,10 +100,10 @@ public abstract class StanlyNode {
 			children.add(newNode);
 			ChildrenCount++;
 		}
-		else
-			return false;
+		//else
+		//	return null;
 		
-		return true;
+		return newNode;
 	}
 	public StanlyMetrics getMetrics() {
 		return metrics;
