@@ -7,16 +7,8 @@ public abstract class AbstractConfiguration {
 
 	private String sourceEncoding = System.getProperty("file.encoding");
 	private boolean debug;
-	public  static int a123123=0; //123123123123
 	protected AbstractConfiguration() {
-
 		super();
-		
-		
-		int i = 10;
-		if(i == 10)	{
-			//
-		}
 	}
 
 	/**

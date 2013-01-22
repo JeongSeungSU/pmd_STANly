@@ -24,7 +24,6 @@ public class NumberOfInterface extends AbstractJavaRule{
 
 	@Override
 	public Object visit(ASTClassOrInterfaceDeclaration node, Object data) {
-		
 		if(node.isInterface())
 			count++;
 		
