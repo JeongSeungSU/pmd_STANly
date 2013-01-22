@@ -33,7 +33,7 @@ public class NumberOfStaticMethods extends AbstractJavaRule{
 		
 		if(node.isStatic())
 			entry.addCount();
-
+		
     	return super.visit(node, data);
     }
 	@Override
