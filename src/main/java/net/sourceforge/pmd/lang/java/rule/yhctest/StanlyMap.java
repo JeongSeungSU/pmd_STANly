@@ -19,7 +19,7 @@ import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyProjectNode;
 
 public class StanlyMap extends AbstractJavaRule {
 	private static StanlyProjectNode projectNode;
-	private Stack<StanlyNode> stack = new Stack<StanlyNode>();
+	private static Stack<StanlyNode> entryStack = new Stack<StanlyNode>();
 	
 	// jdbc, hibernate
 	
@@ -27,6 +27,15 @@ public class StanlyMap extends AbstractJavaRule {
 	{
 		projectNode = new StanlyProjectNode(StanlyNodeType.PROJECT,"Project");
 	}
+	
+	public static StanlyProjectNode getProjectNode() {
+		return projectNode;
+	}
+	
+	public static Stack<StanlyNode> getEntryStack() {
+		return entryStack;
+	}
+	
 	public Object visit(ASTCompilationUnit node, Object data)
 	{
 		StanlyFolderNode currentFolderNode = null;
@@ -68,9 +77,9 @@ public class StanlyMap extends AbstractJavaRule {
 			currentPackageNode = (StanlyPackageNode)currentFolderNode.addChildren(StanlyNodeType.PACKAGE,packageName);
 		}
 		
-		stack.push(currentPackageNode);
+		entryStack.push(currentPackageNode);
 		super.visit(node, data);
-		stack.pop();
+		entryStack.pop();
 		
 		//Gson gson = new Gson();
 		//String temp = gson.toJson(topNode);
@@ -81,7 +90,7 @@ public class StanlyMap extends AbstractJavaRule {
 	public Object visit(ASTClassOrInterfaceDeclaration node, Object data)
 	{
 
-		StanlyNode parent = stack.peek();
+		StanlyNode parent = entryStack.peek();
 		String name = node.getImage();
 		if(node.isInterface())
 		{
@@ -95,58 +104,58 @@ public class StanlyMap extends AbstractJavaRule {
 		}
 		
 	
-		stack.push(parent.getLastChild());
+		entryStack.push(parent.getLastChild());
 		super.visit(node,data);
-		stack.pop();
+		entryStack.pop();
 		return data;
 	}
 	
 	public Object visit(ASTEnumDeclaration node, Object data)
 	{
-		StanlyNode thisNode;
-		StanlyNode parent = stack.peek();
+		//StanlyNode thisNode;
+		StanlyNode parent = entryStack.peek();
 		String name = node.getImage();
 
 //		System.out.println("        new enum node : " + name);
 		
 		
 		parent.addChildren(StanlyNodeType.ENUM, name);
-		stack.push(parent.getLastChild());
+		entryStack.push(parent.getLastChild());
 		super.visit(node,data);
-		stack.pop();
+		entryStack.pop();
 		
 		return data;
 	}
 	
 	public Object visit(ASTFieldDeclaration node, Object data)
 	{
-		StanlyNode thisNode;
-		StanlyNode parent = stack.peek();
+		//StanlyNode thisNode;
+		StanlyNode parent = entryStack.peek();
 		String name = node.getVariableName();
 		
 		parent.addChildren(StanlyNodeType.ATTRIBUTE, name);
 //		System.out.println("            new attribute node : " + name);
 		
 
-		stack.push(parent.getLastChild());
+		entryStack.push(parent.getLastChild());
 		super.visit(node, data);
-		stack.pop();
+		entryStack.pop();
 		
 		return data;
 	}
 	
 	public Object visit(ASTConstructorDeclaration node, Object data)
 	{
-		StanlyNode thisNode;
-		StanlyNode parent = stack.peek();
-		String name = stack.peek().getName();
+		//StanlyNode thisNode;
+		StanlyNode parent = entryStack.peek();
+		String name = entryStack.peek().getName();
 		
 		parent.addChildren(StanlyNodeType.CONSTRUCTOR, name);
 //		System.out.println("            new constructor node : " + name);
 	
-		stack.push(parent.getLastChild());
+		entryStack.push(parent.getLastChild());
 		super.visit(node, data);
-		stack.pop();
+		entryStack.pop();
 		
 		return data;
 	}
@@ -154,15 +163,15 @@ public class StanlyMap extends AbstractJavaRule {
 	public Object visit(ASTMethodDeclaration node, Object data)
 	{
 		StanlyNode thisNode;
-		StanlyNode parent = stack.peek();
+		StanlyNode parent = entryStack.peek();
 		String name = node.getMethodName();
 		
 		thisNode = parent.addChildren(StanlyNodeType.METHOD, name);
 		System.out.println("            new method node : " + thisNode.getFullName());
 		
-		stack.push(parent.getLastChild());
+		entryStack.push(parent.getLastChild());
 		super.visit(node, data);
-		stack.pop();
+		entryStack.pop();
 		
 		return data;
 	}
