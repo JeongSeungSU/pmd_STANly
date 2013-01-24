@@ -41,8 +41,12 @@ public class StanlyMap extends AbstractJavaRule {
 		StanlyFolderNode currentFolderNode = null;
 		StanlyPackageNode currentPackageNode = null;
 		//Iterator it = topNode.iterator();
+		if(true)
+			return data;
+		
 		String folderName = ((RuleContext)data).getSourceCodeFilename();
 		ASTPackageDeclaration apd = node.getPackageDeclaration();
+		
 		if(apd == null)	//패키지가 정의되지 않은경우에는 return 시켜 탐색을하지 않도록함
 			return data;
 		String packageName = apd.getPackageNameImage();

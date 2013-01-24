@@ -28,7 +28,7 @@ import net.sourceforge.pmd.lang.java.rule.yhctest.tree.StanlyNode;
 
 
 public class CyclomaticComplexity extends AbstractJavaRule {
-	
+	/*
 	Stack<StanlyNode> entryStack = StanlyMap.getEntryStack();
 	
 	public static int sumExpressionComplexity(ASTExpression expr){
@@ -177,5 +177,5 @@ public class CyclomaticComplexity extends AbstractJavaRule {
 	public Object visit(ASTConstructorDeclaration node, Object data) {
 		super.visit( node, data );
 		return data;
-	}
+	}*/
 }

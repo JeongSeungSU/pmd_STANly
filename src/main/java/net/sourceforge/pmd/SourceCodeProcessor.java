@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.sourceforge.pmd.benchmark.Benchmark;
@@ -14,15 +15,18 @@ import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.lang.LanguageVersionHandler;
 import net.sourceforge.pmd.lang.Parser;
 import net.sourceforge.pmd.lang.ast.Node;
+import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ParseException;
 import net.sourceforge.pmd.lang.xpath.Initializer;
 import net.sourceforge.pmd.util.IOUtil;
 
 public class SourceCodeProcessor {
 
+	private static List<Node> culist;
     private final PMDConfiguration configuration;
 
     public SourceCodeProcessor(PMDConfiguration configuration) {
+    	this.culist = new LinkedList<Node>();
     	this.configuration = configuration;
     }
     
@@ -138,10 +142,14 @@ public class SourceCodeProcessor {
 		Language language = languageVersion.getLanguage();
 		usesDFA(languageVersion, rootNode, ruleSets, language);
 		usesTypeResolution(languageVersion, rootNode, ruleSets,language);
-		
+				
+		//rootNode.
 		List<Node> acus = new ArrayList<Node>();
 		acus.add(rootNode);
-		ruleSets.apply(acus, ctx, language);		
+		culist.add(rootNode);
+		//if(culist.size() > 596)
+		//	System.out.println("Done");
+		ruleSets.apply(acus, ctx, language);
 	}
 
 
