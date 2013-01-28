@@ -22,11 +22,11 @@ import net.sourceforge.pmd.util.IOUtil;
 
 public class SourceCodeProcessor {
 
-	private static List<Node> culist;
+	//private static List<Node> culist;
     private final PMDConfiguration configuration;
 
     public SourceCodeProcessor(PMDConfiguration configuration) {
-    	this.culist = new LinkedList<Node>();
+    	//this.culist = new LinkedList<Node>();
     	this.configuration = configuration;
     }
     
@@ -146,7 +146,7 @@ public class SourceCodeProcessor {
 		//rootNode.
 		List<Node> acus = new ArrayList<Node>();
 		acus.add(rootNode);
-		culist.add(rootNode);
+		//culist.add(rootNode);
 		//if(culist.size() > 596)
 		//	System.out.println("Done");
 		ruleSets.apply(acus, ctx, language);

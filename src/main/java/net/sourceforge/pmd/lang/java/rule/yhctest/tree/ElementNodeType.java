@@ -1,6 +1,6 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest.tree;
 
-public enum StanlyNodeType {
+public enum ElementNodeType {
 	PROJECT,
 	FOLDER, 
 	PACKAGE, 

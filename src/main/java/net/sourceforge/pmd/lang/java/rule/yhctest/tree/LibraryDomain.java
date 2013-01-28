@@ -1,13 +1,13 @@
 package net.sourceforge.pmd.lang.java.rule.yhctest.tree;
 
 
-public class StanlyFolderNode extends StanlyNode {
-	public StanlyFolderNode(StanlyNode parent, StanlyNodeType type, String name) {
+public class LibraryDomain extends ElementNode {
+	public LibraryDomain(ElementNode parent, ElementNodeType type, String name) {
 		super(parent,type, name);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public StanlyFolderNode(StanlyNodeType type, String name) {
+	public LibraryDomain(ElementNodeType type, String name) {
 		super(type, name);
 		// TODO Auto-generated constructor stub
 	}
