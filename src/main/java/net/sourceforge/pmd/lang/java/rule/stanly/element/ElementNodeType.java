@@ -1,4 +1,4 @@
-package net.sourceforge.pmd.lang.java.rule.yhctest.tree;
+package net.sourceforge.pmd.lang.java.rule.stanly.element;
 
 public enum ElementNodeType {
 	PROJECT,

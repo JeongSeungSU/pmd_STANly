@@ -1,4 +1,4 @@
-package net.sourceforge.pmd.lang.java.rule.yhctest;
+package net.sourceforge.pmd.lang.java.rule.stanly;
 
 import java.util.Stack;
 
@@ -11,11 +11,11 @@ import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTPackageDeclaration;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
-import net.sourceforge.pmd.lang.java.rule.yhctest.tree.LibraryDomain;
-import net.sourceforge.pmd.lang.java.rule.yhctest.tree.ElementNode;
-import net.sourceforge.pmd.lang.java.rule.yhctest.tree.ElementNodeType;
-import net.sourceforge.pmd.lang.java.rule.yhctest.tree.PackageDomain;
-import net.sourceforge.pmd.lang.java.rule.yhctest.tree.ProjectDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
 public class ProjectTree extends AbstractJavaRule {
 	private static ProjectDomain projectNode = null;
