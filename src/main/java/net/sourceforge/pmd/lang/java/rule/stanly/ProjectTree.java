@@ -217,12 +217,15 @@ public class ProjectTree extends AbstractJavaRule {
 		for(int i=0;i<n;i++)
 		{
 			nameNode = ((ASTTypeArgument)template.jjtGetChild(i)).getFirstDescendantOfType(ASTClassOrInterfaceType.class);
-			name += nameNode.getImage();
-			recurseNode = nameNode.getFirstDescendantOfType(ASTTypeArguments.class);
-			if(recurseNode != null)
-				name = addTemplateParameters(name,recurseNode);
-			if(i != n-1)
-				name += ',';
+			if(nameNode != null)
+			{
+				name += nameNode.getImage();
+				recurseNode = nameNode.getFirstDescendantOfType(ASTTypeArguments.class);
+				if(recurseNode != null)
+					name = addTemplateParameters(name,recurseNode);
+				if(i != n-1)
+					name += ',';
+			}
 		}
 		name += '>';
 		return name;
@@ -240,6 +243,7 @@ public class ProjectTree extends AbstractJavaRule {
 			if(template != null)
 				parameterName = addTemplateParameters(parameterName,template);
 			enode.parameters.add(parameterName);
+			System.out.println("                " + parameterName);
 		}
 	}
 		
