@@ -5,7 +5,7 @@ package net.sourceforge.pmd;
  */
 public abstract class AbstractConfiguration {
 
-	private String sourceEncoding = System.getProperty("file.encoding");
+	private String sourceEncoding = System.getProperty("file.encoding"),yhctest="test";
 	private boolean debug;
 	protected AbstractConfiguration() {
 		super();

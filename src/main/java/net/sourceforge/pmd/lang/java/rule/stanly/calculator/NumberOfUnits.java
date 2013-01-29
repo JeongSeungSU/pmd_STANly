@@ -27,7 +27,7 @@ public class NumberOfUnits extends AbstractCalculator {
 			if(entryStack.size() != 0)
 			{
 				((PackageDomain)entryStack.peek()).metric.addUnits(1);
-				System.out.println(((PackageDomain)entryStack.peek()).getFullName() + " has " + ((PackageDomain)entryStack.peek()).metric.getUnits());
+				//System.out.println(((PackageDomain)entryStack.peek()).getFullName() + " has " + ((PackageDomain)entryStack.peek()).metric.getUnits());
 			}
 			for(ElementNode n:nodeList)
 				entryStack.push(n);

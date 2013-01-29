@@ -8,12 +8,11 @@ import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfClassMemberField;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfUnits;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
@@ -29,8 +28,8 @@ public class ProjectTree extends AbstractJavaRule {
 		if(calculators == null)
 		{
 			calculators = new ArrayList<AbstractCalculator>();
-			calculators.add(new LinesOfCode());
-			calculators.add(new NumberOfClassMemberField());
+			//calculators.add(new LinesOfCode());
+			//calculators.add(new NumberOfClassMemberField());
 			calculators.add(new NumberOfUnits());
 		}
 		if(projectNode == null)
@@ -55,17 +54,26 @@ public class ProjectTree extends AbstractJavaRule {
 		char Sperate;
 		
 		String packageName;
-		if(apd == null)	//패키지가 정의되지 않은경우에는 Package name을 <noname>로 설정함
-			packageName = "<noname>";
-		else
-			packageName = apd.getPackageNameImage();
+
 		//OS에 따라
 		if(System.getProperty("os.name").toLowerCase().contains("windows"))
 			Sperate = '\\';
 		else
 			Sperate = '/';
 		
-		folderName = folderName.substring(0, folderName.indexOf(packageName.replace('.', Sperate)));
+		if(apd == null)	//패키지가 정의되지 않은경우에는 Package name을 <noname>로 설정함
+		{
+			packageName = "<noname>";
+			folderName = folderName.substring(0, folderName.lastIndexOf(Sperate) + 1);
+		}
+		else
+		{
+			packageName = apd.getPackageNameImage();
+			folderName = folderName.substring(0, folderName.indexOf(packageName.replace('.', Sperate)));
+		}
+		
+		
+		
 		for(ElementNode pn : projectNode.getChildren())
 		{
 			if(pn.getName().equals(folderName))
@@ -178,21 +186,37 @@ public class ProjectTree extends AbstractJavaRule {
 	{
 		ElementNode thisNode;
 		ElementNode parent = entryStack.peek();
-		String name = node.getVariableName();
-		
-		thisNode = parent.addChildren(ElementNodeType.FIELD, name);
-		//System.out.println("            new field node : " + name);
-		
+		List<ASTVariableDeclarator> varList = node.findChildrenOfType(ASTVariableDeclarator.class);
+		for(ASTVariableDeclarator varNode:varList)
+		{
+			String name = varNode.getFirstChildOfType(ASTVariableDeclaratorId.class).getImage();
+			thisNode = parent.addChildren(ElementNodeType.FIELD, name);
+			//System.out.println("            new field node : " + name);
 
-		entryStack.push(thisNode);
-		super.visit(node, data);
-		for(AbstractCalculator calculator: calculators)
-			calculator.calcMetric(entryStack,node,data);
-		entryStack.pop();
-		
+
+			entryStack.push(thisNode);
+			super.visit(node, data);
+			for(AbstractCalculator calculator: calculators)
+				calculator.calcMetric(entryStack,node,data);
+			entryStack.pop();
+		}
 		return data;
 	}
 	
+	//public void addTemplate
+	
+	public void addParameters(MethodDomain enode, ASTFormalParameters parameters, Object data)
+	{
+		int n = parameters.getParameterCount();
+		String parameterName;
+		for(int i=0;i<n;i++)
+		{
+			ASTFormalParameter parameter = (ASTFormalParameter)parameters.jjtGetChild(i);
+			parameterName = parameter.getTypeNode().getTypeImage();
+			enode.parameters.add(parameterName);
+		}
+	}
+		
 	public Object visit(ASTConstructorDeclaration node, Object data)
 	{
 		ElementNode thisNode;
@@ -200,8 +224,10 @@ public class ProjectTree extends AbstractJavaRule {
 		String name = entryStack.peek().getName();
 		
 		thisNode = parent.addChildren(ElementNodeType.CONSTRUCTOR, name);
-		//System.out.println("            new constructor node : " + name);
+		System.out.println("            new constructor node : " + name);
 	
+		
+		addParameters((MethodDomain)thisNode,node.getParameters(),data);
 		entryStack.push(thisNode);
 		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
@@ -210,6 +236,8 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		return data;
 	}
+	
+	
 	
 	public Object visit(ASTMethodDeclaration node, Object data)
 	{
@@ -219,7 +247,9 @@ public class ProjectTree extends AbstractJavaRule {
 		//if(name.equals("tableModelFrom"))
 		//	//System.out.println();
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
-		//System.out.println("            new method node : " + name);
+		System.out.println("            new method node : " + name);
+		
+		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
 		
 		entryStack.push(thisNode);
 		super.visit(node, data);
