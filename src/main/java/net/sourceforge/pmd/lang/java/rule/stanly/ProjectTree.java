@@ -10,6 +10,7 @@ import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfClassMemberField;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfUnits;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
@@ -30,6 +31,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculators = new ArrayList<AbstractCalculator>();
 			calculators.add(new LinesOfCode());
 			calculators.add(new NumberOfClassMemberField());
+			calculators.add(new NumberOfUnits());
 		}
 		if(projectNode == null)
 			projectNode = new ProjectDomain(ElementNodeType.PROJECT,"Project");
@@ -52,9 +54,11 @@ public class ProjectTree extends AbstractJavaRule {
 		ASTPackageDeclaration apd = node.getPackageDeclaration();
 		char Sperate;
 		
-		if(apd == null)	//패키지가 정의되지 않은경우에는 return 시켜 탐색을하지 않도록함
-			return data;
-		String packageName = apd.getPackageNameImage();
+		String packageName;
+		if(apd == null)	//패키지가 정의되지 않은경우에는 Package name을 <noname>로 설정함
+			packageName = "<noname>";
+		else
+			packageName = apd.getPackageNameImage();
 		//OS에 따라
 		if(System.getProperty("os.name").toLowerCase().contains("windows"))
 			Sperate = '\\';

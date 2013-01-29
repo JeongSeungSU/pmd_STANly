@@ -68,7 +68,7 @@ public class NumberOfClassMemberField extends AbstractCalculator {
 		if(entryStack.size() != 0)
 		{
 			((ClassDomain)entryStack.peek()).metric.addFields(1);
-			System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getFields());
+			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getFields());
 		}
 		for(ElementNode n:nodeList)
 			entryStack.push(n);
