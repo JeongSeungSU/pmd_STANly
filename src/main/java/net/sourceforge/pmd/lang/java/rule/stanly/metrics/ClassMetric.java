@@ -11,9 +11,9 @@ public class ClassMetric {
 	public int getClasses() {
 		return Classes;
 	}
-	public void setClasses(int classes) {
-		Classes = classes;
-	}
+	public void addClasses(int classes) {
+		Classes += classes;
+	}	
 	public int getMethods() {
 		return Methods;
 	}
