@@ -9,7 +9,7 @@ import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfMemberClass;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfClassMemberField;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
@@ -29,7 +29,7 @@ public class ProjectTree extends AbstractJavaRule {
 		{
 			calculators = new ArrayList<AbstractCalculator>();
 			calculators.add(new LinesOfCode());
-			calculators.add(new NumberOfMemberClass());
+			calculators.add(new NumberOfClassMemberField());
 		}
 		if(projectNode == null)
 			projectNode = new ProjectDomain(ElementNodeType.PROJECT,"Project");
