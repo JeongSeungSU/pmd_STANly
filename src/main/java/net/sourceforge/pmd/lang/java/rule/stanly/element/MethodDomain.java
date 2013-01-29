@@ -3,7 +3,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.pmd.lang.java.rule.stanly.metrics.MethodMetric;
+import net.sourceforge.pmd.lang.java.rule.stanly.metrics.MethodMetric;		
 
 
 public class MethodDomain extends ElementNode {

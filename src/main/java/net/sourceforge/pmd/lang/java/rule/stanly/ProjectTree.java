@@ -20,7 +20,7 @@ public class ProjectTree extends AbstractJavaRule {
 	private List<AbstractCalculator> calculators = null;
 	private static ProjectDomain projectNode = null;
 	private static Stack<ElementNode> entryStack = new Stack<ElementNode>();
-	
+	private RelationManager manager = null;
 	// jdbc, hibernate
 	
 	public ProjectTree()
@@ -31,6 +31,10 @@ public class ProjectTree extends AbstractJavaRule {
 			//calculators.add(new LinesOfCode());
 			//calculators.add(new NumberOfClassMemberField());
 			calculators.add(new NumberOfUnits());
+		}
+		if(manager == null)
+		{
+			manager = new RelationManager();
 		}
 		if(projectNode == null)
 			projectNode = new ProjectDomain(ElementNodeType.PROJECT,"Project");
@@ -128,7 +132,8 @@ public class ProjectTree extends AbstractJavaRule {
 			//System.out.println("        new class node : " + name);
 		}
 		
-	
+		manager.AddRelation(node, thisNode);
+		
 		entryStack.push(thisNode);		
 		super.visit(node,data);
 		for(AbstractCalculator calculator: calculators)
@@ -191,8 +196,8 @@ public class ProjectTree extends AbstractJavaRule {
 		{
 			String name = varNode.getFirstChildOfType(ASTVariableDeclaratorId.class).getImage();
 			thisNode = parent.addChildren(ElementNodeType.FIELD, name);
+			manager.AddRelation(node, thisNode);
 			//System.out.println("            new field node : " + name);
-
 
 			entryStack.push(thisNode);
 			super.visit(node, data);
