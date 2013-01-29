@@ -9,10 +9,12 @@ public class MethodDomain extends ElementNode {
 	public MethodDomain(ElementNode parent, ElementNodeType type, String name) {
 		super(parent,type, name);
 		// TODO Auto-generated constructor stub
+		metric = new MethodMetric();
 	}
 	public MethodDomain(ElementNodeType type, String name) {
 		super(type, name);
 		// TODO Auto-generated constructor stub
+		metric = new MethodMetric();
 	}
 
 }

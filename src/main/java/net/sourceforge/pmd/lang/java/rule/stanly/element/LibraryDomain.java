@@ -9,10 +9,14 @@ public class LibraryDomain extends ElementNode {
 	public LibraryDomain(ElementNode parent, ElementNodeType type, String name) {
 		super(parent,type, name);
 		// TODO Auto-generated constructor stub
+		if(metric == null)
+			metric = new LibraryMetric();
 	}
 	
 	public LibraryDomain(ElementNodeType type, String name) {
 		super(type, name);
 		// TODO Auto-generated constructor stub
+		if(metric == null)
+			metric = new LibraryMetric();
 	}
 }

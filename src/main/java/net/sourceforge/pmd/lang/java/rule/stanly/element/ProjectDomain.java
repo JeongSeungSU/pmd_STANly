@@ -9,9 +9,13 @@ public class ProjectDomain extends ElementNode {
 	public ProjectDomain(ElementNode parent, ElementNodeType type, String name) {
 		super(parent,type, name);
 		// TODO Auto-generated constructor stub
+		if(metric == null)
+			metric = new ProjectMetric();
 	}	
 	public ProjectDomain(ElementNodeType type, String name) {
 		super(type,name);
 		// TODO Auto-generated constructor stub
+		if(metric == null)
+			metric = new ProjectMetric();
 	}
 }

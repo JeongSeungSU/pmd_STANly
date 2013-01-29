@@ -2,12 +2,13 @@ package net.sourceforge.pmd.lang.java.rule.stanly.element;
 
 public enum ElementNodeType {
 	PROJECT,
-	FOLDER, 
-	PACKAGE, 
+	LIBRARY, 
+	PACKAGE,
+	PACKAGESET,
 	CLASS, 
 	ENUM, 
 	INTERFACE, 
-	ATTRIBUTE, 
+	FIELD, 
 	CONSTRUCTOR, 
 	METHOD
 }

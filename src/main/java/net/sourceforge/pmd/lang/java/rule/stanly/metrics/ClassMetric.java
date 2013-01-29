@@ -4,7 +4,7 @@ public class ClassMetric {
 	private int Classes;
 	private int Methods;
 	private int Fields;
-	private int ELOC;
+	private int LOC;
 	private float Fat;
 	private int AfferentCoupling;
 	private int EfferentCoupling;
@@ -26,11 +26,14 @@ public class ClassMetric {
 	public void setFields(int fields) {
 		Fields = fields;
 	}
-	public int getELOC() {
-		return ELOC;
+	public int getLOC() {
+		return LOC;
 	}
-	public void setELOC(int eLOC) {
-		ELOC = eLOC;
+	public void setLOC(int lOC) {
+		LOC = lOC;
+	}
+	public void addLOC(int lOC) {
+		LOC += lOC;
 	}
 	public float getFat() {
 		return Fat;

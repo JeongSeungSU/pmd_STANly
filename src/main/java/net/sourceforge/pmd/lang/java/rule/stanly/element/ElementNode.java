@@ -37,7 +37,7 @@ public abstract class ElementNode {
 	}
 
 	public String getFullName() {
-		if(parent.type == ElementNodeType.FOLDER)	
+		if(parent.type == ElementNodeType.LIBRARY)	
 			return name;
 		return parent.getFullName() + '.' + name;
 	}
@@ -55,6 +55,8 @@ public abstract class ElementNode {
 	}
 	public ElementNode getLastChild()
 	{
+		if(ChildrenCount == 0)	
+			return null;
 		return children.get(ChildrenCount-1);
 	}
 	public ElementNode addChildren(ElementNodeType type, String name)
@@ -63,28 +65,42 @@ public abstract class ElementNode {
 		switch(type)
 		{
 			case PROJECT:
-				newNode = new ProjectDomain(this, type,name);
+				newNode = new ProjectDomain(this,type,name);
 				break;
-			case FOLDER: 
-				newNode = new LibraryDomain(this, type,name);
+			case LIBRARY: 
+				newNode = new LibraryDomain(this,type,name);
+				break;
+			case PACKAGESET:
+				newNode = new PackageSetDomain(this,type,name);
 				break;
 			case PACKAGE:
-				newNode = new PackageDomain(this, type,name);
+				newNode = new PackageDomain(this,type,name);
 				break;
 			case CLASS:
+			case INTERFACE:
+			case ENUM:
 				newNode = new ClassDomain(this,type,name);
 				break;
-			case ATTRIBUTE:
-				newNode = new AttributeDomain(this,type,name);
+			case FIELD:
+				newNode = new FieldDomain(this,type,name);
 				break;
 			case METHOD:
-				newNode = new MethodDomain(this, type,name);
+			case CONSTRUCTOR:
+				newNode = new MethodDomain(this,type,name);
 				break;
 		}
 		
 		if(newNode != null)
 		{
-			children.add(newNode);
+			int idx = 0;
+			for(ElementNode node:children)//이름 오름차순 정렬
+			{
+				if(newNode.name.compareTo(node.name) < 0)
+					break;
+				idx++;
+			}
+			children.add(idx, newNode);
+			
 			ChildrenCount++;
 		}
 		//else

@@ -5,7 +5,7 @@ public class PackageMetric {
 	private float ClassesPerClass;
 	private float MethodsPerClass;
 	private float FieldsPerClass;
-	private int ELOC;
+	private int LOC;
 	private float ELOCPerUnit;
 	private float CC;
 	private float FAT;
@@ -46,11 +46,14 @@ public class PackageMetric {
 	public void setFieldsPerClass(float fieldsPerClass) {
 		FieldsPerClass = fieldsPerClass;
 	}
-	public int getELOC() {
-		return ELOC;
+	public int getLOC() {
+		return LOC;
 	}
-	public void setELOC(int eLOC) {
-		ELOC = eLOC;
+	public void setLOC(int lOC) {
+		LOC = lOC;
+	}
+	public void addLOC(int lOC) {
+		LOC += lOC;
 	}
 	public float getELOCPerUnit() {
 		return ELOCPerUnit;
