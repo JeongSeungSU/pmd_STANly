@@ -25,8 +25,8 @@ public class PackageMetric {
 	public int getUnits() {
 		return Units;
 	}
-	public void setUnits(int units) {
-		Units = units;
+	public void addUnits(int units) {
+		Units += units;
 	}
 	public float getClassesPerClass() {
 		return ClassesPerClass;

@@ -11,20 +11,20 @@ public class ClassMetric {
 	public int getClasses() {
 		return Classes;
 	}
-	public void setClasses(int classes) {
-		Classes = classes;
-	}
+	public void addClasses(int classes) {
+		Classes += classes;
+	}	
 	public int getMethods() {
 		return Methods;
 	}
-	public void setMethods(int methods) {
-		Methods = methods;
+	public void addMethods(int methods) {
+		Methods += methods;
 	}
 	public int getFields() {
 		return Fields;
 	}
-	public void setFields(int fields) {
-		Fields = fields;
+	public void addFields(int fields) {
+		Fields += fields;
 	}
 	public int getLOC() {
 		return LOC;
