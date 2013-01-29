@@ -1,11 +1,11 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 
-public class PackageSetMetric {
+public class PackageSetMetric{
 	private int	Units;
+	private int LOC;
 	private float ClassesPerClass;
 	private float MethodsPerClass;
 	private float FieldsPerClass;
-	private int ELOC;
 	private float ELOCPerUnit;
 	private float CC;
 	private float FAT;
@@ -34,11 +34,15 @@ public class PackageSetMetric {
 	public void setFieldsPerClass(float fieldsPerClass) {
 		FieldsPerClass = fieldsPerClass;
 	}
-	public int getELOC() {
-		return ELOC;
+	public int getLOC() {
+		return LOC;
 	}
-	public void setELOC(int eLOC) {
-		ELOC = eLOC;
+	public void setLOC(int loc) {
+		LOC = loc;
+	}
+	public void addLOC(int loc) {
+		// TODO Auto-generated method stub
+		LOC += loc;
 	}
 	public float getELOCPerUnit() {
 		return ELOCPerUnit;
