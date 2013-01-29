@@ -39,12 +39,18 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		String folderName = ((RuleContext)data).getSourceCodeFilename();
 		ASTPackageDeclaration apd = node.getPackageDeclaration();
+		char Sperate;
 		
 		if(apd == null)	//패키지가 정의되지 않은경우에는 return 시켜 탐색을하지 않도록함
 			return data;
 		String packageName = apd.getPackageNameImage();
-		folderName = folderName.substring(0, folderName.indexOf(packageName.replace('.', '/')));
+		//OS에 따라
+		if(System.getProperty("os.name").toLowerCase().contains("windows"))
+			Sperate = '\\';
+		else
+			Sperate = '/';
 		
+		folderName = folderName.substring(0, folderName.indexOf(packageName.replace('.', Sperate)));
 		for(ElementNode pn : projectNode.getChildren())
 		{
 			if(pn.getName().equals(folderName))
