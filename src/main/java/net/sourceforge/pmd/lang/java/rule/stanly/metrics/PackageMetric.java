@@ -8,7 +8,6 @@ public class PackageMetric {
 	private int TotalCC;
 	private int	Units;//Num Of Class
 	private int LOC;
-	private float ELOCPerUnit;
 	
 	private float FAT;
 	private float ADCPerUnit;
@@ -77,11 +76,8 @@ public class PackageMetric {
 		LOC += lOC;
 	}
 	public float getELOCPerUnit() {
-		return ELOCPerUnit;
-	}
-	public void setELOCPerUnit(float eLOCPerUnit) {
-		ELOCPerUnit = eLOCPerUnit;
-	}
+		return (float)LOC / (float)Units;
+	}	
 	public float getCC() {
 		return TotalCC;
 	}

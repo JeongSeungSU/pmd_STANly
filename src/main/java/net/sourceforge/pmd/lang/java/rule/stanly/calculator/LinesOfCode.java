@@ -50,6 +50,8 @@ public class LinesOfCode extends AbstractCalculator{
 
 	public LinesOfCode(){}
 	
+	
+	
 	public void calcMetric(Stack<ElementNode> entryStack,ASTForStatement node, Object data) {
 		//return countNodeChildren(node, data);
 		((MethodDomain)(entryStack.peek())).metric.addLOC(1);

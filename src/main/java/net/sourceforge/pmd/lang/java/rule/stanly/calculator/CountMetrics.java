@@ -22,9 +22,9 @@ public class CountMetrics extends AbstractCalculator {
 	
 	public void calcMetric(Stack<ElementNode> entryStack, ASTCompilationUnit node, Object data)
 	{
-		if(entryStack.peek().getFullName().equals("net.sourceforge.pmd.lang.java.rule.matrics"))
-			System.out.println("");
-		ElementNode packageEntry = entryStack.peek();
+		//if(entryStack.peek().getFullName().equals("net.sourceforge.pmd.lang.java.rule.matrics"))
+		//	System.out.println("");
+		//ElementNode packageEntry = entryStack.peek();
 		/*for(ElementNode classEntry:packageEntry.getChildren())
 		{
 			if(classEntry instanceof ClassDomain)
