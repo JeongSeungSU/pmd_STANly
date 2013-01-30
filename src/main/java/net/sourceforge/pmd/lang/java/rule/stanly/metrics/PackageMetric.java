@@ -1,13 +1,15 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 
 public class PackageMetric {
-	private int	Units;
-	private float ClassesPerClass;
-	private float MethodsPerClass;
-	private float FieldsPerClass;
+	private int NumberOfMethods;//Number of Method
+	private int NumberOfClasses;
+	private int NumberOfClass;	
+	private int NumberOfFields;
+	private int TotalCC;
+	private int	Units;//Num Of Class
 	private int LOC;
 	private float ELOCPerUnit;
-	private float CC;
+	
 	private float FAT;
 	private float ADCPerUnit;
 	private int AfferentCoupling;
@@ -22,6 +24,32 @@ public class PackageMetric {
 	private float RFC;
 	private float LCOM;
 	
+	
+	public int getNumberOfMethods() {
+		return NumberOfMethods;
+	}
+	public void addNumberOfMethods(int numberOfMethods) {
+		NumberOfMethods += numberOfMethods;
+	}
+	public int getNumberOfClasses() {
+		return NumberOfClasses;
+	}
+	public void addNumberOfClasses(int numberOfClasses) {
+		NumberOfClasses += numberOfClasses;
+	}
+	public int getNumberOfClass() {
+		return NumberOfClass;
+	}
+	public void addNumberOfClass(int numberOfClass) {
+		NumberOfClass += numberOfClass;
+	}
+	public int getNumberOfFields() {
+		return NumberOfFields;
+	}
+	public void addNumberOfFields(int numberOfFields) {
+		NumberOfFields += numberOfFields;
+	}
+	
 	public int getUnits() {
 		return Units;
 	}
@@ -29,22 +57,15 @@ public class PackageMetric {
 		Units += units;
 	}
 	public float getClassesPerClass() {
-		return ClassesPerClass;
+		return (float)NumberOfClasses / (float)NumberOfClass;//ClassesPerClass;
 	}
-	public void setClassesPerClass(float classesPerClass) {
-		ClassesPerClass = classesPerClass;
-	}
+	
 	public float getMethodsPerClass() {
-		return MethodsPerClass;
+		return (float)NumberOfMethods / (float)NumberOfClass;
 	}
-	public void setMethodsPerClass(float methodsPerClass) {
-		MethodsPerClass = methodsPerClass;
-	}
+
 	public float getFieldsPerClass() {
-		return FieldsPerClass;
-	}
-	public void setFieldsPerClass(float fieldsPerClass) {
-		FieldsPerClass = fieldsPerClass;
+		return (float)NumberOfFields / (float)NumberOfClass;
 	}
 	public int getLOC() {
 		return LOC;
@@ -62,10 +83,10 @@ public class PackageMetric {
 		ELOCPerUnit = eLOCPerUnit;
 	}
 	public float getCC() {
-		return CC;
+		return TotalCC;
 	}
-	public void setCC(float cC) {
-		CC = cC;
+	public void addCC(int cC) {
+		TotalCC = cC;
 	}
 	public float getFAT() {
 		return FAT;

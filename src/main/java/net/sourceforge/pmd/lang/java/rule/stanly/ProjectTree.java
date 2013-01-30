@@ -8,7 +8,10 @@ import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.NumberOfUnits;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AverageNumberOf;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CyclomaticComplexity;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
@@ -28,9 +31,10 @@ public class ProjectTree extends AbstractJavaRule {
 		if(calculators == null)
 		{
 			calculators = new ArrayList<AbstractCalculator>();
-			//calculators.add(new LinesOfCode());
-			//calculators.add(new NumberOfClassMemberField());
-			calculators.add(new NumberOfUnits());
+			calculators.add(new LinesOfCode());
+			calculators.add(new CountMetrics());
+			calculators.add(new CyclomaticComplexity());
+			calculators.add(new AverageNumberOf());
 		}
 		if(manager == null)
 		{
@@ -108,6 +112,8 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		entryStack.push(currentPackageNode);
 		super.visit(node, data);
+		for(AbstractCalculator calculator: calculators)
+			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
 		
 		//Gson gson = new Gson();
@@ -243,7 +249,7 @@ public class ProjectTree extends AbstractJavaRule {
 			if(template != null)
 				parameterName = addTemplateParameters(parameterName,template);
 			enode.parameters.add(parameterName);
-			System.out.println("                " + parameterName);
+			//System.out.println("                " + parameterName);
 		}
 	}
 		
@@ -254,7 +260,7 @@ public class ProjectTree extends AbstractJavaRule {
 		String name = entryStack.peek().getName();
 		
 		thisNode = parent.addChildren(ElementNodeType.CONSTRUCTOR, name);
-		System.out.println("            new constructor node : " + name);
+		//System.out.println("            new constructor node : " + name);
 	
 		
 		addParameters((MethodDomain)thisNode,node.getParameters(),data);
@@ -277,7 +283,7 @@ public class ProjectTree extends AbstractJavaRule {
 		//if(name.equals("tableModelFrom"))
 		//	//System.out.println();
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
-		System.out.println("            new method node : " + name);
+		//System.out.println("            new method node : " + name);
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
 		

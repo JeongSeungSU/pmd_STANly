@@ -14,8 +14,8 @@ public class MethodMetric {
 	public int getCC() {
 		return CC;
 	}
-	public void setCC(int cC) {
-		CC = cC;
+	public void addCC(int cC) {
+		CC += cC;
 	}
 	public void addLOC(int i) {
 		// TODO Auto-generated method stub
