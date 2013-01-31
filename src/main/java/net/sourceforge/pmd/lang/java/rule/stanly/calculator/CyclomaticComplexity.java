@@ -20,6 +20,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTSwitchLabel;
 import net.sourceforge.pmd.lang.java.ast.ASTSwitchStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTWhileStatement;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
@@ -131,15 +132,20 @@ public class CyclomaticComplexity extends AbstractCalculator {
 
 	public void addCC2Package(Stack<ElementNode> entryStack,JavaNode node, Object data)
 	{
-		MethodDomain classEntry = (MethodDomain)entryStack.peek();
+		MethodDomain methodEntry = (MethodDomain)entryStack.peek();
 		List<ElementNode> nodeList = new ArrayList<ElementNode>();
 		nodeList.add(0,entryStack.pop());//처음 ClassDomain은 자기 자신을 가르키므로 무시
-		while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.PACKAGE)
+		while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.CLASS)
 			nodeList.add(0,entryStack.pop());
 		if(entryStack.size() != 0)
 		{
-			((PackageDomain)entryStack.peek()).metric.addCC(classEntry.metric.getCC());
-			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getClasses());
+			ClassDomain classEntry = (ClassDomain)entryStack.pop();
+			classEntry.metric.addWMC(methodEntry.metric.getCC());
+			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getMethods());
+			
+			if(entryStack.peek() instanceof PackageDomain)
+				((PackageDomain)entryStack.peek()).metric.addCC(methodEntry.metric.getCC());
+			entryStack.push(classEntry);			
 		}
 		for(ElementNode n:nodeList)
 			entryStack.push(n);
