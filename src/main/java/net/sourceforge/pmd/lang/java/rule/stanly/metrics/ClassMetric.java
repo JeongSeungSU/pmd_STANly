@@ -56,8 +56,8 @@ public class ClassMetric {
 	public float getWMC() {
 		return WMC;
 	}
-	public void setWMC(float wMC) {
-		WMC = wMC;
+	public void addWMC(float wMC) {
+		WMC += wMC;
 	}
 	public float getDIT() {
 		return DIT;

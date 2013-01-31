@@ -8,10 +8,9 @@ import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AverageNumberOf;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CyclomaticComplexity;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
@@ -34,7 +33,6 @@ public class ProjectTree extends AbstractJavaRule {
 			calculators.add(new LinesOfCode());
 			calculators.add(new CountMetrics());
 			calculators.add(new CyclomaticComplexity());
-			calculators.add(new AverageNumberOf());
 		}
 		if(manager == null)
 		{
@@ -116,6 +114,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
 		
+		System.out.println(currentPackageNode.metric.getCC() + "     " +currentPackageNode.metric.getAverageCC());
 		//Gson gson = new Gson();
 		//String temp = gson.toJson(topNode);
 		////System.out.println(temp);
