@@ -285,6 +285,10 @@ public class ProjectTree extends AbstractJavaRule {
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
 		//System.out.println("            new method node : " + name);
 		
+		manager.AddRelation(node,thisNode);
+		
+		
+		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
 		
 		entryStack.push(thisNode);

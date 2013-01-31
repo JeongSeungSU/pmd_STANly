@@ -1,6 +1,5 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +11,10 @@ import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTImplementsList;
 import net.sourceforge.pmd.lang.java.ast.ASTInitializer;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
+import net.sourceforge.pmd.lang.java.ast.ASTName;
+import net.sourceforge.pmd.lang.java.ast.ASTNameList;
+import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
 public class RelationManager {
@@ -21,6 +24,19 @@ public class RelationManager {
 	public RelationManager() {
 		//Array? Linked?
 		DomainRelationList = new LinkedList<DomainRelation>();
+	}
+	private void AddRelation(Relations relationkind,String source, String target)
+	{
+		if(target.equals("String"))
+			return;
+		DomainRelation relation = new DomainRelation();
+		relation.setRelation(relationkind);
+		relation.setSource(source);
+		relation.setTarget(target);
+		System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
+							"-> \t Target : " + relation.getTarget());
+		DomainRelationList.add(relation);
+		
 	}
 	/**
 	 * Is of Type, contains
@@ -34,22 +50,10 @@ public class RelationManager {
 		if(type.size() > 0)
 		{
 			//Is of Type
-			DomainRelation isoftype = new DomainRelation();
-			isoftype.setRelation(Relations.ISOFTYPE);
-			isoftype.setSource(elementnode.getFullName());
-			isoftype.setTarget(((ASTClassOrInterfaceType)type.get(0)).getImage());
-			DomainRelationList.add(isoftype);
+			AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),((ASTClassOrInterfaceType)type.get(0)).getImage());
 			
 			//Contains
-			ASTClassOrInterfaceDeclaration parentnode = node.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
-			if(parentnode != null)
-			{
-				DomainRelation contains = new DomainRelation();
-				contains.setRelation(Relations.CONTAINS);
-				contains.setSource(parentnode.getImage());
-				contains.setTarget(((ASTClassOrInterfaceType)type.get(0)).getImage());
-				DomainRelationList.add(contains);
-			}
+			AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),((ASTClassOrInterfaceType)type.get(0)).getImage());
 		}
 	}
 	
@@ -69,11 +73,8 @@ public class RelationManager {
 			List<ASTClassOrInterfaceType> list = extendlist.get(0).findChildrenOfType(ASTClassOrInterfaceType.class);
 			for(ASTClassOrInterfaceType type : list)
 			{
-				DomainRelation relationimplements = new DomainRelation();
-				relationimplements.setRelation(Relations.EXTENDS);
-				relationimplements.setSource(elementnode.getFullName());
-				relationimplements.setTarget(type.getImage());
-				DomainRelationList.add(relationimplements);
+				//Extends
+				AddRelation(Relations.EXTENDS,elementnode.getFullName(),type.getImage());
 			}
 		}
 		if(Implementslist.size() > 0 )
@@ -81,18 +82,57 @@ public class RelationManager {
 			List<ASTClassOrInterfaceType> list = Implementslist.get(0).findChildrenOfType(ASTClassOrInterfaceType.class);
 			for(ASTClassOrInterfaceType type : list)
 			{
-				DomainRelation relationextends = new DomainRelation();
-				relationextends.setRelation(Relations.IMPLEMENTS);
-				relationextends.setSource(elementnode.getFullName());
-				relationextends.setTarget(type.getImage());
-				DomainRelationList.add(relationextends);
+				//Imeplements
+				AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), type.getImage());
 			}
-						
 		}	
 	}
 	
 	void AddRelation(ASTMethodDeclaration node,ElementNode elementnode)
 	{
+		//Relation return
+		ASTResultType resulttype = (ASTResultType)node.getFirstChildOfType(ASTResultType.class);
+		if(resulttype != null)
+		{
+			List<ASTClassOrInterfaceType> type = resulttype.findDescendantsOfType(ASTClassOrInterfaceType.class);
+			if(type.size() > 0)
+			{
+				AddRelation(Relations.RETURNS,elementnode.getFullName(),type.get(0).getImage());
+			}
+		}
+		//Relation has param
+		ASTMethodDeclarator hasparam = (ASTMethodDeclarator)node.getFirstChildOfType(ASTMethodDeclarator.class);
+		
+		if(hasparam != null)
+		{
+			List<ASTClassOrInterfaceType> param = hasparam.findDescendantsOfType(ASTClassOrInterfaceType.class);
+			if(param.size() > 0)
+			{
+				for(ASTClassOrInterfaceType tmp :  param)
+				{
+					AddRelation(Relations.HASPARAM, elementnode.getFullName(), tmp.getImage());
+				}
+			}
+		}
+		
+		//Relation throws
+		ASTNameList throwsList = (ASTNameList)node.getFirstChildOfType(ASTNameList.class);
+		
+		if(throwsList != null)
+		{
+			List<ASTName> throwsname = throwsList.findDescendantsOfType(ASTName.class);
+			if(throwsname.size() > 0)
+			{
+				for(ASTName tmp :  throwsname)
+				{
+					AddRelation(Relations.THROWS,elementnode.getFullName(),tmp.getImage());
+				}
+			}
+		}
+		
+		
+		
+		
 		
 	}
 	
