@@ -1,5 +1,6 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.calculator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -9,6 +10,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTCatchStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalAndExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTDoStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTForStatement;
@@ -17,8 +19,11 @@ import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTSwitchLabel;
 import net.sourceforge.pmd.lang.java.ast.ASTSwitchStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTWhileStatement;
+import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 
 
 
@@ -124,11 +129,29 @@ public class CyclomaticComplexity extends AbstractCalculator {
 		}
 	}
 
-	public void calcMetric(Stack<ElementNode> entryStack,ASTMethodDeclaration node, Object data) {
-		
-		//System.out.println(entryStack.peek().getFullName() + " has " + ((MethodDomain)(entryStack.peek())).metric.getCC());
+	public void addCC2Package(Stack<ElementNode> entryStack,JavaNode node, Object data)
+	{
+		MethodDomain classEntry = (MethodDomain)entryStack.peek();
+		List<ElementNode> nodeList = new ArrayList<ElementNode>();
+		nodeList.add(0,entryStack.pop());//처음 ClassDomain은 자기 자신을 가르키므로 무시
+		while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.PACKAGE)
+			nodeList.add(0,entryStack.pop());
+		if(entryStack.size() != 0)
+		{
+			((PackageDomain)entryStack.peek()).metric.addCC(classEntry.metric.getCC());
+			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getClasses());
+		}
+		for(ElementNode n:nodeList)
+			entryStack.push(n);
 	}
 	
+	public void calcMetric(Stack<ElementNode> entryStack,ASTMethodDeclaration node, Object data) {
+		addCC2Package(entryStack,node,data);
+	}
+	
+	public void calcMetric(Stack<ElementNode> entryStack,ASTConstructorDeclaration node, Object data) {
+		addCC2Package(entryStack,node,data);		
+	}
 	/*@Override
 	public void calcMetric(Stack<ElementNode> entryStack,ASTClassOrInterfaceDeclaration node, Object data) {
 		if ( node.isInterface() ) {

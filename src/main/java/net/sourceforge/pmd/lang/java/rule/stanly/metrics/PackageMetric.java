@@ -56,15 +56,15 @@ public class PackageMetric {
 		Units += units;
 	}
 	public float getClassesPerClass() {
-		return (float)NumberOfClasses / (float)NumberOfClass;//ClassesPerClass;
+		return NumberOfClass == 0 ? 0 : (float)NumberOfClasses / (float)NumberOfClass;//ClassesPerClass;
 	}
 	
 	public float getMethodsPerClass() {
-		return (float)NumberOfMethods / (float)NumberOfClass;
+		return NumberOfClass == 0 ? 0 : (float)NumberOfMethods / (float)NumberOfClass;
 	}
 
 	public float getFieldsPerClass() {
-		return (float)NumberOfFields / (float)NumberOfClass;
+		return NumberOfClass == 0 ? 0 : (float)NumberOfFields / (float)NumberOfClass;
 	}
 	public int getLOC() {
 		return LOC;
@@ -78,11 +78,14 @@ public class PackageMetric {
 	public float getELOCPerUnit() {
 		return (float)LOC / (float)Units;
 	}	
+	public float getAverageCC() {
+		return NumberOfMethods == 0 ? 0 : (float)TotalCC / (float)NumberOfMethods;
+	}
 	public float getCC() {
 		return TotalCC;
 	}
 	public void addCC(int cC) {
-		TotalCC = cC;
+		TotalCC += cC;
 	}
 	public float getFAT() {
 		return FAT;

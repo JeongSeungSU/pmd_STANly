@@ -12,7 +12,7 @@ public class MethodMetric {
 		LOC = lOC;
 	}
 	public int getCC() {
-		return CC;
+		return CC == 0 ? 1 : CC;
 	}
 	public void addCC(int cC) {
 		CC += cC;
