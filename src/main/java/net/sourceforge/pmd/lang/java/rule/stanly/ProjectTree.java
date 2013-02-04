@@ -286,6 +286,28 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		manager.AddRelation(node,thisNode);
 		
+		List<ASTPrimaryExpression>test = node.findDescendantsOfType(ASTPrimaryExpression.class);
+		
+		for(ASTPrimaryExpression tmp : test)
+		{
+			ASTPrimaryPrefix prefix = tmp.getFirstChildOfType(ASTPrimaryPrefix.class);
+			if(prefix != null)
+			{
+				ASTName prefixname = prefix.getFirstDescendantOfType(ASTName.class);
+				if(prefixname !=null)
+					System.out.println("prefix : "+ prefixname.getImage());
+			}
+
+			
+			ASTPrimarySuffix Suffix = tmp.getFirstChildOfType(ASTPrimarySuffix.class);
+			if(Suffix != null)
+			{
+				ASTName SUffixName = Suffix.getFirstDescendantOfType(ASTName.class);
+				if(SUffixName !=null)
+					System.out.println("Suffix : "+SUffixName.getImage());
+			}
+		}
+		String bawre = "hi"; 
 		
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
@@ -311,6 +333,7 @@ public class ProjectTree extends AbstractJavaRule {
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
+		
 		
 		return data;
 	}

@@ -3,6 +3,11 @@ package net.sourceforge.pmd.lang.java.rule.stanly;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import net.sourceforge.pmd.lang.ast.Node;
+import net.sourceforge.pmd.lang.java.ast.ASTArguments;
+import net.sourceforge.pmd.lang.java.ast.ASTBlock;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
 import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
@@ -14,7 +19,11 @@ import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTNameList;
+import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
+import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
+import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
+import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
 public class RelationManager {
@@ -130,6 +139,61 @@ public class RelationManager {
 			}
 		}
 		
+		//Relation calls
+		ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
+		List<ASTArguments> ArgumentList = block.findDescendantsOfType(ASTArguments.class);
+		
+		for(ASTArguments argument : ArgumentList)
+		{
+			String CalledObjectName = "Super";
+			String CalledMethodName = "";
+			String CalledArgument = "";
+			
+			Node parentnode = argument.getNthParent(2);
+			ASTPrimaryPrefix MethodNamePrefix = parentnode.getFirstDescendantOfType(ASTPrimaryPrefix.class);
+			if(MethodNamePrefix == null)
+			{
+				continue;
+			}
+			ASTName methodName = MethodNamePrefix.getFirstChildOfType(ASTName.class);
+			if(methodName == null)
+			{
+				ASTPrimarySuffix calledMethod = parentnode.getFirstChildOfType(ASTPrimarySuffix.class);
+				CalledMethodName = calledMethod.getImage();
+			}
+			else
+			{
+				if(methodName.getNameDeclaration() == null)
+				{
+					String[] tmp = methodName.getImage().split("\\.");
+					CalledMethodName = tmp[1];
+					CalledObjectName = tmp[0];
+				}
+				else 
+				{
+					String[] tmp = methodName.getImage().split("\\.");
+					if(tmp.length == 1)
+					{
+						CalledMethodName = tmp[0];
+						CalledObjectName = elementnode.getParent().getFullName();
+					}
+					else {
+						CalledMethodName = tmp[1];
+						JavaNode typenode = (JavaNode) methodName
+								.getNameDeclaration().getNode().getNthParent(1);
+						if (typenode.getClass() == ASTVariableDeclarator.class) {
+							typenode = (JavaNode) typenode.getNthParent(1);
+						}
+						typenode = typenode
+								.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
+						CalledObjectName = typenode.getImage();
+					}
+				}
+			}
+			
+			AddRelation(Relations.CALLS,elementnode.getFullName(),CalledObjectName +"." +CalledMethodName);
+			
+		}
 		
 		
 		
