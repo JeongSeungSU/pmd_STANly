@@ -284,33 +284,8 @@ public class ProjectTree extends AbstractJavaRule {
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
 		//System.out.println("            new method node : " + name);
 		
-		manager.AddRelation(node,thisNode);
-		
-		List<ASTPrimaryExpression>test = node.findDescendantsOfType(ASTPrimaryExpression.class);
-		
-		for(ASTPrimaryExpression tmp : test)
-		{
-			ASTPrimaryPrefix prefix = tmp.getFirstChildOfType(ASTPrimaryPrefix.class);
-			if(prefix != null)
-			{
-				ASTName prefixname = prefix.getFirstDescendantOfType(ASTName.class);
-				if(prefixname !=null)
-					System.out.println("prefix : "+ prefixname.getImage());
-			}
-
-			
-			ASTPrimarySuffix Suffix = tmp.getFirstChildOfType(ASTPrimarySuffix.class);
-			if(Suffix != null)
-			{
-				ASTName SUffixName = Suffix.getFirstDescendantOfType(ASTName.class);
-				if(SUffixName !=null)
-					System.out.println("Suffix : "+SUffixName.getImage());
-			}
-		}
-		String bawre = "hi"; 
-		
-		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
+		manager.AddRelation(node,thisNode);
 		
 		entryStack.push(thisNode);
 		super.visit(node, data);
