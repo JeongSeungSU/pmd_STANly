@@ -114,7 +114,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
 		
-		System.out.println(currentPackageNode.metric.getCC() + "     " +currentPackageNode.metric.getAverageCC());
+		//System.out.println(currentPackageNode.metric.getCC() + "     " +currentPackageNode.metric.getAverageCC());
 		//Gson gson = new Gson();
 		//String temp = gson.toJson(topNode);
 		////System.out.println(temp);

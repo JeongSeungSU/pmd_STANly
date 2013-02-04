@@ -4,7 +4,6 @@ package net.sourceforge.pmd;
  * @author Brian Remedios
  */
 public abstract class AbstractConfiguration {
-
 	private String sourceEncoding = System.getProperty("file.encoding");
 	private boolean debug;
 	protected AbstractConfiguration() {
