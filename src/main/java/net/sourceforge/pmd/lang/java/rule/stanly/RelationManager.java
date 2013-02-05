@@ -25,6 +25,9 @@ import net.sourceforge.pmd.lang.java.ast.ASTNameList;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
+import net.sourceforge.pmd.lang.java.ast.ASTType;
+import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
+import net.sourceforge.pmd.lang.java.ast.ASTTypeArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
@@ -38,6 +41,39 @@ public class RelationManager {
 		//Array? Linked?
 		DomainRelationList = new LinkedList<DomainRelation>();
 	}
+	/**
+	 * 클래스 타입을 스트링으로 뽑아내기..
+	 * @since 2013. 2. 5.오후 7:53:55
+	 * @author JeongSeungsu
+	 * @param type AST Class,Interface타입들
+	 * @return
+	 */
+	private String ClassOrInterfaceTypeToString(ASTClassOrInterfaceType type)
+	{
+		String ClassName = "";
+		String ArgumentList = "";
+		ASTTypeArguments typeargument = type.getFirstDescendantOfType(ASTTypeArguments.class);
+		if(typeargument != null)
+		{
+			ArgumentList += "<";
+			List<ASTTypeArgument> argument = typeargument.findChildrenOfType(ASTTypeArgument.class);
+			for(ASTTypeArgument ar : argument)
+			{
+				ASTClassOrInterfaceType typename = ar.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
+				if(typename == null)
+					ArgumentList += "?";
+				else
+					ArgumentList += ClassOrInterfaceTypeToString(typename);
+				ArgumentList += ",";
+			}
+			ArgumentList = ArgumentList.substring(0,ArgumentList.length()-1);
+			ArgumentList += ">";
+		}
+		ClassName = type.getImage();
+		
+		return ClassName+ArgumentList;
+	}
+	
 	private void AddRelation(Relations relationkind,String source, String target)
 	{
 		if(target.equals("String"))
@@ -51,6 +87,7 @@ public class RelationManager {
 		DomainRelationList.add(relation);
 		
 	}
+	
 	/**
 	 * Is of Type, contains
 	 * @since 2013. 1. 30.오전 12:36:13
@@ -63,10 +100,10 @@ public class RelationManager {
 		if(type.size() > 0)
 		{
 			//Is of Type
-			AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),((ASTClassOrInterfaceType)type.get(0)).getImage());
+			AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))));
 			
 			//Contains
-			AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),((ASTClassOrInterfaceType)type.get(0)).getImage());
+			AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))));
 		}
 	}
 	
@@ -87,7 +124,7 @@ public class RelationManager {
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Extends
-				AddRelation(Relations.EXTENDS,elementnode.getFullName(),type.getImage());
+				AddRelation(Relations.EXTENDS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type));
 			}
 		}
 		if(Implementslist.size() > 0 )
@@ -96,7 +133,7 @@ public class RelationManager {
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Imeplements
-				AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), type.getImage());
+				AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), ClassOrInterfaceTypeToString(type));
 			}
 		}	
 	}
@@ -107,10 +144,10 @@ public class RelationManager {
 		ASTResultType resulttype = (ASTResultType)node.getFirstChildOfType(ASTResultType.class);
 		if(resulttype != null)
 		{
-			List<ASTClassOrInterfaceType> type = resulttype.findDescendantsOfType(ASTClassOrInterfaceType.class);
-			if(type.size() > 0)
+			ASTClassOrInterfaceType type = resulttype.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
+			if(type != null)
 			{
-				AddRelation(Relations.RETURNS,elementnode.getFullName(),type.get(0).getImage());
+				AddRelation(Relations.RETURNS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type));
 			}
 		}
 		//Relation has param
@@ -118,12 +155,12 @@ public class RelationManager {
 		
 		if(hasparam != null)
 		{
-			List<ASTClassOrInterfaceType> param = hasparam.findDescendantsOfType(ASTClassOrInterfaceType.class);
+			List<ASTType> param = hasparam.findDescendantsOfType(ASTType.class);
 			if(param.size() > 0)
 			{
-				for(ASTClassOrInterfaceType tmp :  param)
+				for(ASTType tmp :  param)
 				{
-					AddRelation(Relations.HASPARAM, elementnode.getFullName(), tmp.getImage());
+					AddRelation(Relations.HASPARAM, elementnode.getFullName(), ClassOrInterfaceTypeToString(tmp.getFirstDescendantOfType(ASTClassOrInterfaceType.class)));
 				}
 			}
 		}
@@ -203,14 +240,14 @@ public class RelationManager {
 							{
 								continue;
 							}
-							CalledObjectName = MethodCallType.getImage();
+							CalledObjectName = ClassOrInterfaceTypeToString((ASTClassOrInterfaceType)MethodCallType);
 						}
 					}
 				}
 				//argumentlist extract
 				ASTArgumentList methodArgumentList = argument.getFirstChildOfType(ASTArgumentList.class);
 				
-				//methodArgumentList.
+				
 				
 				
 				
