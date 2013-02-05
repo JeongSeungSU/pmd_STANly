@@ -3,10 +3,6 @@ package net.sourceforge.pmd.lang.java.rule.stanly;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
-import net.sourceforge.pmd.AbstractPropertySource;
-import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTArgumentList;
 import net.sourceforge.pmd.lang.java.ast.ASTArguments;
@@ -18,17 +14,20 @@ import net.sourceforge.pmd.lang.java.ast.ASTExtendsList;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTImplementsList;
 import net.sourceforge.pmd.lang.java.ast.ASTInitializer;
+import net.sourceforge.pmd.lang.java.ast.ASTLocalVariableDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTNameList;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
+import net.sourceforge.pmd.lang.java.ast.ASTReferenceType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
+import net.sourceforge.pmd.lang.java.ast.ASTType;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
-import net.sourceforge.pmd.util.designer.CreateXMLRulePanel;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
 
 public class RelationManager {
 		
@@ -230,7 +229,17 @@ public class RelationManager {
 	{
 	
 	}
-	
+
+	void AddRelation(ASTReferenceType node, ElementNode elementnode)
+	{
+		if(node.getFirstParentOfType(ASTBlock.class) == null) return;
+		ASTClassOrInterfaceType ci = node.getFirstChildOfType(ASTClassOrInterfaceType.class);
+		//if(!(elementnode instanceof MethodDomain)) return; 
+		//System.out.println(.getImage());
+		if(ci == null)
+			return;
+		AddRelation(Relations.REFERENCES, elementnode.getFullName(),ci.getImage());
+	}
 }
 	
 

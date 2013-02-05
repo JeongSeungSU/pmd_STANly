@@ -285,7 +285,7 @@ public class ProjectTree extends AbstractJavaRule {
 		//System.out.println("            new method node : " + name);
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
-		manager.AddRelation(node,thisNode);
+		manager.AddRelation(node, thisNode);
 		
 		entryStack.push(thisNode);
 		super.visit(node, data);
@@ -377,6 +377,8 @@ public class ProjectTree extends AbstractJavaRule {
 	public Object visit(ASTReferenceType node, Object data) {
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
+		ElementNode thisNode = entryStack.peek();
+		manager.AddRelation(node,thisNode);
 		return super.visit(node, data);
 	}
 
@@ -820,7 +822,7 @@ public class ProjectTree extends AbstractJavaRule {
 		return super.visit(node, data);
 	}
 
-	public Object visit(ASTLocalVariableDeclaration node, Object data) {
+	public Object visit(ASTLocalVariableDeclaration node, Object data) {		
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
 		return super.visit(node, data);
