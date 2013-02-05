@@ -24,6 +24,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTNameList;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
+import net.sourceforge.pmd.lang.java.ast.ASTReferenceType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.ast.ASTType;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
@@ -267,7 +268,18 @@ public class RelationManager {
 	{
 	
 	}
-	
+	void AddRelation(ASTReferenceType node, ElementNode elementnode) {
+		if (node.getFirstParentOfType(ASTBlock.class) == null)
+			return;
+		ASTClassOrInterfaceType ci = node
+				.getFirstChildOfType(ASTClassOrInterfaceType.class);
+		// if(!(elementnode instanceof MethodDomain)) return;
+		// System.out.println(.getImage());
+		if (ci == null)
+			return;
+		AddRelation(Relations.REFERENCES, elementnode.getFullName(),
+				ci.getImage());
+	}
 }
 	
 

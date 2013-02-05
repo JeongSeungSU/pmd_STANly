@@ -377,6 +377,8 @@ public class ProjectTree extends AbstractJavaRule {
 	public Object visit(ASTReferenceType node, Object data) {
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
+		ElementNode thisNode = entryStack.peek();
+		manager.AddRelation(node,thisNode);
 		return super.visit(node, data);
 	}
 
