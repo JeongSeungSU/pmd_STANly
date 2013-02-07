@@ -56,6 +56,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpressionNotPlusMinus;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclaratorId;
+import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.ast.JavaParserVisitorAdapter;
 import net.sourceforge.pmd.lang.java.ast.TypeNode;
 
@@ -616,7 +617,11 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 	}
 
 	private void populateType(TypeNode node, String className) {
-
+		if(className.equals("ConverterScanner"))
+		{
+			System.out.println("");
+		}
+		boolean foundFlag = true;
 		String qualifiedName = className;
 		Class<?> myType = PRIMITIVE_TYPES.get(className);
 		if (myType == null && importedClasses != null) {
@@ -624,7 +629,8 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 				qualifiedName = importedClasses.get(className);
 			} else if (importedClasses.containsValue(className)) {
 				qualifiedName = className;
-			}
+			} else
+				foundFlag = false;
 			if (qualifiedName != null) {
 				try {
 					/*
@@ -636,6 +642,23 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 					//pmdClassLoader.getImportedClasses(qualifiedName);//YHC
 				} catch (ClassNotFoundException e) {
 					myType = processOnDemand(qualifiedName);
+					if(foundFlag == false)
+					{
+						if(qualifiedName.equals("Exception"))
+							qualifiedName = "java.lang.Exception";
+						else
+						{
+							ASTCompilationUnit cu = ((AbstractJavaNode)node).getFirstParentOfType(ASTCompilationUnit.class);
+							ASTPackageDeclaration pd = null;
+							if(cu != null)
+								pd = cu.getFirstChildOfType(ASTPackageDeclaration.class);
+							if(pd != null)
+							{
+								qualifiedName = pd.getPackageNameImage() + "." + qualifiedName;
+								System.out.println(qualifiedName);
+							}
+						}
+					}
 				} catch (LinkageError e) {
 					myType = processOnDemand(qualifiedName);
 				}

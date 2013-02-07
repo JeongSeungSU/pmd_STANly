@@ -10,7 +10,7 @@ public class AfterRelations {
 		this.projectNode = projectNode;
 		this.manager = manager;		
 	}
-	public void analysis() {
+	public void analysis(){
 		// TODO Auto-generated method stub
 		
 	}
