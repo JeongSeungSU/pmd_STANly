@@ -16,4 +16,7 @@ public interface TypeNode {
 	 * @param type A Java Class
 	 */
 	void setType(Class<?> type);
+	
+	public void setQualifiedName(String name);	
+	public String getQualifiedName();
 }

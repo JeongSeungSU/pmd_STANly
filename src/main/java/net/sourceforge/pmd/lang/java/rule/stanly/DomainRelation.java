@@ -1,5 +1,7 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+
 /**
  * 각 도메인 사이의 arch
  * @since 2013. 1. 29.오후 11:16:50
@@ -14,6 +16,8 @@ public class DomainRelation {
 		Target = new String();
 	}
 	private Relations			Relation;
+	private ElementNode			SourceNode;
+	private ElementNode			TargetNode;
 	private String 				Source;
 	private String				Target;
 	
@@ -34,5 +38,17 @@ public class DomainRelation {
 	}
 	public void setTarget(String target) {
 		Target = target;
+	}
+	public ElementNode getSourceNode() {
+		return SourceNode;
+	}
+	public void setSourceNode(ElementNode sourceNode) {
+		SourceNode = sourceNode;
+	}
+	public ElementNode getTargetNode() {
+		return TargetNode;
+	}
+	public void setTargetNode(ElementNode targetNode) {
+		TargetNode = targetNode;
 	}
 }

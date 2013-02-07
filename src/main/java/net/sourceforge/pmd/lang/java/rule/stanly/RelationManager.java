@@ -73,14 +73,22 @@ public class RelationManager {
 		{
 			int i = 0;
 		}
-		ClassName = type.getImage();
-		
+		if(type.getType() != null) // Class 파일이 있을경우 바로 전체 클레스 경로를 입력함 YHC
+			ClassName = type.getType().getName();
+		else if(type.getQualifiedName() != null)
+			ClassName = type.getQualifiedName();
+		else
+			ClassName = type.getImage() + " (Cannot Found!)";
 		return ClassName+ArgumentList;
 	}
 	
 
 	private void AddRelation(Relations relationkind,String source, String target)
 	{
+		AddRelation(relationkind,source,target,null,null);		
+	}
+	private void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
+	{		
 		if(target.equals("String"))
 			return;
 		
@@ -99,12 +107,14 @@ public class RelationManager {
 		relation.setRelation(relationkind);
 		relation.setSource(source);
 		relation.setTarget(target);
+		
+		relation.setSourceNode(sourceNode);
+		relation.setTargetNode(targetNode);
+		
 		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
 		//					"-> \t Target : " + relation.getTarget());
 		DomainRelationList.add(0,relation);
-		
 	}
-	
 	/**
 	 * Is of Type, contains
 	 * @since 2013. 1. 30.오전 12:36:13
@@ -117,10 +127,10 @@ public class RelationManager {
 		if(type.size() > 0)
 		{
 			//Is of Type
-			AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))));
+			AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))),elementnode,null);
 			
 			//Contains
-			AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))));
+			AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))),elementnode.getParent(),null);
 		}
 	}
 	
@@ -141,7 +151,7 @@ public class RelationManager {
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Extends
-				AddRelation(Relations.EXTENDS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type));
+				AddRelation(Relations.EXTENDS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}
 		if(Implementslist.size() > 0 )
@@ -150,7 +160,7 @@ public class RelationManager {
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Imeplements
-				AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), ClassOrInterfaceTypeToString(type));
+				AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}	
 	}
@@ -195,7 +205,15 @@ public class RelationManager {
 			{
 				for(ASTName tmp :  throwsname)
 				{
-					AddRelation(Relations.THROWS,elementnode.getFullName(),tmp.getImage());
+					String className = tmp.getImage();
+					
+					if(tmp.getType() != null)
+						className = tmp.getType().getName();
+					else if(tmp.getQualifiedName() != null)
+						className = tmp.getQualifiedName();
+					else
+						className = tmp.getImage() + " (Cannot Found!)";
+					AddRelation(Relations.THROWS,elementnode.getFullName(),className);
 				}
 			}
 		}

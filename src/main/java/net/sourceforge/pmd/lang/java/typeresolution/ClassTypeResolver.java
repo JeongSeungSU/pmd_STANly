@@ -183,11 +183,12 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 	@Override
 	public Object visit(ASTClassOrInterfaceType node, Object data) {
 		String typeName = node.getImage();
+		
 		if (node.jjtGetParent().hasDescendantOfType(ASTClassOrInterfaceBody.class)) {
 			anonymousClassCounter++;
 		    typeName = node.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class).getImage() + "$" + anonymousClassCounter;
 		}
-		populateType(node, typeName);
+		populateType(node, typeName);//YHC
 		return data;
 	}
 
@@ -643,6 +644,7 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 		if (myType != null) {
 			node.setType(myType);
 		}
+		node.setQualifiedName(qualifiedName);
 	}
 
 	/**

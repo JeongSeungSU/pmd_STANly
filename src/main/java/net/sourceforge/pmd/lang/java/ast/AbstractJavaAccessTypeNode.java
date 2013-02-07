@@ -19,4 +19,16 @@ public abstract class AbstractJavaAccessTypeNode extends AbstractJavaAccessNode 
 	public void setType(Class<?> type) {
 		this.type = type;
 	}
+	
+	private String qualifiedName;
+	
+	public void setQualifiedName(String name)
+	{
+		qualifiedName = name;
+	}
+	
+	public String getQualifiedName()
+	{
+		return qualifiedName;
+	}
 }
