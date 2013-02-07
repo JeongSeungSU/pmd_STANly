@@ -1,15 +1,10 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
-import net.sourceforge.pmd.AbstractPropertySource;
-import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTAllocationExpression;
-import net.sourceforge.pmd.lang.java.ast.ASTArgumentList;
 import net.sourceforge.pmd.lang.java.ast.ASTArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTBlock;
 import net.sourceforge.pmd.lang.java.ast.ASTBlockStatement;
@@ -36,7 +31,6 @@ import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.symboltable.NameDeclaration;
-import net.sourceforge.pmd.util.designer.CreateXMLRulePanel;
 
 public class RelationManager {
 		
@@ -44,7 +38,8 @@ public class RelationManager {
 	
 	public RelationManager() {
 		//Array? Linked?
-		DomainRelationList = new LinkedList<DomainRelation>();
+		//DomainRelationList = new LinkedList<DomainRelation>();
+		DomainRelationList = new ArrayList<DomainRelation>();
 	}
 	/**
 	 * 클래스 타입을 스트링으로 뽑아내기..
@@ -88,13 +83,25 @@ public class RelationManager {
 	{
 		if(target.equals("String"))
 			return;
+		
+		//중복 제거 YHC
+		for(DomainRelation relation:DomainRelationList)
+		{
+			String src = relation.getSource();
+			if(!src.equals(source))	break;
+			Relations rel = relation.getRelation();
+			String tar = relation.getTarget();
+			if(rel == relationkind && tar.equals(target))
+				return;//중복제거
+		}
+		
 		DomainRelation relation = new DomainRelation();
 		relation.setRelation(relationkind);
 		relation.setSource(source);
 		relation.setTarget(target);
-		System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
-							"-> \t Target : " + relation.getTarget());
-		DomainRelationList.add(relation);
+		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
+		//					"-> \t Target : " + relation.getTarget());
+		DomainRelationList.add(0,relation);
 		
 	}
 	

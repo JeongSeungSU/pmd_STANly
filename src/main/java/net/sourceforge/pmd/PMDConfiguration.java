@@ -235,9 +235,6 @@ public class PMDConfiguration extends AbstractConfiguration {
 	public String getRuleSets() {
 		return ruleSets;
 	}
-	public double getRuleSets(String test) {
-		return 1.;
-	}
 
 	/**
 	 * Set the command separated list of RuleSet URIs.
