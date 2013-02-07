@@ -23,6 +23,7 @@ public class ProjectTree extends AbstractJavaRule {
 	private static ProjectDomain projectNode = null;
 	private static Stack<ElementNode> entryStack = new Stack<ElementNode>();
 	private RelationManager manager = null;
+	private String StartOfJavafile = null;
 	// jdbc, hibernate
 	
 	public ProjectTree()
@@ -51,7 +52,15 @@ public class ProjectTree extends AbstractJavaRule {
 	}
 	
 	public Object visit(ASTCompilationUnit node, Object data)
-	{
+	{	
+		if(StartOfJavafile == null)
+			StartOfJavafile = ((RuleContext)data).getSourceCodeFilename();
+		else if(StartOfJavafile.equals(((RuleContext)data).getSourceCodeFilename()))
+		{
+			AfterRelations afterRelation = new AfterRelations(projectNode,manager);
+			afterRelation.analysis();
+			return data;
+		}
 		LibraryDomain currentLibraryNode = null;
 		PackageDomain currentPackageNode = null;
 		

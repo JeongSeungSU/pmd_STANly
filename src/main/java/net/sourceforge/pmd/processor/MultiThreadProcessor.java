@@ -42,7 +42,8 @@ public class MultiThreadProcessor extends AbstractPMDProcessor {
 		ExecutorService executor = Executors.newFixedThreadPool(
 				configuration.getThreads(), factory);
 		List<Future<Report>> tasks = new LinkedList<Future<Report>>();
-
+		
+		
 		for (DataSource dataSource : files) {
 			String niceFileName = filenameFrom(dataSource);
 
@@ -51,6 +52,12 @@ public class MultiThreadProcessor extends AbstractPMDProcessor {
 			Future<Report> future = executor.submit(r);
 			tasks.add(future);
 		}
+		//End of Analysis YHC
+		String niceFileName = filenameFrom(files.get(0));
+		PmdRunnable r = new PmdRunnable(executor, configuration,
+				files.get(0), niceFileName, renderers);
+		Future<Report> future = executor.submit(r);
+		tasks.add(future);
 		executor.shutdown();
 
 		processReports(renderers, tasks);

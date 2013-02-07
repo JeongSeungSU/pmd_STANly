@@ -632,6 +632,7 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 					 * the class loader for every type - much faster
 					 */
 					myType = pmdClassLoader.loadClass(qualifiedName);
+					//pmdClassLoader.getImportedClasses(qualifiedName);//YHC
 				} catch (ClassNotFoundException e) {
 					myType = processOnDemand(qualifiedName);
 				} catch (LinkageError e) {
