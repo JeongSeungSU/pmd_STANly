@@ -174,7 +174,7 @@ public class RelationManager {
 			ASTClassOrInterfaceType type = resulttype.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
 			if(type != null)
 			{
-				AddRelation(Relations.RETURNS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type));
+				AddRelation(Relations.RETURNS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}
 		//Relation has param
@@ -190,7 +190,7 @@ public class RelationManager {
 					ASTClassOrInterfaceType paramtype = tmp.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
 					if(paramtype == null)
 						continue;
-					AddRelation(Relations.HASPARAM, elementnode.getFullName(), ClassOrInterfaceTypeToString(paramtype));
+					AddRelation(Relations.HASPARAM, elementnode.getFullName(), ClassOrInterfaceTypeToString(paramtype),elementnode,null);
 				}
 			}
 		}
@@ -213,7 +213,7 @@ public class RelationManager {
 						className = tmp.getQualifiedName();
 					else
 						className = tmp.getImage() + " (Cannot Found!)";
-					AddRelation(Relations.THROWS,elementnode.getFullName(),className);
+					AddRelation(Relations.THROWS,elementnode.getFullName(),className,elementnode,null);
 				}
 			}
 		}
@@ -372,9 +372,9 @@ public class RelationManager {
 			LastString += NowString;
 		}
 		if(ToggleMethod)
-			AddRelation(Relations.CALLS, elementnode.getFullName(),LastString);
+			AddRelation(Relations.CALLS, elementnode.getFullName(),LastString,elementnode,null);
 		else
-			AddRelation(Relations.ACCESSES, elementnode.getFullName(),LastString);
+			AddRelation(Relations.ACCESSES, elementnode.getFullName(),LastString,elementnode,null);
 	}
 	private String TraceASTNameToString(ASTName name)
 	{
@@ -413,7 +413,7 @@ public class RelationManager {
 		if (ci == null)
 			return;
 		AddRelation(Relations.REFERENCES, elementnode.getFullName(),
-				ClassOrInterfaceTypeToString(ci));
+				ClassOrInterfaceTypeToString(ci),elementnode,null);
 	}
 }
 	

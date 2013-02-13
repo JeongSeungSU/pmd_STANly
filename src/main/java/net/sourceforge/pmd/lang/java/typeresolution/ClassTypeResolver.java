@@ -616,11 +616,7 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 		}
 	}
 
-	private void populateType(TypeNode node, String className) {
-		if(className.equals("ConverterScanner"))
-		{
-			System.out.println("");
-		}
+	private void populateType(TypeNode node, String className) {		
 		boolean foundFlag = true;
 		String qualifiedName = className;
 		Class<?> myType = PRIMITIVE_TYPES.get(className);
@@ -655,7 +651,7 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 							if(pd != null)
 							{
 								qualifiedName = pd.getPackageNameImage() + "." + qualifiedName;
-								System.out.println(qualifiedName);
+								//System.out.println(qualifiedName);
 							}
 						}
 					}
