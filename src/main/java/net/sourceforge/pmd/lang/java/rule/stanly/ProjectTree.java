@@ -294,6 +294,8 @@ public class ProjectTree extends AbstractJavaRule {
 		//System.out.println("            new method node : " + name);
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
+		if(thisNode.getFullName().equals("net.sourceforge.pmd.lang.java.rule.stanly.ProjectTree.visit"))
+			System.out.println("");//YHC
 		manager.AddRelation(node,thisNode);
 		
 		entryStack.push(thisNode);

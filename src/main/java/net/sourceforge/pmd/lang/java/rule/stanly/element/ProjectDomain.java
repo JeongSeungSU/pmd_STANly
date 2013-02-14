@@ -17,5 +17,5 @@ public class ProjectDomain extends ElementNode {
 		// TODO Auto-generated constructor stub
 		if(metric == null)
 			metric = new ProjectMetric();
-	}
+	}	
 }

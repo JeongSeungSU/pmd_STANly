@@ -41,6 +41,18 @@ public class RelationManager {
 		//DomainRelationList = new LinkedList<DomainRelation>();
 		DomainRelationList = new ArrayList<DomainRelation>();
 	}
+	
+	/**
+	 * 도메인 리스트 얻어오..
+	 * @since 2013. 2. 13.오 4:37:55
+	 * @author YangHyunchul
+	 * @param 
+	 * @return List
+	 */
+	public List<DomainRelation >getDomainRelationList(){
+		return DomainRelationList;
+	}
+	
 	/**
 	 * 클래스 타입을 스트링으로 뽑아내기..
 	 * @since 2013. 2. 5.오후 7:53:55
@@ -82,11 +94,6 @@ public class RelationManager {
 		return ClassName+ArgumentList;
 	}
 	
-
-	private void AddRelation(Relations relationkind,String source, String target)
-	{
-		AddRelation(relationkind,source,target,null,null);		
-	}
 	private void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
 	{		
 		if(target.equals("String"))
@@ -97,9 +104,10 @@ public class RelationManager {
 		{
 			String src = relation.getSource();
 			if(!src.equals(source))	break;
+			ElementNode srcNode = relation.getSourceNode();
 			Relations rel = relation.getRelation();
 			String tar = relation.getTarget();
-			if(rel == relationkind && tar.equals(target))
+			if(srcNode == sourceNode && rel == relationkind && tar.equals(target))
 				return;//중복제거
 		}
 		

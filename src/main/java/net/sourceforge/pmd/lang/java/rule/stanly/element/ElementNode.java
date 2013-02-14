@@ -3,6 +3,8 @@ package net.sourceforge.pmd.lang.java.rule.stanly.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
+
 
 
 public abstract class ElementNode {
@@ -13,6 +15,8 @@ public abstract class ElementNode {
 	
 	protected ElementNode parent;
 	protected List<ElementNode> children;
+	protected List<DomainRelation> relationSources;
+	protected List<DomainRelation> relationTargets;
 	
 	protected String name;
 	int ChildrenCount=0;
@@ -22,20 +26,35 @@ public abstract class ElementNode {
 		this.type = type;
 		this.name = name;
 		this.children = new ArrayList<ElementNode>();
+		this.relationSources = null;//new ArrayList<DomainRelation>();
+		this.relationTargets = null;//new ArrayList<DomainRelation>();
 	}
 
 	public ElementNode(ElementNodeType type,String name)
 	{
-		this.parent = null;
-		this.type = type;
-		this.name = name;
-		this.children = new ArrayList<ElementNode>();
+		this(null,type,name);
+		//this.parent = null;
+		//this.type = type;
+		//this.name = name;
+		//this.children = new ArrayList<ElementNode>();
 	}
 	
 	public ElementNodeType getType() {
 		return type;
 	}
 
+	public void AddRelationSource(DomainRelation relation)
+	{
+		if(relationSources == null)
+			this.relationSources = new ArrayList<DomainRelation>();
+		relationSources.add(relation);
+	}
+	public void AddRelationTarget(DomainRelation relation)
+	{
+		if(relationTargets == null)
+			this.relationTargets = new ArrayList<DomainRelation>();
+		relationTargets.add(relation);
+	}
 	public String getFullName() {
 		if(parent.type == ElementNodeType.LIBRARY)	
 			return name;
@@ -95,8 +114,10 @@ public abstract class ElementNode {
 			int idx = 0;
 			for(ElementNode node:children)//이름 오름차순 정렬
 			{
-				if(newNode.name.compareTo(node.name) < 0)
-					break;
+				int val = newNode.name.compareTo(node.name);
+				if(val < 0)		break;
+				//else if(val == 0 && node.name.equals("visit")) 
+				//	System.out.println("");//YHC
 				idx++;
 			}
 			children.add(idx, newNode);
@@ -108,5 +129,43 @@ public abstract class ElementNode {
 		
 		return newNode;
 	}
-
+	public ElementNode findNode(String targetString) {
+		// TODO Auto-generated method stub
+		ElementNode targetNode = null;
+		//targetString.startsWith(prefix)
+		if(type == ElementNodeType.LIBRARY)
+		{
+			for(ElementNode childnode:getChildren())
+			{				
+				if(targetString.startsWith(childnode.getFullName()))
+				{
+					targetNode = childnode.findNode(targetString);
+					if(targetNode != null) break;
+				}
+			}
+		}
+		else if(targetString.equals(getFullName()))
+			targetNode = this;
+		else if(targetString.startsWith(getFullName()))
+		{
+			String subString = targetString.substring(getFullName().length()); 
+			if(subString.startsWith("."))
+			{
+				for(ElementNode childnode:getChildren())
+				{
+					
+					if(targetString.startsWith(childnode.getFullName()))
+					{
+						targetNode = childnode.findNode(targetString);
+						if(targetNode != null) break;
+					}
+				}
+			}
+			else if(subString.startsWith("("))
+				targetNode = this;
+		}
+		else targetNode = getParent().findNode(targetString);
+		
+		return targetNode;
+	}
 }
