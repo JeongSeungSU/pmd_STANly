@@ -5,12 +5,14 @@ import java.util.List;
 
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTAllocationExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTArgumentList;
 import net.sourceforge.pmd.lang.java.ast.ASTArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTBlock;
 import net.sourceforge.pmd.lang.java.ast.ASTBlockStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
 import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTExtendsList;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTImplementsList;
@@ -81,10 +83,7 @@ public class RelationManager {
 			ArgumentList = ArgumentList.substring(0,ArgumentList.length()-1);
 			ArgumentList += ">";
 		}
-		else
-		{
-			int i = 0;
-		}
+
 		if(type.getType() != null) // Class 파일이 있을경우 바로 전체 클레스 경로를 입력함 YHC
 			ClassName = type.getType().getName();
 		else if(type.getQualifiedName() != null)
@@ -119,8 +118,8 @@ public class RelationManager {
 		relation.setSourceNode(sourceNode);
 		relation.setTargetNode(targetNode);
 		
-		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
-		//					"-> \t Target : " + relation.getTarget());
+		System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
+							"-> \t Target : " + relation.getTarget());
 		DomainRelationList.add(0,relation);
 	}
 	/**
@@ -318,11 +317,14 @@ public class RelationManager {
 			}
 		}
 	}
-	private void PrimaryExpressionAnalysis(ASTPrimaryExpression primaryexpression, ElementNode elementnode)
+	private String PrimaryExpressionAnalysis(ASTPrimaryExpression primaryexpression, ElementNode elementnode)
 	{
 		String LastString = "";
 		boolean ToggleMethod = false;
-
+		if(primaryexpression == null)
+		{
+			int i = 0;
+		}
 		for(int i = 0; i < primaryexpression.jjtGetNumChildren(); i++)
 		{
 			String NowString = "";
@@ -343,7 +345,11 @@ public class RelationManager {
 						if (TypeName.length == 1) 
 						{
 							NowString = elementnode.getParent().getFullName();
-							NowString += "." + TypeName[0];
+							String Type = TraceASTNameToString(name);
+							if(Type == null)
+								NowString += "." + TypeName[0];
+							else
+								NowString += "." + Type;
 						}
 						else 
 						{
@@ -368,7 +374,7 @@ public class RelationManager {
 				if(arguments != null)
 				{
 					//파라미터 채우기...
-					NowString = "(parameter)";
+					NowString = ParameterAnalysis(arguments,elementnode);
 					ToggleMethod = true;
 				}
 				else
@@ -383,9 +389,40 @@ public class RelationManager {
 			AddRelation(Relations.CALLS, elementnode.getFullName(),LastString,elementnode,null);
 		else
 			AddRelation(Relations.ACCESSES, elementnode.getFullName(),LastString,elementnode,null);
+		
+		return LastString;
+	}
+	private String ParameterAnalysis(ASTArguments arguments, ElementNode elementnode)
+	{
+		ASTArgumentList argumentlist = arguments.getFirstChildOfType(ASTArgumentList.class);
+		if(argumentlist == null)
+		{
+			return "()";
+		}
+		int argumentcount = argumentlist.jjtGetNumChildren();
+		String ParameterText = "(";
+		
+		for(int i = 0; i < argumentcount; i++)
+		{
+			ASTExpression expression = (ASTExpression)argumentlist.jjtGetChild(i);
+			ASTPrimaryExpression primaryExpression = expression.getFirstChildOfType(ASTPrimaryExpression.class);
+			if(primaryExpression == null)
+			{
+				int j = 0;
+			}
+			String primaryText = PrimaryExpressionAnalysis(primaryExpression, elementnode);
+			ParameterText += primaryText + ",";
+		}
+		if(argumentcount > 0)
+			ParameterText = ParameterText.substring(0,ParameterText.length()-1);
+		
+		ParameterText += ")";
+		
+		return ParameterText;
 	}
 	private String TraceASTNameToString(ASTName name)
 	{
+		//primitive type도 나오도록!! 해야됨
 		NameDeclaration tmp = (NameDeclaration)name.getNameDeclaration();
 		if(tmp == null)
 		{
