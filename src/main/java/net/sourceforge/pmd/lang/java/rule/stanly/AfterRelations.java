@@ -1,24 +1,37 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCalculator;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
 public class AfterRelations {
 	private static ProjectDomain projectNode = null;
 	private RelationManager manager = null;
+	private List<AbstractAfterCalculator> calculators = null;
+
 	public AfterRelations(ProjectDomain projectNode, RelationManager manager) {
 		// TODO Auto-generated constructor stub
 		this.projectNode = projectNode;
-		this.manager = manager;		
+		this.manager = manager;
+
+		if(calculators == null)
+		{
+			calculators = new ArrayList<AbstractAfterCalculator>();
+			calculators.add(new Fat());
+		}
 	}
 	public void analysis(){
 		// TODO Auto-generated method stub
 		FindTarget();
 		RemoveNullTargetRelations();
+		for(AbstractAfterCalculator calculator:calculators)
+			calculator.calcMatric(projectNode);
 	}
-	
+
 	public void FindTarget(){
 		List<DomainRelation> domainRelation = manager.getDomainRelationList();
 		String targetString;
@@ -28,15 +41,11 @@ public class AfterRelations {
 		for(DomainRelation relation:domainRelation)
 		{
 			//sourceString = domainRelation.get(i).getSource();
-			
+
 			targetString = relation.getTarget();
 			sourceNode = relation.getSourceNode();
-			if(sourceNode.getFullName().equals("net.sourceforge.pmd.lang.java.rule.stanly.ProjectTree.visit"))
-			{
-				System.out.println("");//YHC
-			}
 			targetNode = sourceNode.getParent().findNode(targetString);
-			
+
 			if(targetNode == null)//찾을수 없느 관계는 추후 삭제함 YHC
 				;//domainRelation.remove(relation);
 			else

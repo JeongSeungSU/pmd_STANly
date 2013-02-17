@@ -3,7 +3,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 public class LibraryMetric {
 	private int Packages;
 	private float UnitPerPackage;
-	private float Fat;
+	private int Fat;
 	private float Tangled;
 	private float ACDPackage;
 	private float ACDUnit;
@@ -28,11 +28,11 @@ public class LibraryMetric {
 	public void setUnitPerPackage(float unitPerPackage) {
 		UnitPerPackage = unitPerPackage;
 	}
-	public float getFat() {
+	public int getFat() {
 		return Fat;
 	}
-	public void setFat(float fat) {
-		Fat = fat;
+	public void addFat(int fat) {
+		Fat += fat;
 	}
 	public float getTangled() {
 		return Tangled;

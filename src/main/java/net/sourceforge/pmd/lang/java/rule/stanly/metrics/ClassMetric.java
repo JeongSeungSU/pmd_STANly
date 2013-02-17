@@ -5,7 +5,7 @@ public class ClassMetric {
 	private int Methods;
 	private int Fields;
 	private int LOC;
-	private float Fat;
+	private int Fat;
 	private int AfferentCoupling;
 	private int EfferentCoupling;
 	public int getClasses() {
@@ -35,10 +35,10 @@ public class ClassMetric {
 	public void addLOC(int lOC) {
 		LOC += lOC;
 	}
-	public float getFat() {
+	public int getFat() {
 		return Fat;
 	}
-	public void setFat(float fat) {
+	public void setFat(int fat) {
 		Fat = fat;
 	}
 	public int getAfferentCoupling() {
