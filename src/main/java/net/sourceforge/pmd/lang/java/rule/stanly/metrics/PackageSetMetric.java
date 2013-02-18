@@ -60,7 +60,7 @@ public class PackageSetMetric{
 		return Fat;
 	}
 	public void setFat(float fAT) {
-		Fat = fAT;
+		Fat = (int) fAT;
 	}
 	public float getTangled() {
 		return Tangled;

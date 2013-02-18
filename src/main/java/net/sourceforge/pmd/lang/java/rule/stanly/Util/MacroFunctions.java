@@ -9,11 +9,11 @@ public final class MacroFunctions {
 	 * @param obj
 	 * @return NULL->true 아니면 false
 	 */
-	final public static boolean NULLChecking(Object obj)
+	final public static boolean NULLTrue(Object obj)
 	{
 		if(obj == null)
-			return false;
-		else
 			return true;
+		else
+			return false;
 	}
 }

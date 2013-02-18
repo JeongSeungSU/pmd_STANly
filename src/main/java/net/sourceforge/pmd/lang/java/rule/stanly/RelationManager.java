@@ -38,14 +38,14 @@ import net.sourceforge.pmd.lang.java.symboltable.NameDeclaration;
 
 public class RelationManager {
 		
-	private List<DomainRelation> DomainRelationList;
+	private DomainRelationList 	 RelationList;
 	private MethodAnlaysis		 RelationChainManager;
 	
 	public RelationManager() {
 		//Array? Linked?
 		//DomainRelationList = new LinkedList<DomainRelation>();
-		DomainRelationList 		= new ArrayList<DomainRelation>();
-		RelationChainManager 	= new MethodAnlaysis(DomainRelationList); 
+		RelationList = new DomainRelationList();
+		RelationChainManager 	= new MethodAnlaysis(RelationList); 
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class RelationManager {
 	 * @return List
 	 */
 	public List<DomainRelation >getDomainRelationList(){
-		return DomainRelationList;
+		return RelationList.GetList();
 	}
 	
 	/**
@@ -97,35 +97,6 @@ public class RelationManager {
 		return ClassName+ArgumentList;
 	}
 	
-	private void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
-	{		
-		if(target.equals("String"))
-			return;
-		
-		//중복 제거 YHC
-		for(DomainRelation relation:DomainRelationList)
-		{
-			String src = relation.getSource();
-			if(!src.equals(source))	break;
-			ElementNode srcNode = relation.getSourceNode();
-			Relations rel = relation.getRelation();
-			String tar = relation.getTarget();
-			if(srcNode == sourceNode && rel == relationkind && tar.equals(target))
-				return;//중복제거
-		}
-		
-		DomainRelation relation = new DomainRelation();
-		relation.setRelation(relationkind);
-		relation.setSource(source);
-		relation.setTarget(target);
-		
-		relation.setSourceNode(sourceNode);
-		relation.setTargetNode(targetNode);
-		
-		System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
-							"-> \t Target : " + relation.getTarget());
-		DomainRelationList.add(0,relation);
-	}
 	/**
 	 * Is of Type, contains
 	 * @since 2013. 1. 30.오전 12:36:13
@@ -138,10 +109,10 @@ public class RelationManager {
 		if(type.size() > 0)
 		{
 			//Is of Type
-			AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))),elementnode,null);
+			RelationList.AddRelation(Relations.ISOFTYPE,elementnode.getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))),elementnode,null);
 			
 			//Contains
-			AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))),elementnode.getParent(),null);
+			RelationList.AddRelation(Relations.CONTAINS,elementnode.getParent().getFullName(),ClassOrInterfaceTypeToString(((ASTClassOrInterfaceType)type.get(0))),elementnode.getParent(),null);
 		}
 	}
 	
@@ -163,7 +134,7 @@ public class RelationManager {
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Extends
-				AddRelation(Relations.EXTENDS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
+				RelationList.AddRelation(Relations.EXTENDS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}
 		if(Implementslist.size() > 0 )
@@ -172,7 +143,7 @@ public class RelationManager {
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Imeplements
-				AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), ClassOrInterfaceTypeToString(type),elementnode,null);
+				RelationList.AddRelation(Relations.IMPLEMENTS, elementnode.getFullName(), ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}	
 	}
@@ -187,7 +158,7 @@ public class RelationManager {
 			ASTClassOrInterfaceType type = resulttype.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
 			if(type != null)
 			{
-				AddRelation(Relations.RETURNS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
+				RelationList.AddRelation(Relations.RETURNS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}
 		//Relation has param
@@ -203,7 +174,7 @@ public class RelationManager {
 					ASTClassOrInterfaceType paramtype = tmp.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
 					if(paramtype == null)
 						continue;
-					AddRelation(Relations.HASPARAM, elementnode.getFullName(), ClassOrInterfaceTypeToString(paramtype),elementnode,null);
+					RelationList.AddRelation(Relations.HASPARAM, elementnode.getFullName(), ClassOrInterfaceTypeToString(paramtype),elementnode,null);
 				}
 			}
 		}
@@ -226,12 +197,15 @@ public class RelationManager {
 						className = tmp.getQualifiedName();
 					else
 						className = tmp.getImage() + " (Cannot Found!)";
-					AddRelation(Relations.THROWS,elementnode.getFullName(),className,elementnode,null);
+					RelationList.AddRelation(Relations.THROWS,elementnode.getFullName(),className,elementnode,null);
 				}
 			}
 		}
 		
 
+		//Relation method ,Access 
+		//RelationChainManager.AnalysisMethodCallandAccess(node, elementnode);
+		
 		ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
 		if (block != null) 
 		{
@@ -333,9 +307,9 @@ public class RelationManager {
 			LastString += NowString;
 		}
 		if(ToggleMethod)
-			AddRelation(Relations.CALLS, elementnode.getFullName(),LastString,elementnode,null);
+			RelationList.AddRelation(Relations.CALLS, elementnode.getFullName(),LastString,elementnode,null);
 		else
-			AddRelation(Relations.ACCESSES, elementnode.getFullName(),LastString,elementnode,null);
+			RelationList.AddRelation(Relations.ACCESSES, elementnode.getFullName(),LastString,elementnode,null);
 		
 		return LastString;
 	}
@@ -352,11 +326,8 @@ public class RelationManager {
 		for(int i = 0; i < argumentcount; i++)
 		{
 			ASTExpression expression = (ASTExpression)argumentlist.jjtGetChild(i);
+			//여기서 타입 나눠서 줘야함...ㅇㅋ?
 			ASTPrimaryExpression primaryExpression = expression.getFirstChildOfType(ASTPrimaryExpression.class);
-			if(primaryExpression == null)
-			{
-				int j = 0;
-			}
 			String primaryText = PrimaryExpressionAnalysis(primaryExpression, elementnode);
 			ParameterText += primaryText + ",";
 		}
@@ -404,7 +375,7 @@ public class RelationManager {
 		// System.out.println(.getImage());
 		if (ci == null)
 			return;
-		AddRelation(Relations.REFERENCES, elementnode.getFullName(),
+		RelationList.AddRelation(Relations.REFERENCES, elementnode.getFullName(),
 				ClassOrInterfaceTypeToString(ci),elementnode,null);
 	}
 }

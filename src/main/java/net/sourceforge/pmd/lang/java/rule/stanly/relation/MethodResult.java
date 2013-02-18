@@ -7,13 +7,22 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
  * @author JeongSeungsu
  */
 public class MethodResult {
+	
+	public MethodResult()
+	{}
+	public MethodResult(String targetresult, String typename , boolean isprocess) 
+	{
+		TargetResult 	= targetresult;
+		TypeName 		= typename;
+		IsProcess 		= isprocess;
+	}
 	/**
 	 * 처리된 결과...
 	 */
 	public String TargetResult;
 	
 	/**
-	 * 다음에 처리할 노드...
+	 * 타입 이름
 	 */
 	public String TypeName;
 	
