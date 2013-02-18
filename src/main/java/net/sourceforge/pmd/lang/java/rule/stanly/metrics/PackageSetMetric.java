@@ -8,7 +8,7 @@ public class PackageSetMetric{
 	private float FieldsPerClass;
 	private float ELOCPerUnit;
 	private float CC;
-	private float FAT;
+	private int Fat;
 	private float Tangled;
 	public int getUnits() {
 		return Units;
@@ -56,11 +56,11 @@ public class PackageSetMetric{
 	public void setCC(float cC) {
 		CC = cC;
 	}
-	public float getFAT() {
-		return FAT;
+	public int getFat() {
+		return Fat;
 	}
-	public void setFAT(float fAT) {
-		FAT = fAT;
+	public void setFat(float fAT) {
+		Fat = fAT;
 	}
 	public float getTangled() {
 		return Tangled;

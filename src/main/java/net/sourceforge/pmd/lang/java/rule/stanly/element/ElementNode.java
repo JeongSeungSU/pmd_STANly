@@ -26,8 +26,8 @@ public abstract class ElementNode {
 		this.type = type;
 		this.name = name;
 		this.children = new ArrayList<ElementNode>();
-		this.relationSources = null;//new ArrayList<DomainRelation>();
-		this.relationTargets = null;//new ArrayList<DomainRelation>();
+		this.relationSources = new ArrayList<DomainRelation>();
+		this.relationTargets = new ArrayList<DomainRelation>();
 	}
 
 	public ElementNode(ElementNodeType type,String name)
@@ -43,16 +43,24 @@ public abstract class ElementNode {
 		return type;
 	}
 
+	public List<DomainRelation> getRelationSources()
+	{
+		return relationSources;
+	}
+	public List<DomainRelation> getRelationTargets()
+	{
+		return relationTargets;
+	}
 	public void AddRelationSource(DomainRelation relation)
 	{
-		if(relationSources == null)
-			this.relationSources = new ArrayList<DomainRelation>();
+		//if(relationSources == null)
+		this.relationSources = new ArrayList<DomainRelation>();
 		relationSources.add(relation);
 	}
 	public void AddRelationTarget(DomainRelation relation)
 	{
-		if(relationTargets == null)
-			this.relationTargets = new ArrayList<DomainRelation>();
+		//if(relationTargets == null)
+		this.relationTargets = new ArrayList<DomainRelation>();
 		relationTargets.add(relation);
 	}
 	public String getFullName() {

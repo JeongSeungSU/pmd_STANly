@@ -9,7 +9,7 @@ public class PackageMetric {
 	private int	Units;//Num Of Class
 	private int LOC;
 	
-	private float FAT;
+	private int Fat;
 	private float ADCPerUnit;
 	private int AfferentCoupling;
 	private int EfferentCoupling;
@@ -87,11 +87,11 @@ public class PackageMetric {
 	public void addCC(int cC) {
 		TotalCC += cC;
 	}
-	public float getFAT() {
-		return FAT;
+	public int getFat() {
+		return Fat;
 	}
-	public void setFAT(float fAT) {
-		FAT = fAT;
+	public void setFat(int fAT) {
+		Fat = fAT;
 	}
 	public float getADCPerUnit() {
 		return ADCPerUnit;
