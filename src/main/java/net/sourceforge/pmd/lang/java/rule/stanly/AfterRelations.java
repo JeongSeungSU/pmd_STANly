@@ -127,6 +127,7 @@ public class AfterRelations {
 					else
 						child.setName(child.getName().substring(packageSetName.length()+1));
 					newNode.addChildren(child);
+					child.setParent(newNode);
 					node.getChildren().remove(i--);
 				}
 			}

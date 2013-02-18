@@ -118,8 +118,8 @@ public class RelationManager {
 		relation.setSourceNode(sourceNode);
 		relation.setTargetNode(targetNode);
 		
-		System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
-							"-> \t Target : " + relation.getTarget());
+		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
+		//					"-> \t Target : " + relation.getTarget());
 		DomainRelationList.add(0,relation);
 	}
 	/**
@@ -349,8 +349,8 @@ public class RelationManager {
 							if(Type == null)
 								NowString += "." + TypeName[0];
 							else
-								NowString += "." + Type;
-								//NowString = Type; //클레스명을 전체로 PMD에서 넣도록했으므로 이렇게 수정하는편이 좋을듯
+								//NowString += "." + Type;
+								NowString = Type; //클레스명을 전체로 PMD에서 넣도록했으므로 이렇게 수정하는편이 좋을듯
 						}
 						else 
 						{

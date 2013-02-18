@@ -83,6 +83,10 @@ public abstract class ElementNode {
 	public ElementNode getParent() {
 		return parent;
 	}
+	
+	public void setParent(ElementNode parent) {
+		this.parent = parent;
+	}
 
 	public final List<ElementNode> getChildren() {
 		return children;
@@ -176,7 +180,11 @@ public abstract class ElementNode {
 				for(ElementNode childnode:getChildren())
 				{
 					
-					if(targetString.startsWith(childnode.getFullName()))
+					if(targetString.startsWith(childnode.getFullName()) &&
+						(targetString.equals(childnode.getFullName()) ||
+						targetString.charAt(childnode.getFullName().length()) == '.' ||
+						targetString.charAt(childnode.getFullName().length()) == '<' ||
+						targetString.charAt(childnode.getFullName().length()) == '('))
 					{
 						targetNode = childnode.findNode(targetString);
 						if(targetNode != null) break;
@@ -185,6 +193,7 @@ public abstract class ElementNode {
 			}
 			else if(subString.startsWith("("))
 				targetNode = this;
+			else targetNode = getParent().findNode(targetString);
 		}
 		else targetNode = getParent().findNode(targetString);
 		
