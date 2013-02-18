@@ -97,6 +97,7 @@ public class RelationManager {
 		return ClassName+ArgumentList;
 	}
 	
+
 	/**
 	 * Is of Type, contains
 	 * @since 2013. 1. 30.오전 12:36:13
@@ -270,7 +271,8 @@ public class RelationManager {
 							if(Type == null)
 								NowString += "." + TypeName[0];
 							else
-								NowString += "." + Type;
+								//NowString += "." + Type;
+								NowString = Type; //클레스명을 전체로 PMD에서 넣도록했으므로 이렇게 수정하는편이 좋을듯
 						}
 						else 
 						{

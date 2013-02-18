@@ -66,15 +66,26 @@ public abstract class ElementNode {
 	public String getFullName() {
 		if(parent.type == ElementNodeType.LIBRARY)	
 			return name;
+		if(name.equals("."))//PackageSet의 경우 "."은 부모를 의미
+			return parent.getFullName(); 
+		
 		return parent.getFullName() + '.' + name;
 	}
 	
 	public String getName() {
 		return name;
 	}
+	
+	public void setName(String newName) {
+		name = newName;
+	}
 
 	public ElementNode getParent() {
 		return parent;
+	}
+	
+	public void setParent(ElementNode parent) {
+		this.parent = parent;
 	}
 
 	public final List<ElementNode> getChildren() {
@@ -85,6 +96,20 @@ public abstract class ElementNode {
 		if(ChildrenCount == 0)	
 			return null;
 		return children.get(ChildrenCount-1);
+	}
+	public ElementNode addChildren(ElementNode newNode)
+	{
+		int idx = 0;
+		for(ElementNode node:children)//이름 오름차순 정렬
+		{
+			int val = newNode.name.compareTo(node.name);
+			if(val < 0)		break;
+			idx++;
+		}
+		children.add(idx, newNode);
+		
+		ChildrenCount++;
+		return newNode;
 	}
 	public ElementNode addChildren(ElementNodeType type, String name)
 	{
@@ -118,20 +143,7 @@ public abstract class ElementNode {
 		}
 		
 		if(newNode != null)
-		{
-			int idx = 0;
-			for(ElementNode node:children)//이름 오름차순 정렬
-			{
-				int val = newNode.name.compareTo(node.name);
-				if(val < 0)		break;
-				//else if(val == 0 && node.name.equals("visit")) 
-				//	System.out.println("");//YHC
-				idx++;
-			}
-			children.add(idx, newNode);
-			
-			ChildrenCount++;
-		}
+			addChildren(newNode);
 		//else
 		//	return null;
 		
@@ -152,17 +164,27 @@ public abstract class ElementNode {
 				}
 			}
 		}
-		else if(targetString.equals(getFullName()))
-			targetNode = this;
 		else if(targetString.startsWith(getFullName()))
 		{
 			String subString = targetString.substring(getFullName().length()); 
-			if(subString.startsWith("."))
+			
+			while(subString.startsWith("<"))
+			{
+				targetString = removeTemplate(targetString,getFullName().length());
+				subString = targetString.substring(getFullName().length()); 
+			}
+			if(targetString.equals(getFullName()))
+				targetNode = this;
+			else if(subString.startsWith("."))
 			{
 				for(ElementNode childnode:getChildren())
 				{
 					
-					if(targetString.startsWith(childnode.getFullName()))
+					if(targetString.startsWith(childnode.getFullName()) &&
+						(targetString.equals(childnode.getFullName()) ||
+						targetString.charAt(childnode.getFullName().length()) == '.' ||
+						targetString.charAt(childnode.getFullName().length()) == '<' ||
+						targetString.charAt(childnode.getFullName().length()) == '('))
 					{
 						targetNode = childnode.findNode(targetString);
 						if(targetNode != null) break;
@@ -171,9 +193,45 @@ public abstract class ElementNode {
 			}
 			else if(subString.startsWith("("))
 				targetNode = this;
+			else targetNode = getParent().findNode(targetString);
 		}
 		else targetNode = getParent().findNode(targetString);
 		
 		return targetNode;
+	}
+
+	private String removeTemplate(String targetString, int sp) {
+		int opencount=0;
+		String substr = "";
+		int ep=sp;
+		for(int i=sp;i<targetString.length();i++)
+		{
+			if(targetString.charAt(i) == '<')
+				opencount++;
+			
+			if(opencount > 0)
+				ep++;
+			
+			if(targetString.charAt(i) == '>')
+			{
+				opencount--;
+				if(opencount == 0)
+					break;
+			}
+			
+		}
+		
+		String newStr = targetString.substring(0, sp);
+		newStr += targetString.substring(ep, targetString.length());
+		return newStr;
+	}
+	public boolean isAncestor(ElementNode ancestor)
+	{
+		ElementNode node = this;
+		while(node != null && node != ancestor)
+			node = node.parent;
+		
+		if(node != null)	return true;
+		else				return false;
 	}
 }
