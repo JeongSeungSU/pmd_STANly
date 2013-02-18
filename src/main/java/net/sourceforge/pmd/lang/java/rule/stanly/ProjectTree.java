@@ -58,6 +58,7 @@ public class ProjectTree extends AbstractJavaRule {
 		else if(StartOfJavafile.equals(((RuleContext)data).getSourceCodeFilename()))
 		{
 			AfterRelations afterRelation = new AfterRelations(projectNode,manager);
+			afterRelation.makePackageSet();
 			afterRelation.analysis();
 			return data;
 		}

@@ -42,7 +42,7 @@ public class Fat extends AbstractAfterCalculator{
 	public void calcMatric(PackageSetDomain node)
 	{
 		calculateChildren(node);
-		List<DomainRelation> relations = getChilrenRelation(node);
+		List<DomainRelation> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
@@ -50,14 +50,14 @@ public class Fat extends AbstractAfterCalculator{
 	public void calcMatric(PackageDomain node)
 	{
 		calculateChildren(node);
-		List<DomainRelation> relations = getChilrenRelation(node);
+		List<DomainRelation> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
 	
 	public void calcMatric(ClassDomain node)
 	{
-		List<DomainRelation> relations = getChilrenRelation(node);
+		List<DomainRelation> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
@@ -80,22 +80,31 @@ public class Fat extends AbstractAfterCalculator{
 		calculateChildren(node);
 	}*/
 	
-	List<DomainRelation> getChilrenRelation(ElementNode node)
+	List<DomainRelation> getChilrenRelation(ElementNode ancestor,ElementNode node)
 	{
 		List<DomainRelation> relations = new ArrayList<DomainRelation>();
 		for(ElementNode child:node.getChildren())
-		{
+		{			
 			for(DomainRelation rel:child.getRelationSources())
 			{
+				if(!rel.getSourceNode().isAncestor(ancestor))	continue;
+				System.out.println(rel.getSourceNode().getFullName() + " " + child.getFullName());
+				//if(!rel.getSource().startsWith(ancestor))	continue;
+				//String distStrSrc = rel.getSource().substring(ancestor.length());
+				//System.out.println(distStrSrc);
+				/*
 				if(node != rel.getSourceNode().getParent())	continue;
 				boolean flag = false;
-				for(DomainRelation dup:relations)
+				for(DomainRelation dup:relations) //중복 확인
 					if(dup.getSource().equals(rel.getSource()) && dup.getTarget().equals(rel.getTarget()))
 						flag = true;
 				if(flag == false)
-					relations.add(rel);
+					relations.add(rel);*/
 			}
+			relations.addAll(getChilrenRelation(ancestor,child));
 		}
 		return relations;
 	}
+	
+	
 }
