@@ -26,22 +26,26 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.ASTReferenceType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
+import net.sourceforge.pmd.lang.java.ast.ASTStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTType;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnlaysis;
 import net.sourceforge.pmd.lang.java.symboltable.NameDeclaration;
 
 public class RelationManager {
 		
 	private List<DomainRelation> DomainRelationList;
+	private MethodAnlaysis		 RelationChainManager;
 	
 	public RelationManager() {
 		//Array? Linked?
 		//DomainRelationList = new LinkedList<DomainRelation>();
-		DomainRelationList = new ArrayList<DomainRelation>();
+		DomainRelationList 		= new ArrayList<DomainRelation>();
+		RelationChainManager 	= new MethodAnlaysis(DomainRelationList); 
 	}
 	
 	/**
@@ -150,6 +154,7 @@ public class RelationManager {
 	 */
 	void AddRelation(ASTClassOrInterfaceDeclaration node, ElementNode elementnode)
 	{
+
 		List<ASTExtendsList> extendlist = node.findDescendantsOfType(ASTExtendsList.class);
 		List<ASTImplementsList> Implementslist = node.findDescendantsOfType(ASTImplementsList.class);
 		if(extendlist.size() > 0)
@@ -174,6 +179,7 @@ public class RelationManager {
 	
 	void AddRelation(ASTMethodDeclaration node,ElementNode elementnode)
 	{
+	
 		//Relation return
 		ASTResultType resulttype = (ASTResultType)node.getFirstChildOfType(ASTResultType.class);
 		if(resulttype != null)
@@ -225,87 +231,7 @@ public class RelationManager {
 			}
 		}
 		
-		// Relation calls
-		/*ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
-		if (block != null) {
-			List<ASTArguments> ArgumentList = block.findDescendantsOfType(ASTArguments.class);
 
-			for (ASTArguments argument : ArgumentList) {
-				String CalledObjectName = "Super";
-				String CalledMethodName = "";
-				String CalledArgument = "";
-
-				Node parentnode = argument.getNthParent(2);
-				ASTPrimaryPrefix MethodNamePrefix = parentnode
-						.getFirstDescendantOfType(ASTPrimaryPrefix.class);
-				if (MethodNamePrefix == null) 
-				{
-					continue;
-				}
-				ASTName methodName = MethodNamePrefix
-						.getFirstChildOfType(ASTName.class);
-				
-				if (methodName == null) 
-				{
-					ASTPrimarySuffix calledMethod = parentnode
-							.getFirstChildOfType(ASTPrimarySuffix.class);
-					if (calledMethod == null) {
-						continue;
-					}
-
-					CalledMethodName = calledMethod.getImage();
-				} 
-				else
-				{
-					if (methodName.getNameDeclaration() == null) {
-						String[] tmp = methodName.getImage().split("\\.");
-						if(tmp.length == 1 )
-						{
-							CalledMethodName = tmp[0];
-							CalledObjectName = "Object";
-						}
-						else
-						{
-							CalledMethodName = tmp[1];
-							CalledObjectName = tmp[0];
-						}
-					} else {
-						String[] tmp = methodName.getImage().split("\\.");
-						if (tmp.length == 1) {
-							CalledMethodName = tmp[0];
-							CalledObjectName = elementnode.getParent()
-									.getFullName();
-						} else {
-							CalledMethodName = tmp[1];
-							JavaNode typenode = (JavaNode) methodName
-									.getNameDeclaration().getNode()
-									.getNthParent(1);
-							if (typenode.getClass() == ASTVariableDeclarator.class) {
-								typenode = (JavaNode) typenode.getNthParent(1);
-							}
-							JavaNode MethodCallType = typenode
-									.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
-							if( MethodCallType == null)
-							{
-								continue;
-							}
-							CalledObjectName = ClassOrInterfaceTypeToString((ASTClassOrInterfaceType)MethodCallType);
-						}
-					}
-				}
-				//argumentlist extract
-				ASTArgumentList methodArgumentList = argument.getFirstChildOfType(ASTArgumentList.class);
-				
-				
-				
-				
-				
-				AddRelation(Relations.CALLS, elementnode.getFullName(),
-						CalledObjectName + "." + CalledMethodName + "(" + CalledArgument+ ")");
-
-			}
-			}
-			*/
 		ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
 		if (block != null) 
 		{
@@ -316,7 +242,28 @@ public class RelationManager {
 				PrimaryExpressionAnalysis(RootPrimaryExpressions, elementnode);
 			}
 		}
+		
+		//////////////Refactoring중/////////////////////////
+		//ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
+		if (block != null) 
+		{
+			List<ASTBlockStatement> BlockStatementList = block.findChildrenOfType(ASTBlockStatement.class);
+			for (ASTBlockStatement blockStatement : BlockStatementList) 
+			{
+				ASTStatement RootStatement = blockStatement.getFirstChildOfType(ASTStatement.class);
+				StatementAnalysis(RootStatement, elementnode);
+			}
+		}
+		//////////////Refactoring중/////////////////////////
+		
 	}
+//////////////Refactoring중/////////////////////////
+	private void StatementAnalysis(ASTStatement statement, ElementNode elementnode)
+	{
+		//RelationChainManager.
+		
+	}
+	//////////////Refactoring중/////////////////////////
 	private String PrimaryExpressionAnalysis(ASTPrimaryExpression primaryexpression, ElementNode elementnode)
 	{
 		String LastString = "";
