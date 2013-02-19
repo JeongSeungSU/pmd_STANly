@@ -6,6 +6,7 @@ import java.util.List;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.DepthOfInheritanceTree;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.NumberOfChildren;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
@@ -25,6 +26,7 @@ public class AfterRelations {
 			calculators = new ArrayList<AbstractAfterCalculator>();
 			calculators.add(new Fat());
 			calculators.add(new DepthOfInheritanceTree());
+			calculators.add(new NumberOfChildren());
 		}
 	}
 	public void analysis(){
