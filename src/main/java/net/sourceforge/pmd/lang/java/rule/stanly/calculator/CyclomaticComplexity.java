@@ -23,6 +23,7 @@ import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 
@@ -151,12 +152,30 @@ public class CyclomaticComplexity extends AbstractCalculator {
 			entryStack.push(n);
 	}
 	
+	public void addCC2Library(Stack<ElementNode> entryStack,JavaNode node, Object data)
+	{
+		MethodDomain methodEntry = (MethodDomain)entryStack.peek();
+		List<ElementNode> nodeList = new ArrayList<ElementNode>();
+		nodeList.add(0,entryStack.pop());//처음 ClassDomain은 자기 자신을 가르키므로 무시
+		while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.LIBRARY)
+			nodeList.add(0,entryStack.pop());
+		if(entryStack.size() != 0)
+		{
+			LibraryDomain libraryEntry = (LibraryDomain)entryStack.peek();
+			libraryEntry.metric.addWMC(methodEntry.metric.getCC());
+		}
+		for(ElementNode n:nodeList)
+			entryStack.push(n);
+	}
+	
 	public void calcMetric(Stack<ElementNode> entryStack,ASTMethodDeclaration node, Object data) {
 		addCC2Package(entryStack,node,data);
+		addCC2Library(entryStack,node,data);
 	}
 	
 	public void calcMetric(Stack<ElementNode> entryStack,ASTConstructorDeclaration node, Object data) {
-		addCC2Package(entryStack,node,data);		
+		addCC2Package(entryStack,node,data);
+		addCC2Library(entryStack,node,data);
 	}
 	/*@Override
 	public void calcMetric(Stack<ElementNode> entryStack,ASTClassOrInterfaceDeclaration node, Object data) {

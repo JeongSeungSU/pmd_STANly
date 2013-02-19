@@ -18,7 +18,7 @@ public class PackageMetric {
 	private float Distance;
 	//private float WMC;
 	private int totalDIT;
-	private float NOC;
+	private int totalNOC;
 	private float CBO;
 	private float RFC;
 	private float LCOM;
@@ -142,10 +142,10 @@ public class PackageMetric {
 		totalDIT += dIT;
 	}
 	public float getNOC() {
-		return NOC;
+		return (float)totalNOC / (float)this.NumberOfClass;
 	}
-	public void setNOC(float nOC) {
-		NOC = nOC;
+	public void addNOC(int nOC) {
+		totalNOC += nOC;
 	}
 	public float getCBO() {
 		return CBO;

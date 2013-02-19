@@ -10,9 +10,9 @@ public class LibraryMetric {
 	private float ACDUnit;
 	private float Distance;
 	private float DistanceAbsolute;
-	private float WMC;
+	private int totalWMC;
 	private int totalDIT;
-	private float NOC;
+	private int totalNOC;
 	private float CBO;
 	private float RFC;
 	private float LCOM;
@@ -66,22 +66,22 @@ public class LibraryMetric {
 		DistanceAbsolute = distanceAbsolute;
 	}
 	public float getWMC() {
-		return WMC;
+		return (float)totalWMC / (float)NumberOfClass;
 	}
-	public void setWMC(float wMC) {
-		WMC = wMC;
+	public void addWMC(int wMC) {
+		totalWMC += wMC;
 	}
 	public float getDIT() {
 		return (float)totalDIT / (float)NumberOfClass;
 	}
 	public void addDIT(int dIT) {
-		totalDIT = dIT;
+		totalDIT += dIT;
 	}
 	public float getNOC() {
-		return NOC;
+		return (float)totalNOC / (float)NumberOfClass;
 	}
-	public void setNOC(float nOC) {
-		NOC = nOC;
+	public void addNOC(float nOC) {
+		totalNOC += nOC;
 	}
 	public float getCBO() {
 		return CBO;
