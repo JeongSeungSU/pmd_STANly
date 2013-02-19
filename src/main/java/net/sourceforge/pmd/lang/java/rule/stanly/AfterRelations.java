@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCalculator;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.DepthOfInheritanceTree;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.NumberOfChildren;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
-import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
 public class AfterRelations {
@@ -17,13 +18,15 @@ public class AfterRelations {
 
 	public AfterRelations(ProjectDomain projectNode, RelationManager manager) {
 		// TODO Auto-generated constructor stub
-		this.projectNode = projectNode;
+		AfterRelations.projectNode = projectNode;
 		this.manager = manager;
 
 		if(calculators == null)
 		{
 			calculators = new ArrayList<AbstractAfterCalculator>();
 			calculators.add(new Fat());
+			calculators.add(new DepthOfInheritanceTree());
+			calculators.add(new NumberOfChildren());
 		}
 	}
 	public void analysis(){
@@ -31,7 +34,7 @@ public class AfterRelations {
 		FindTarget();
 		RemoveNullTargetRelations();
 		for(AbstractAfterCalculator calculator:calculators)
-			calculator.calcMatric(projectNode);
+			calculator.calcMetric(projectNode);
 	}
 
 	public void FindTarget(){
@@ -78,6 +81,7 @@ public class AfterRelations {
 				targetNode.AddRelationSource(relation);
 			}
 		}
+		System.out.println("Number of Relations : " + domainRelation.size());
 	}
 	public void makePackageSet() {
 		// TODO Auto-generated method stub
@@ -96,7 +100,7 @@ public class AfterRelations {
 		String[] newStr;
 		for(ElementNode child:node.getChildren())
 		{
-			String[] cmpStr = child.getFullName().split("\\.");
+			String[] cmpStr = child.getName().split("\\.");
 			newStr = getMinimumMatch(minStr,cmpStr);
 			if(newStr.length > 0)
 			{
