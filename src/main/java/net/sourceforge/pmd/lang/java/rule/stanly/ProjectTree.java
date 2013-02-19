@@ -118,12 +118,13 @@ public class ProjectTree extends AbstractJavaRule {
 			currentPackageNode = (PackageDomain)currentLibraryNode.addChildren(ElementNodeType.PACKAGE,packageName);
 		}
 		
+		entryStack.push(currentLibraryNode);
 		entryStack.push(currentPackageNode);
 		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
-		
+		entryStack.pop();
 		//System.out.println(currentPackageNode.metric.getCC() + "     " +currentPackageNode.metric.getAverageCC());
 		//Gson gson = new Gson();
 		//String temp = gson.toJson(topNode);

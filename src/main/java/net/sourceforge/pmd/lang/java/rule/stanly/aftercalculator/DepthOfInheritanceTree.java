@@ -5,6 +5,8 @@ import net.sourceforge.pmd.lang.java.rule.stanly.Relations;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
 public class DepthOfInheritanceTree extends AbstractAfterCalculator {
@@ -26,7 +28,27 @@ public class DepthOfInheritanceTree extends AbstractAfterCalculator {
 				return 1 + calcMetric((ClassDomain)rel.getTargetNode());
 			}
 		}
-		return 1;
+		if(node.getType() == ElementNodeType.CLASS)
+			return 1;
+		else //interface or enum
+			return 0;
+	}
+	
+	private void addDITtoPackage(int dit, ElementNode node)
+	{
+		ElementNode packageNode = node;
+		while(packageNode != null && packageNode.getType() != ElementNodeType.PACKAGE)
+			packageNode = packageNode.getParent();
+		if(packageNode == null)	return;
+		((PackageDomain)packageNode).metric.addDIT(dit);
+	}
+	private void addDITtoLibrary(int dit, ElementNode node)
+	{
+		ElementNode libraryNode = node;
+		while(libraryNode != null && libraryNode.getType() != ElementNodeType.LIBRARY)
+			libraryNode = libraryNode.getParent();
+		if(libraryNode == null)	return;
+		((LibraryDomain)libraryNode).metric.addDIT(dit);
 	}
 	
 	public void visitClasses(ElementNode node)
@@ -38,6 +60,11 @@ public class DepthOfInheritanceTree extends AbstractAfterCalculator {
 			{
 				dit = calcMetric((ClassDomain)child);
 				((ClassDomain)child).metric.setDIT(dit);
+				if(dit > 0)
+				{
+					addDITtoPackage(dit,child);
+					addDITtoLibrary(dit,child);
+				}
 			}
 			visitClasses(child);
 		}

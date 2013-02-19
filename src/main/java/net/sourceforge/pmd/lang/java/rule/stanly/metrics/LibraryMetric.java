@@ -2,6 +2,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 
 public class LibraryMetric {
 	private int Packages;
+	private int NumberOfClass;	// unit class + inner class
 	private float UnitPerPackage;
 	private int Fat;
 	private float Tangled;
@@ -10,7 +11,7 @@ public class LibraryMetric {
 	private float Distance;
 	private float DistanceAbsolute;
 	private float WMC;
-	private float DIT;
+	private int totalDIT;
 	private float NOC;
 	private float CBO;
 	private float RFC;
@@ -71,10 +72,10 @@ public class LibraryMetric {
 		WMC = wMC;
 	}
 	public float getDIT() {
-		return DIT;
+		return (float)totalDIT / (float)NumberOfClass;
 	}
-	public void setDIT(float dIT) {
-		DIT = dIT;
+	public void addDIT(int dIT) {
+		totalDIT = dIT;
 	}
 	public float getNOC() {
 		return NOC;
@@ -99,5 +100,11 @@ public class LibraryMetric {
 	}
 	public void setLCOM(float lCOM) {
 		LCOM = lCOM;
+	}
+	public int getNumberOfClass() {
+		return NumberOfClass;
+	}
+	public void addNumberOfClass(int numberOfClass) {
+		NumberOfClass += numberOfClass;
 	}
 }

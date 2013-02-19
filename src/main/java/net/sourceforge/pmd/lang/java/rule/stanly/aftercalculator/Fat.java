@@ -1,9 +1,7 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
@@ -42,7 +40,7 @@ public class Fat extends AbstractAfterCalculator{
 	public void calcMetric(PackageSetDomain node)
 	{
 		calculateChildren(node);
-		Set<String> relations = getChilrenRelation(node,node);
+		Map<String,Integer> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
@@ -50,14 +48,14 @@ public class Fat extends AbstractAfterCalculator{
 	public void calcMetric(PackageDomain node)
 	{
 		calculateChildren(node);
-		Set<String> relations = getChilrenRelation(node,node);		
+		Map<String,Integer> relations = getChilrenRelation(node,node);		
 		node.metric.setFat(relations.size());
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
 	
 	public void calcMetric(ClassDomain node)
 	{
-		Set<String> relations = getChilrenRelation(node,node);
+		Map<String,Integer> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
@@ -80,12 +78,12 @@ public class Fat extends AbstractAfterCalculator{
 		calculateChildren(node);
 	}*/
 	
-	Set<String> getChilrenRelation(ElementNode ancestor,ElementNode node)
+	Map<String,Integer> getChilrenRelation(ElementNode ancestor,ElementNode node)
 	{
 		String[] ancSplit = ancestor.getFullName().split("\\.");
 		String[] tarSplit = null;
 		String[] srcSplit = null;
-		Set<String> relations = new HashSet<String>();
+		Map<String,Integer> relations = new HashMap<String,Integer>();
 		for(ElementNode child:node.getChildren())
 		{
 			srcSplit = child.getFullName().split("\\.");			
@@ -96,11 +94,16 @@ public class Fat extends AbstractAfterCalculator{
 				if(ancSplit.length < srcSplit.length && ancSplit.length < tarSplit.length && 
 					!srcSplit[ancSplit.length].equals(tarSplit[ancSplit.length]))
 				{
-					relations.add(srcSplit[ancSplit.length] + ">" + tarSplit[ancSplit.length]);
+					String key = srcSplit[ancSplit.length] + ">" + tarSplit[ancSplit.length];
+					Integer value = 0;
+					if(relations.containsKey(key))
+						value = relations.get(key);
+					value++;
+					relations.put(key,value);
 				}
 			}
 			if(child.getChildren().size() > 0)
-				relations.addAll(getChilrenRelation(ancestor,child));
+				relations.putAll(getChilrenRelation(ancestor,child));
 		}
 		return relations;
 	}

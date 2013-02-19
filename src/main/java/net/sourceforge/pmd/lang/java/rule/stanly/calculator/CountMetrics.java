@@ -11,10 +11,11 @@ import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
-import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 
 public class CountMetrics extends AbstractCalculator {
 	
@@ -71,11 +72,19 @@ public class CountMetrics extends AbstractCalculator {
 			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getClasses());
 			while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.PACKAGE)
 				nodeList.add(0,entryStack.pop());
-			((PackageDomain)entryStack.peek()).metric.addNumberOfClasses(1);
-			((PackageDomain)entryStack.peek()).metric.addNumberOfClass(1);
-		}
-		else 
+			nodeList.add(0,entryStack.pop());
+			((PackageDomain)nodeList.get(0)).metric.addNumberOfClasses(1);
 			((PackageDomain)nodeList.get(0)).metric.addNumberOfClass(1);
+			
+			nodeList.add(0,entryStack.pop());
+			((LibraryDomain)nodeList.get(0)).metric.addNumberOfClass(1);
+		}
+		else
+		{
+			((PackageDomain)nodeList.get(1)).metric.addNumberOfClass(1);
+			((LibraryDomain)nodeList.get(0)).metric.addNumberOfClass(1);
+		}
+				
 		for(ElementNode n:nodeList)
 			entryStack.push(n);
 		
@@ -127,7 +136,7 @@ public class CountMetrics extends AbstractCalculator {
 	{
 		List<ElementNode> nodeList = new ArrayList<ElementNode>();
 		//nodeList.add(0,entryStack.pop());//처음 ClassDomain은 자기 자신을 가르키므로 무시
-		((PackageDomain)entryStack.get(0)).metric.addNumberOfFields(1);
+		((PackageDomain)entryStack.get(1)).metric.addNumberOfFields(1);
 		while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.CLASS)
 			nodeList.add(0,entryStack.pop());
 		if(entryStack.size() != 0)
