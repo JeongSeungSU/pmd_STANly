@@ -25,7 +25,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
  * @since 2013. 2. 19.오전 4:05:45
  * @author JeongSeungsu
  */
-public class PrimaryExpressionAnalysisNode extends AbstractASTParserNode{
+public class PrimaryExpressionAnalysisNode extends AbstractASTAnalysisNode{
 
 
 	public PrimaryExpressionAnalysisNode(DomainRelationList relationlist,
@@ -39,6 +39,10 @@ public class PrimaryExpressionAnalysisNode extends AbstractASTParserNode{
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException {
 		
 		ASTPrimaryExpression primaryexpression = (ASTPrimaryExpression)analysisnode;
+		
+		//중복되면 이미 처리되있는 데이터를 리턴해줌...
+		if(ProcessedPrimaryExpressionList.containsKey(primaryexpression))
+			return ProcessedPrimaryExpressionList.get(primaryexpression);
 		
 		MethodResult Result = new MethodResult("", "unknown", true);
 		
@@ -60,6 +64,7 @@ public class PrimaryExpressionAnalysisNode extends AbstractASTParserNode{
 		{
 			Node ChildrenNode = primaryexpression.jjtGetChild(i);
 			
+			//arguments가 맞냐? 체크
 			if(ChildrenNode.toString().equalsIgnoreCase("Arguments"))
 			{
 				Result.TypeName = "unknown";
@@ -73,8 +78,10 @@ public class PrimaryExpressionAnalysisNode extends AbstractASTParserNode{
 			RelationList.AddRelation(Relations.UNKNOWN, sourcenode.getFullName(),Result.TargetResult,sourcenode,null);
 		else
 			RelationList.AddRelation(Relations.ACCESSES, sourcenode.getFullName(),Result.TargetResult,sourcenode,null);
+
+		//이미 처리된것 중복을 막기 위해서 처리된 데이터를 입력...
+		ProcessedPrimaryExpressionList.put(primaryexpression, Result);
 		
 		return Result;
 	}
-
 }

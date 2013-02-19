@@ -7,12 +7,12 @@ import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
-public abstract class AbstractASTParserNode {
+public abstract class AbstractASTAnalysisNode {
 	protected DomainRelationList RelationList;
 	protected Map<ASTPrimaryExpression, MethodResult> ProcessedPrimaryExpressionList;
 	protected MethodAnlaysis MethodAnlysistor;
 	
-	public AbstractASTParserNode(DomainRelationList relationlist , Map<ASTPrimaryExpression, MethodResult> PrimaryExpressionList , 
+	public AbstractASTAnalysisNode(DomainRelationList relationlist , Map<ASTPrimaryExpression, MethodResult> PrimaryExpressionList , 
 					MethodAnlaysis anlysis)
 	{
 		RelationList = relationlist;

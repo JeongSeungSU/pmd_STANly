@@ -2,9 +2,15 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
 
 import java.util.Map;
 
+import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
+import net.sourceforge.pmd.lang.java.ast.ASTFormalParameter;
+import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
+import net.sourceforge.pmd.lang.java.ast.ASTType;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
@@ -20,7 +26,7 @@ import net.sourceforge.pmd.lang.java.symboltable.NameDeclaration;
  * @since 2013. 2. 19.오전 4:03:19
  * @author JeongSeungsu
  */
-public class NameAnalysisNode extends AbstractASTParserNode {
+public class NameAnalysisNode extends AbstractASTAnalysisNode {
 
 	public NameAnalysisNode(DomainRelationList relationlist,
 			Map<ASTPrimaryExpression, MethodResult> PrimaryExpressionList,
@@ -40,15 +46,23 @@ public class NameAnalysisNode extends AbstractASTParserNode {
 		}
 		
 		JavaNode typenode = (JavaNode)tmp.getNode().getNthParent(1);
-		if (typenode.getClass() == ASTVariableDeclarator.class) {
+		
+		if (typenode.getClass() == ASTVariableDeclarator.class) 
 			typenode = (JavaNode) typenode.getNthParent(1);
-		}
+		else if(typenode.getClass() == ASTMethodDeclaration.class)
+			typenode = (JavaNode)typenode.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
+		else if(typenode.getClass() == ASTFormalParameter.class)
+			typenode = (JavaNode)typenode.getFirstParentOfType(ASTType.class);
+		else
+			throw new MethodAnalysisException("ASTName에서" + typenode.getClass().toString() + "타입을 못찾음...");
 
 		//primitive type을 넣어야 한다... 음.. 이게 여기만 들어가는건지 여기저기 들어갈지는 모름...
 		AbstractJavaNode CallType = typenode.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
 		
 		if( MacroFunctions.NULLTrue(CallType)){
-			return new MethodResult(name.getImage(),"unknown",false);
+			CallType = typenode.getFirstDescendantOfType(ASTPrimitiveType.class);
+			if(MacroFunctions.NULLTrue(CallType))
+				return new MethodResult(name.getImage(),"unknown",false);
 		}
 
 		MethodResult result = new MethodResult();
