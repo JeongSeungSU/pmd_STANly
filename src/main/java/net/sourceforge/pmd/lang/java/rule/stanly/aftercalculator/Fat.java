@@ -19,27 +19,27 @@ public class Fat extends AbstractAfterCalculator{
 	{
 		for(ElementNode child:node.getChildren())
 		{
-			if(child instanceof LibraryDomain)		calcMatric((LibraryDomain)child);
-			if(child instanceof PackageSetDomain)	calcMatric((PackageSetDomain)child);
-			if(child instanceof PackageDomain)		calcMatric((PackageDomain)child);
-			if(child instanceof ClassDomain)		calcMatric((ClassDomain)child);
-			//if(child instanceof MethodDomain)		calcMatric((MethodDomain)child);
-			//if(child instanceof FieldDomain)		calcMatric((FieldDomain)child);
+			if(child instanceof LibraryDomain)		calcMetric((LibraryDomain)child);
+			if(child instanceof PackageSetDomain)	calcMetric((PackageSetDomain)child);
+			if(child instanceof PackageDomain)		calcMetric((PackageDomain)child);
+			if(child instanceof ClassDomain)		calcMetric((ClassDomain)child);
+			//if(child instanceof MethodDomain)		calcMetric((MethodDomain)child);
+			//if(child instanceof FieldDomain)		calcMetric((FieldDomain)child);
 		}
 	}
 	
-	public void calcMatric(ProjectDomain node)
+	public void calcMetric(ProjectDomain node)
 	{
 		calculateChildren(node);
 	}
 	
-	public void calcMatric(LibraryDomain node)
+	public void calcMetric(LibraryDomain node)
 	{
 		calculateChildren(node);
 		//추후 추가해야함 LibraryDomain테스트 케이스를 만들어야함 
 	}
 	
-	public void calcMatric(PackageSetDomain node)
+	public void calcMetric(PackageSetDomain node)
 	{
 		calculateChildren(node);
 		Set<String> relations = getChilrenRelation(node,node);
@@ -47,7 +47,7 @@ public class Fat extends AbstractAfterCalculator{
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
 	
-	public void calcMatric(PackageDomain node)
+	public void calcMetric(PackageDomain node)
 	{
 		calculateChildren(node);
 		Set<String> relations = getChilrenRelation(node,node);		
@@ -55,7 +55,7 @@ public class Fat extends AbstractAfterCalculator{
 		addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
 	
-	public void calcMatric(ClassDomain node)
+	public void calcMetric(ClassDomain node)
 	{
 		Set<String> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
@@ -70,12 +70,12 @@ public class Fat extends AbstractAfterCalculator{
 			((LibraryDomain)node).metric.addFat(fat);
 	}
 	/*
-	public void calcMatric(MethodDomain node)
+	public void calcMetric(MethodDomain node)
 	{
 		calculateChildren(node);
 	}
 	
-	public void calcMatric(FieldDomain node)
+	public void calcMetric(FieldDomain node)
 	{
 		calculateChildren(node);
 	}*/
@@ -88,9 +88,7 @@ public class Fat extends AbstractAfterCalculator{
 		Set<String> relations = new HashSet<String>();
 		for(ElementNode child:node.getChildren())
 		{
-			srcSplit = child.getFullName().split("\\.");
-			if(srcSplit.length > 4 && srcSplit[4].equals("RegistryStrategy"))
-				System.out.println("");
+			srcSplit = child.getFullName().split("\\.");			
 			for(DomainRelation rel:child.getRelationTargets())
 			{
 				if(!rel.getTargetNode().isAncestor(ancestor))	continue;
@@ -98,17 +96,6 @@ public class Fat extends AbstractAfterCalculator{
 				if(ancSplit.length < srcSplit.length && ancSplit.length < tarSplit.length && 
 					!srcSplit[ancSplit.length].equals(tarSplit[ancSplit.length]))
 				{
-					//if(!rel.getSource().startsWith(ancestor))	continue;
-					//String distStrSrc = rel.getSource().substring(ancestor.length());
-					//System.out.println(distStrSrc);
-
-					//if(node != rel.getSourceNode().getParent())	continue;
-					//boolean flag = false;					
-					//for(HashMap<String,String> dup:relations) //중복 확인
-					//	if(dup.getSource().equals(rel.getSource()) && dup.getTarget().equals(rel.getTarget()))
-					//		flag = true;
-					//if(flag == false)
-					System.out.println(ancestor.getFullName() + " : " + child.getFullName() + " > " + rel.getTargetNode().getFullName());
 					relations.add(srcSplit[ancSplit.length] + ">" + tarSplit[ancSplit.length]);
 				}
 			}

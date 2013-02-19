@@ -8,6 +8,13 @@ public class ClassMetric {
 	private int Fat;
 	private int AfferentCoupling;
 	private int EfferentCoupling;
+	private float WMC;
+	private int DIT;
+	private float NOC;
+	private float CBO;
+	private float RFC;
+	private float LCOM;
+	
 	public int getClasses() {
 		return Classes;
 	}
@@ -59,10 +66,10 @@ public class ClassMetric {
 	public void addWMC(float wMC) {
 		WMC += wMC;
 	}
-	public float getDIT() {
+	public int getDIT() {
 		return DIT;
 	}
-	public void setDIT(float dIT) {
+	public void setDIT(int dIT) {
 		DIT = dIT;
 	}
 	public float getNOC() {
@@ -89,10 +96,4 @@ public class ClassMetric {
 	public void setLCOM(float lCOM) {
 		LCOM = lCOM;
 	}
-	private float WMC;
-	private float DIT;
-	private float NOC;
-	private float CBO;
-	private float RFC;
-	private float LCOM;
 }
