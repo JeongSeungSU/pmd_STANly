@@ -19,9 +19,9 @@ import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
 /**
- * TargetResult = 
- * TypeName		= 
- * IsProcess	= 
+ * TargetResult = +type+->abc.b(!!!)
+ * TypeName		= Unknown아니면 return type
+ * IsProcess	= true
  * @since 2013. 2. 19.오전 4:05:45
  * @author JeongSeungsu
  */
@@ -38,32 +38,43 @@ public class PrimaryExpressionAnalysisNode extends AbstractASTParserNode{
 	@Override
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException {
 		
-		String LastString = "";
-		boolean ToggleMethod = false;
 		ASTPrimaryExpression primaryexpression = (ASTPrimaryExpression)analysisnode;
+		
+		MethodResult Result = new MethodResult("", "unknown", true);
 		
 		MethodResult PrefixResult = MethodAnlysistor.ProcessMethodCallAndAccess(
 									(AbstractJavaNode)primaryexpression.jjtGetChild(0), sourcenode);
 		
 		
-		
-		for(int i = 1; i < primaryexpression.jjtGetNumChildren(); i++)
+		if(PrefixResult.IsProcess)
 		{
-			String NowString = "";
-			
-			Node ChildrenNode = primaryexpression.jjtGetChild(i);
-			MethodResult SuffixResult = MethodAnlysistor.ProcessMethodCallAndAccess((AbstractJavaNode)ChildrenNode, sourcenode);
-			
-
-			LastString += NowString;
+			String DeleteType = MethodAnlysistor.TypeSperateApplyer(PrefixResult.TypeName);
+			Result.TargetResult = PrefixResult.TargetResult.replaceFirst(DeleteType, "");
+			if(!PrefixResult.TargetResult.matches(".*"+ PrefixResult.TypeName+".*"))
+				Result.TypeName = PrefixResult.TypeName;
 		}
 		
-		if(ToggleMethod)
-			RelationList.AddRelation(Relations.CALLS, sourcenode.getFullName(),LastString,sourcenode,null);
-		else
-			RelationList.AddRelation(Relations.ACCESSES, sourcenode.getFullName(),LastString,sourcenode,null);
+		//여기해야됨
+		//Suffix처리...
+		for(int i = 1; i < primaryexpression.jjtGetNumChildren(); i++)
+		{
+			Node ChildrenNode = primaryexpression.jjtGetChild(i);
+			
+			if(ChildrenNode.toString().equalsIgnoreCase("Arguments"))
+			{
+				Result.TypeName = "unknown";
+			}
+			
+			MethodResult SuffixResult = MethodAnlysistor.ProcessMethodCallAndAccess((AbstractJavaNode)ChildrenNode, sourcenode);
+			Result.TargetResult += SuffixResult.TargetResult;
+		}
 		
-		return new MethodResult(LastString,"unknown",true);
+		if(Result.TypeName.equalsIgnoreCase("unknown"))
+			RelationList.AddRelation(Relations.UNKNOWN, sourcenode.getFullName(),Result.TargetResult,sourcenode,null);
+		else
+			RelationList.AddRelation(Relations.ACCESSES, sourcenode.getFullName(),Result.TargetResult,sourcenode,null);
+		
+		return Result;
 	}
 
 }
