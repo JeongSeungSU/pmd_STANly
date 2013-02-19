@@ -2,8 +2,8 @@ package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 
 public class PackageMetric {
 	private int NumberOfMethods;//Number of Method
-	private int NumberOfClasses;
-	private int NumberOfClass;	
+	private int NumberOfClasses;// inner class
+	private int NumberOfClass;	// unit class + inner class
 	private int NumberOfFields;
 	private int TotalCC;
 	private int	Units;//Num Of Class
@@ -16,8 +16,8 @@ public class PackageMetric {
 	private float Abstractness;
 	private float Instability;
 	private float Distance;
-	private float WMC;
-	private float DIT;
+	//private float WMC;
+	private int totalDIT;
 	private float NOC;
 	private float CBO;
 	private float RFC;
@@ -81,9 +81,9 @@ public class PackageMetric {
 	public float getAverageCC() {
 		return NumberOfMethods == 0 ? 0 : (float)TotalCC / (float)NumberOfMethods;
 	}
-	public float getCC() {
-		return TotalCC;
-	}
+	//public float getCC() {
+	//	return TotalCC;
+	//}
 	public void addCC(int cC) {
 		TotalCC += cC;
 	}
@@ -130,16 +130,16 @@ public class PackageMetric {
 		Distance = distance;
 	}
 	public float getWMC() {
-		return WMC;
+		return NumberOfClass == 0 ? 0 : (float)TotalCC / (float)NumberOfClass;
 	}
-	public void setWMC(float wMC) {
-		WMC = wMC;
-	}
+	//public void setWMC(float wMC) {
+	//	WMC = wMC;
+	//}
 	public float getDIT() {
-		return DIT;
+		return (float)totalDIT / (float)this.NumberOfClass;
 	}
-	public void setDIT(float dIT) {
-		DIT = dIT;
+	public void addDIT(int dIT) {
+		totalDIT += dIT;
 	}
 	public float getNOC() {
 		return NOC;
