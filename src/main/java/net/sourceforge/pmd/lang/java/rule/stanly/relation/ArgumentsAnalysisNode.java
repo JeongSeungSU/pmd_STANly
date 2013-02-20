@@ -17,7 +17,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
  * @since 2013. 2. 19.오전 3:59:01
  * @author JeongSeungsu
  */
-public class ArgumentsAnalysisNode extends AbstractASTParserNode {
+public class ArgumentsAnalysisNode extends AbstractASTAnalysisNode {
 
 	public ArgumentsAnalysisNode(DomainRelationList relationlist,
 			Map<ASTPrimaryExpression, MethodResult> PrimaryExpressionList,

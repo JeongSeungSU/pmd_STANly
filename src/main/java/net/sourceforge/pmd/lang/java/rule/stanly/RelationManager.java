@@ -205,7 +205,7 @@ public class RelationManager {
 		
 
 		//Relation method ,Access 
-		//RelationChainManager.AnalysisMethodCallandAccess(node, elementnode);
+		RelationChainManager.AnalysisMethodCallandAccess(node, elementnode);
 		
 		ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
 		if (block != null) 
