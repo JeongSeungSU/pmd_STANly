@@ -21,11 +21,19 @@ public class AdditiveExpressionAnalysisNode extends AbstractASTAnalysisNode {
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
 		ASTAdditiveExpression additiveexpression = (ASTAdditiveExpression)analysisnode;
-		if(additiveexpression.jjtGetNumChildren() != 2)
+		String ReturnType = "";
+		for(int i = 0; i < additiveexpression.jjtGetNumChildren(); i++)
 		{
-			int i = 0;
+			AbstractJavaNode childnode = (AbstractJavaNode) additiveexpression.jjtGetChild(i); 
+			MethodResult result = MethodAnlysistor.ProcessMethodCallAndAccess(childnode, sourcenode);
+			
+			if(result.TypeName.equalsIgnoreCase("unknown"))
+				ReturnType = result.TargetResult;
+			else
+				return result;
 		}
-		return null;
+		
+		return new MethodResult(ReturnType,"unknown",false);
 	}
 
 }

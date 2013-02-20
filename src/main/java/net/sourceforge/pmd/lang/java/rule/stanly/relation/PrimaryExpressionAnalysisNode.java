@@ -62,14 +62,8 @@ public class PrimaryExpressionAnalysisNode extends AbstractASTAnalysisNode{
 		//Suffix처리...
 		for(int i = 1; i < primaryexpression.jjtGetNumChildren(); i++)
 		{
+			Result.TypeName = "unknown";
 			Node ChildrenNode = primaryexpression.jjtGetChild(i);
-			
-			//arguments가 맞냐? 체크
-			if(ChildrenNode.toString().equalsIgnoreCase("Arguments"))
-			{
-				Result.TypeName = "unknown";
-			}
-			
 			MethodResult SuffixResult = MethodAnlysistor.ProcessMethodCallAndAccess((AbstractJavaNode)ChildrenNode, sourcenode);
 			Result.TargetResult += SuffixResult.TargetResult;
 		}
