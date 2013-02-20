@@ -20,7 +20,7 @@ public class PackageMetric {
 	private int totalDIT;
 	private int totalNOC;
 	private int totalCBO;
-	private float RFC;
+	private int totalRFC;
 	private float LCOM;
 	
 	
@@ -156,11 +156,15 @@ public class PackageMetric {
 	public void addCBO(int cBO) {
 		totalCBO += cBO;
 	}
-	public float getRFC() {
-		return RFC;
+	
+	public float getAverageRFC() {
+		return NumberOfClass == 0 ? 0 : (float)totalRFC / (float)NumberOfClass;
 	}
-	public void setRFC(float rFC) {
-		RFC = rFC;
+	public int getTotalRFC() {
+		return totalRFC;
+	}
+	public void addRFC(int rFC) {
+		totalRFC += rFC;
 	}
 	public float getLCOM() {
 		return LCOM;

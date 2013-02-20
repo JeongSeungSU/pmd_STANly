@@ -50,7 +50,7 @@ public class CouplingBetweenObjects extends AbstractCalculator {
 		return super.visit(node, data);
 	}*/
 
-	public boolean isNotClass(Stack<ElementNode> entryStack)
+	/*public boolean isNotClass(Stack<ElementNode> entryStack)
 	{
 		for(int i=entryStack.size() - 1;i>=0;i--)
 		{
@@ -58,11 +58,11 @@ public class CouplingBetweenObjects extends AbstractCalculator {
 				return false;
 		}
 		return true;
-	}
+	}*/
 
 	@Override
 	public void calcMetric(Stack<ElementNode> entryStack,ASTResultType node, Object data) {
-		if(isNotClass(entryStack))	return;
+		//if(isNotClass(entryStack))	return;
 
 		for (int x = 0; x < node.jjtGetNumChildren(); x++) {
 			Node tNode = node.jjtGetChild(x);
@@ -82,21 +82,21 @@ public class CouplingBetweenObjects extends AbstractCalculator {
 
 	@Override
 	public void calcMetric(Stack<ElementNode> entryStack,ASTLocalVariableDeclaration node, Object data) {
-		if(isNotClass(entryStack))	return;
+		//if(isNotClass(entryStack))	return;
 		handleASTTypeChildren(entryStack,node);
 		//return super.visit(node, data);
 	}
 
 	@Override
 	public void calcMetric(Stack<ElementNode> entryStack,ASTFormalParameter node, Object data) {
-		if(isNotClass(entryStack))	return;
+		//if(isNotClass(entryStack))	return;
 		handleASTTypeChildren(entryStack,node);
 		//return super.visit(node, data);
 	}
 
 	@Override
 	public void calcMetric(Stack<ElementNode> entryStack,ASTFieldDeclaration node, Object data) {
-		if(isNotClass(entryStack))	return;
+		//if(isNotClass(entryStack))	return;
 		for (int x = 0; x < node.jjtGetNumChildren(); ++x) {
 			Node firstStmt = node.jjtGetChild(x);
 			if (firstStmt instanceof ASTType) {
