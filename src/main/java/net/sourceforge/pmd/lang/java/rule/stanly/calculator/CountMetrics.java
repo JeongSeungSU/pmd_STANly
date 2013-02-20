@@ -54,6 +54,12 @@ public class CountMetrics extends AbstractCalculator {
 				nodeList.add(0,entryStack.pop());
 			if(entryStack.size() != 0)
 				((PackageDomain)entryStack.peek()).metric.addUnits(1);
+			
+			while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.LIBRARY)
+				nodeList.add(0,entryStack.pop());
+			if(entryStack.size() != 0)
+				((LibraryDomain)entryStack.peek()).metric.addUnits(1);
+			
 				//System.out.println(((PackageDomain)entryStack.peek()).getFullName() + " has " + ((PackageDomain)entryStack.peek()).metric.getUnits());
 			for(ElementNode n:nodeList)
 				entryStack.push(n);

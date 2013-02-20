@@ -19,7 +19,7 @@ public class PackageMetric {
 	//private float WMC;
 	private int totalDIT;
 	private int totalNOC;
-	private float CBO;
+	private int totalCBO;
 	private float RFC;
 	private float LCOM;
 	
@@ -147,11 +147,14 @@ public class PackageMetric {
 	public void addNOC(int nOC) {
 		totalNOC += nOC;
 	}
-	public float getCBO() {
-		return CBO;
+	public int getTotalCBO() {
+		return totalCBO;
 	}
-	public void setCBO(float cBO) {
-		CBO = cBO;
+	public float getAverageCBO() {
+		return NumberOfClass == 0 ? 0 : (float)totalCBO / (float)NumberOfClass;
+	}
+	public void addCBO(int cBO) {
+		totalCBO += cBO;
 	}
 	public float getRFC() {
 		return RFC;

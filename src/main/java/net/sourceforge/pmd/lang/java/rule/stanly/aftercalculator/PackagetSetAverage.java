@@ -2,6 +2,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
@@ -11,6 +12,19 @@ public class PackagetSetAverage extends AbstractAfterCalculator {
 	public void calcMetric(ProjectDomain node)
 	{
 		visitClasses(node);
+	}
+	
+	public void calcMetric(LibraryDomain node)
+	{
+		for(ElementNode child:node.getChildren())
+		{
+			int numberOfPackages = 0;
+			if(child.getType() == ElementNodeType.PACKAGESET)
+				numberOfPackages = ((PackageSetDomain)child).metric.getNumberOfPakcages();
+			else if(child.getType() == ElementNodeType.PACKAGE)
+				numberOfPackages = 1;
+			node.metric.addPackages(numberOfPackages);
+		}
 	}
 	
 	public void calcMetric(PackageSetDomain node)
@@ -64,9 +78,9 @@ public class PackagetSetAverage extends AbstractAfterCalculator {
 		{
 			visitClasses(child);
 			if(child.getType() == ElementNodeType.PACKAGESET)
-			{
 				calcMetric((PackageSetDomain)child);
-			}
+			else if(child.getType() == ElementNodeType.LIBRARY)//Number of Packages를 여기서 구
+				calcMetric((LibraryDomain)child);
 		}
 	}
 }

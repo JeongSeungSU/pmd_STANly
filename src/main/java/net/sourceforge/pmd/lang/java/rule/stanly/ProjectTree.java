@@ -9,6 +9,7 @@ import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CyclomaticComplexity;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
@@ -34,6 +35,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculators.add(new LinesOfCode());
 			calculators.add(new CountMetrics());
 			calculators.add(new CyclomaticComplexity());
+			calculators.add(new CouplingBetweenObjects());
 		}
 		if(manager == null)
 		{

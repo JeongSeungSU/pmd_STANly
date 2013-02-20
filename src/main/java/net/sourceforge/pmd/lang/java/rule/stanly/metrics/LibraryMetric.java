@@ -1,9 +1,9 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 
 public class LibraryMetric {
+	private int Unit;
 	private int Packages;
 	private int NumberOfClass;	// unit class + inner class
-	private float UnitPerPackage;
 	private int Fat;
 	private float Tangled;
 	private float ACDPackage;
@@ -13,21 +13,21 @@ public class LibraryMetric {
 	private int totalWMC;
 	private int totalDIT;
 	private int totalNOC;
-	private float CBO;
+	private int totalCBO;
 	private float RFC;
 	private float LCOM;
 	
 	public int getPackages() {
 		return Packages;
 	}
-	public void setPackages(int packages) {
-		Packages = packages;
+	public void addPackages(int packages) {
+		Packages += packages;
 	}
 	public float getUnitPerPackage() {
-		return UnitPerPackage;
+		return Packages == 0 ? 0 : (float)Unit / (float)Packages;
 	}
-	public void setUnitPerPackage(float unitPerPackage) {
-		UnitPerPackage = unitPerPackage;
+	public void addUnits(int unit) {
+		Unit += unit;
 	}
 	public int getFat() {
 		return Fat;
@@ -83,11 +83,14 @@ public class LibraryMetric {
 	public void addNOC(float nOC) {
 		totalNOC += nOC;
 	}
-	public float getCBO() {
-		return CBO;
+	public float getAverageCBO() {
+		return NumberOfClass == 0 ? 0 : (float)totalCBO / (float)NumberOfClass;
 	}
-	public void setCBO(float cBO) {
-		CBO = cBO;
+	public int getTotalCBO() {
+		return totalCBO;
+	}
+	public void addCBO(float cBO) {
+		totalCBO += cBO;
 	}
 	public float getRFC() {
 		return RFC;
