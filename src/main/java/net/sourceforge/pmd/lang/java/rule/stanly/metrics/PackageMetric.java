@@ -5,8 +5,8 @@ public class PackageMetric {
 	private int NumberOfClasses;// inner class
 	private int NumberOfClass;	// unit class + inner class
 	private int NumberOfFields;
-	private int TotalCC;
 	private int	Units;//Num Of Class
+	private int TotalCC;
 	private int LOC;
 	
 	private int Fat;
@@ -81,9 +81,9 @@ public class PackageMetric {
 	public float getAverageCC() {
 		return NumberOfMethods == 0 ? 0 : (float)TotalCC / (float)NumberOfMethods;
 	}
-	//public float getCC() {
-	//	return TotalCC;
-	//}
+	public int getTotalCC() {
+		return TotalCC;
+	}
 	public void addCC(int cC) {
 		TotalCC += cC;
 	}
