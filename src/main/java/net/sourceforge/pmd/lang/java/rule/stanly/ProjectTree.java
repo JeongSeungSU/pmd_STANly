@@ -7,6 +7,7 @@ import java.util.Stack;
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Tangled;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;

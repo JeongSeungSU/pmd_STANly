@@ -12,6 +12,11 @@ public class PackagetSetAverage extends AbstractAfterCalculator {
 	public void calcMetric(ProjectDomain node)
 	{
 		visitClasses(node);
+		int numberOfLibraries = 0;
+		for(ElementNode child:node.getChildren())			
+			if(child.getType() == ElementNodeType.LIBRARY)
+				numberOfLibraries = ((LibraryDomain)child).metric.getPackages();
+		node.metric.setLibraries(numberOfLibraries);
 	}
 	
 	public void calcMetric(LibraryDomain node)

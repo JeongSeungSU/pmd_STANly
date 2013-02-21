@@ -9,6 +9,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.NumberOfChildren;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.PackagetSetAverage;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.ResponseForClass;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Tangled;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
@@ -31,6 +32,7 @@ public class AfterRelations {
 			calculators.add(new NumberOfChildren());
 			calculators.add(new PackagetSetAverage());
 			calculators.add(new ResponseForClass());
+			calculators.add(new Tangled());
 		}
 	}
 	public void analysis(){
