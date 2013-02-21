@@ -15,7 +15,7 @@ public class LibraryMetric {
 	private int totalNOC;
 	private int totalCBO;
 	private int totalRFC;
-	private float LCOM;
+	private int totalLCOM;
 	
 	public int getPackages() {
 		return Packages;
@@ -101,11 +101,14 @@ public class LibraryMetric {
 	public void addRFC(int rFC) {
 		totalRFC += rFC;
 	}
-	public float getLCOM() {
-		return LCOM;
+	public float getAverageLCOM() {
+		return NumberOfClass == 0 ? 0 : (float)totalLCOM / (float)NumberOfClass;
 	}
-	public void setLCOM(float lCOM) {
-		LCOM = lCOM;
+	public int getLCOM() {
+		return totalLCOM;
+	}
+	public void addLCOM(int lCOM) {
+		totalLCOM += lCOM;
 	}
 	public int getNumberOfClass() {
 		return NumberOfClass;

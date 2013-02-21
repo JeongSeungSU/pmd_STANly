@@ -13,7 +13,7 @@ public class ClassMetric {
 	private int NOC;
 	private int CBO;
 	private float RFC;
-	private float LCOM;
+	private int LCOM;
 	
 	public int getClasses() {
 		return Classes;
@@ -90,10 +90,10 @@ public class ClassMetric {
 	public void setRFC(float rFC) {
 		RFC = rFC;
 	}
-	public float getLCOM() {
+	public int getLCOM() {
 		return LCOM;
 	}
-	public void setLCOM(float lCOM) {
-		LCOM = lCOM;
+	public void addLCOM(int lCOM) {
+		LCOM += lCOM;
 	}
 }

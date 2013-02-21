@@ -154,7 +154,9 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		manager.AddRelation(node, thisNode);
 		
-		entryStack.push(thisNode);		
+		entryStack.push(thisNode);
+		for(AbstractCalculator calculator: calculators)
+			calculator.preCalcMetric(entryStack,node,data);
 		super.visit(node,data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);

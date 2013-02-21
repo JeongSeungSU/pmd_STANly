@@ -21,7 +21,7 @@ public class PackageMetric {
 	private int totalNOC;
 	private int totalCBO;
 	private int totalRFC;
-	private float LCOM;
+	private int totalLCOM;
 	
 	
 	public int getNumberOfMethods() {
@@ -166,10 +166,13 @@ public class PackageMetric {
 	public void addRFC(int rFC) {
 		totalRFC += rFC;
 	}
-	public float getLCOM() {
-		return LCOM;
+	public float getAverageLCOM() {
+		return NumberOfClass == 0 ? 0 : (float)totalLCOM / (float)NumberOfClass;
 	}
-	public void setLCOM(float lCOM) {
-		LCOM = lCOM;
+	public int getLCOM() {
+		return totalLCOM;
+	}
+	public void addLCOM(int lCOM) {
+		totalLCOM += lCOM;
 	}
 }
