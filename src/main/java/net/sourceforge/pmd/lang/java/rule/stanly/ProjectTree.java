@@ -11,6 +11,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CyclomaticComplexity;
+import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LackOfCohesion;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
@@ -36,6 +37,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculators.add(new CountMetrics());
 			calculators.add(new CyclomaticComplexity());
 			calculators.add(new CouplingBetweenObjects());
+			calculators.add(new LackOfCohesion());
 		}
 		if(manager == null)
 		{
@@ -331,9 +333,10 @@ public class ProjectTree extends AbstractJavaRule {
 	////////////////////////////////////////////////////////////////////////
 
 	public Object visit(ASTExtendsList node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	//public Object visit(ASTClassOrInterfaceDeclaration node, Object data) {
@@ -342,173 +345,201 @@ public class ProjectTree extends AbstractJavaRule {
 	
 	
 	public Object visit(ASTImplementsList node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTypeParameters node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMemberSelector node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTypeParameter node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTypeBound node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}	
 
 	public Object visit(ASTClassOrInterfaceBodyDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTEnumBody node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTEnumConstant node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTReferenceType node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
 		ElementNode thisNode = entryStack.peek();
 		manager.AddRelation(node,thisNode);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTClassOrInterfaceType node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTypeArguments node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTypeArgument node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTWildcardBounds node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAnnotation node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTNormalAnnotation node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMarkerAnnotation node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTSingleMemberAnnotation node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMemberValuePairs node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMemberValuePair node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMemberValue node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMemberValueArrayInitializer node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAnnotationTypeDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAnnotationTypeBody node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAnnotationTypeMemberDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAnnotationMethodDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTDefaultValue node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTRUNSIGNEDSHIFT node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTRSIGNEDSHIFT node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	//public Object visit(ASTCompilationUnit node, Object data) {
@@ -520,27 +551,31 @@ public class ProjectTree extends AbstractJavaRule {
 		//}
 	
 	public Object visit(ASTAssertStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPackageDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTImportDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTypeDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	//public Object visit(ASTFieldDeclaration node, Object data) {
@@ -548,27 +583,31 @@ public class ProjectTree extends AbstractJavaRule {
 	//}
 
 	public Object visit(ASTVariableDeclarator node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTVariableDeclaratorId node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTVariableInitializer node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTArrayInitializer node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	//public Object visit(ASTMethodDeclaration node, Object data) {
@@ -576,21 +615,24 @@ public class ProjectTree extends AbstractJavaRule {
 	//}
 
 	public Object visit(ASTMethodDeclarator node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTFormalParameters node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTFormalParameter node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	//public Object visit(ASTConstructorDeclaration node, Object data) {
@@ -598,381 +640,444 @@ public class ProjectTree extends AbstractJavaRule {
 	//}
 
 	public Object visit(ASTExplicitConstructorInvocation node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTType node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPrimitiveType node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTResultType node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTName node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTNameList node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAssignmentOperator node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTConditionalExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTConditionalOrExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTConditionalAndExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTInclusiveOrExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTExclusiveOrExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAndExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTEqualityExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTInstanceOfExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTRelationalExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTShiftExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAdditiveExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTMultiplicativeExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTUnaryExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPreIncrementExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPreDecrementExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTUnaryExpressionNotPlusMinus node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPostfixExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTCastExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPrimaryExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPrimaryPrefix node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTPrimarySuffix node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTLiteral node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTBooleanLiteral node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTNullLiteral node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTArguments node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTArgumentList node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTAllocationExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTArrayDimsAndInits node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTLabeledStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTBlock node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTBlockStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTLocalVariableDeclaration node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTEmptyStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTStatementExpression node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTSwitchStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTSwitchLabel node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTIfStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTWhileStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTDoStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTForStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTForInit node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTStatementExpressionList node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTForUpdate node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTBreakStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTContinueStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTReturnStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTThrowStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTSynchronizedStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTTryStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTFinallyStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTCatchStatement node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTResourceSpecification node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTResources node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 	public Object visit(ASTResource node, Object data) {
+		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);
-		return super.visit(node, data);
+		return data;
 	}
 
 }
