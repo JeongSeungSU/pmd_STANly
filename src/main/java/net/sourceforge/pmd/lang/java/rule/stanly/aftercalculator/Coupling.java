@@ -17,11 +17,7 @@ public class Coupling extends AbstractAfterCalculator {
 	{
 		visitChildren(node);
 	}	
-	private void calcMetric(LibraryDomain node)
-	{
-		//Map<String,Integer> relations = getChilrenRelation(node,node);
-		
-	}
+
 	private void calcMetric(PackageDomain node)
 	{
 		int afferent = calcAfferentCoupling(node,node).size();
@@ -42,6 +38,17 @@ public class Coupling extends AbstractAfterCalculator {
 		
 		float distance = (abstractness + instability - 1) / (float)Math.sqrt(2);		
 		node.metric.setDistance(distance);
+		
+		
+		ElementNode libraryNode = node;
+		do libraryNode = libraryNode.getParent();
+		while(libraryNode != null && !(libraryNode instanceof LibraryDomain));
+		
+		if(libraryNode != null)
+		{
+			((LibraryDomain)libraryNode).metric.addDistance(distance);
+			((LibraryDomain)libraryNode).metric.addDistanceAbsolute(Math.abs(distance));
+		}
 	}
 	private void calcMetric(ClassDomain node)
 	{
@@ -55,6 +62,7 @@ public class Coupling extends AbstractAfterCalculator {
 	{
 		for(ElementNode child:node.getChildren())
 		{
+			visitChildren(child);
 			if(child.getType() == ElementNodeType.CLASS)
 			{
 				calcMetric((ClassDomain)child);
@@ -63,11 +71,6 @@ public class Coupling extends AbstractAfterCalculator {
 			{
 				calcMetric((PackageDomain)child);
 			}
-			else if(child.getType() == ElementNodeType.LIBRARY)
-			{
-				calcMetric((LibraryDomain)child);
-			}
-			visitChildren(child);
 		}
 	}
 	
