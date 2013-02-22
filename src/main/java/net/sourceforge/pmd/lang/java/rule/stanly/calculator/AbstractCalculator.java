@@ -9,6 +9,7 @@ public abstract class AbstractCalculator {
 		
 	public void calcMetric(Stack<ElementNode> entryStack,ASTExtendsList node, Object data) {}
 
+	public void preCalcMetric(Stack<ElementNode> entryStack,ASTClassOrInterfaceDeclaration node, Object data) {}
 	public void calcMetric(Stack<ElementNode> entryStack,ASTClassOrInterfaceDeclaration node, Object data) {}
 
 	public void calcMetric(Stack<ElementNode> entryStack,ASTImplementsList node, Object data) {}

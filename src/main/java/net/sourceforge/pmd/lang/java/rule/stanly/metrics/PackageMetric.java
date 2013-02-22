@@ -5,8 +5,8 @@ public class PackageMetric {
 	private int NumberOfClasses;// inner class
 	private int NumberOfClass;	// unit class + inner class
 	private int NumberOfFields;
-	private int TotalCC;
 	private int	Units;//Num Of Class
+	private int TotalCC;
 	private int LOC;
 	
 	private int Fat;
@@ -18,10 +18,10 @@ public class PackageMetric {
 	private float Distance;
 	//private float WMC;
 	private int totalDIT;
-	private float NOC;
-	private float CBO;
-	private float RFC;
-	private float LCOM;
+	private int totalNOC;
+	private int totalCBO;
+	private int totalRFC;
+	private int totalLCOM;
 	
 	
 	public int getNumberOfMethods() {
@@ -81,9 +81,9 @@ public class PackageMetric {
 	public float getAverageCC() {
 		return NumberOfMethods == 0 ? 0 : (float)TotalCC / (float)NumberOfMethods;
 	}
-	//public float getCC() {
-	//	return TotalCC;
-	//}
+	public int getTotalCC() {
+		return TotalCC;
+	}
 	public void addCC(int cC) {
 		TotalCC += cC;
 	}
@@ -142,27 +142,37 @@ public class PackageMetric {
 		totalDIT += dIT;
 	}
 	public float getNOC() {
-		return NOC;
+		return (float)totalNOC / (float)this.NumberOfClass;
 	}
-	public void setNOC(float nOC) {
-		NOC = nOC;
+	public void addNOC(int nOC) {
+		totalNOC += nOC;
 	}
-	public float getCBO() {
-		return CBO;
+	public int getTotalCBO() {
+		return totalCBO;
 	}
-	public void setCBO(float cBO) {
-		CBO = cBO;
+	public float getAverageCBO() {
+		return NumberOfClass == 0 ? 0 : (float)totalCBO / (float)NumberOfClass;
 	}
-	public float getRFC() {
-		return RFC;
+	public void addCBO(int cBO) {
+		totalCBO += cBO;
 	}
-	public void setRFC(float rFC) {
-		RFC = rFC;
+	
+	public float getAverageRFC() {
+		return NumberOfClass == 0 ? 0 : (float)totalRFC / (float)NumberOfClass;
 	}
-	public float getLCOM() {
-		return LCOM;
+	public int getTotalRFC() {
+		return totalRFC;
 	}
-	public void setLCOM(float lCOM) {
-		LCOM = lCOM;
+	public void addRFC(int rFC) {
+		totalRFC += rFC;
+	}
+	public float getAverageLCOM() {
+		return NumberOfClass == 0 ? 0 : (float)totalLCOM / (float)NumberOfClass;
+	}
+	public int getLCOM() {
+		return totalLCOM;
+	}
+	public void addLCOM(int lCOM) {
+		totalLCOM += lCOM;
 	}
 }

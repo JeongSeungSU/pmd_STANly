@@ -1,33 +1,33 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.metrics;
 
 public class LibraryMetric {
+	private int Unit;
 	private int Packages;
 	private int NumberOfClass;	// unit class + inner class
-	private float UnitPerPackage;
 	private int Fat;
 	private float Tangled;
 	private float ACDPackage;
 	private float ACDUnit;
 	private float Distance;
 	private float DistanceAbsolute;
-	private float WMC;
+	private int totalWMC;
 	private int totalDIT;
-	private float NOC;
-	private float CBO;
-	private float RFC;
-	private float LCOM;
+	private int totalNOC;
+	private int totalCBO;
+	private int totalRFC;
+	private int totalLCOM;
 	
 	public int getPackages() {
 		return Packages;
 	}
-	public void setPackages(int packages) {
-		Packages = packages;
+	public void addPackages(int packages) {
+		Packages += packages;
 	}
 	public float getUnitPerPackage() {
-		return UnitPerPackage;
+		return Packages == 0 ? 0 : (float)Unit / (float)Packages;
 	}
-	public void setUnitPerPackage(float unitPerPackage) {
-		UnitPerPackage = unitPerPackage;
+	public void addUnits(int unit) {
+		Unit += unit;
 	}
 	public int getFat() {
 		return Fat;
@@ -66,40 +66,49 @@ public class LibraryMetric {
 		DistanceAbsolute = distanceAbsolute;
 	}
 	public float getWMC() {
-		return WMC;
+		return (float)totalWMC / (float)NumberOfClass;
 	}
-	public void setWMC(float wMC) {
-		WMC = wMC;
+	public void addWMC(int wMC) {
+		totalWMC += wMC;
 	}
 	public float getDIT() {
 		return (float)totalDIT / (float)NumberOfClass;
 	}
 	public void addDIT(int dIT) {
-		totalDIT = dIT;
+		totalDIT += dIT;
 	}
 	public float getNOC() {
-		return NOC;
+		return (float)totalNOC / (float)NumberOfClass;
 	}
-	public void setNOC(float nOC) {
-		NOC = nOC;
+	public void addNOC(float nOC) {
+		totalNOC += nOC;
 	}
-	public float getCBO() {
-		return CBO;
+	public float getAverageCBO() {
+		return NumberOfClass == 0 ? 0 : (float)totalCBO / (float)NumberOfClass;
 	}
-	public void setCBO(float cBO) {
-		CBO = cBO;
+	public int getTotalCBO() {
+		return totalCBO;
 	}
-	public float getRFC() {
-		return RFC;
+	public void addCBO(float cBO) {
+		totalCBO += cBO;
 	}
-	public void setRFC(float rFC) {
-		RFC = rFC;
+	public float getAverageRFC() {
+		return NumberOfClass == 0 ? 0 : (float)totalRFC / (float)NumberOfClass;
 	}
-	public float getLCOM() {
-		return LCOM;
+	public int getTotalRFC() {
+		return totalRFC;
 	}
-	public void setLCOM(float lCOM) {
-		LCOM = lCOM;
+	public void addRFC(int rFC) {
+		totalRFC += rFC;
+	}
+	public float getAverageLCOM() {
+		return NumberOfClass == 0 ? 0 : (float)totalLCOM / (float)NumberOfClass;
+	}
+	public int getLCOM() {
+		return totalLCOM;
+	}
+	public void addLCOM(int lCOM) {
+		totalLCOM += lCOM;
 	}
 	public int getNumberOfClass() {
 		return NumberOfClass;

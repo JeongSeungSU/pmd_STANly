@@ -9,54 +9,68 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class NumberOfChildren extends AbstractAfterCalculator {
-
+public class ResponseForClass extends AbstractAfterCalculator {
+	
 	public void calcMetric(ProjectDomain node)
 	{
-		visitClasses(node);
+		visitClasses((ElementNode)node);
+	}
+	
+	public int getCallRelationCount(ElementNode node)
+	{
+		int count = 0;
+		for(DomainRelation rel:node.getRelationTargets())
+		{
+			if(rel.getRelation() == Relations.CALLS)
+				count++;
+		}
+		return count;
 	}
 	
 	public int calcMetric(ClassDomain node)
-	{	
-		int noc = 0;
-		for(DomainRelation rel:node.getRelationSources())
+	{
+		int rfc = 0;
+		for(ElementNode child:node.getChildren())
 		{
-			if(rel.getRelation() == Relations.EXTENDS)
-				noc++;
+			if(child.getType() == ElementNodeType.METHOD || child.getType() == ElementNodeType.CONSTRUCTOR)
+			{
+				rfc++;
+				rfc += getCallRelationCount(child);
+			}
 		}
-		return noc;
+		return rfc;
 	}
 	
-	private void addNOCtoPackage(int noc, ElementNode node)
+	private void addRFCtoPackage(int rfc, ElementNode node)
 	{
 		ElementNode packageNode = node;
 		while(packageNode != null && packageNode.getType() != ElementNodeType.PACKAGE)
 			packageNode = packageNode.getParent();
 		if(packageNode == null)	return;
-		((PackageDomain)packageNode).metric.addNOC(noc);
+		((PackageDomain)packageNode).metric.addRFC(rfc);
 	}
-	private void addNOCtoLibrary(int noc, ElementNode node)
+	private void addRFCtoLibrary(int rfc, ElementNode node)
 	{
 		ElementNode libraryNode = node;
 		while(libraryNode != null && libraryNode.getType() != ElementNodeType.LIBRARY)
 			libraryNode = libraryNode.getParent();
 		if(libraryNode == null)	return;
-		((LibraryDomain)libraryNode).metric.addNOC(noc);
+		((LibraryDomain)libraryNode).metric.addRFC(rfc);
 	}
 	
 	public void visitClasses(ElementNode node)
 	{
-		int noc;
+		int rfc;
 		for(ElementNode child:node.getChildren())
 		{
 			if(child.getType() == ElementNodeType.CLASS)
 			{
-				noc = calcMetric((ClassDomain)child);
-				((ClassDomain)child).metric.setNOC(noc);
-				if(noc > 0)
+				rfc = calcMetric((ClassDomain)child);
+				((ClassDomain)child).metric.setRFC(rfc);
+				if(rfc > 0)
 				{
-					addNOCtoPackage(noc,child);
-					addNOCtoLibrary(noc,child);
+					addRFCtoPackage(rfc,child);
+					addRFCtoLibrary(rfc,child);
 				}
 			}
 			visitClasses(child);

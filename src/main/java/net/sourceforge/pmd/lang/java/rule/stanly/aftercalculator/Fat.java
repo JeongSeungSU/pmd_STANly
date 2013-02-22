@@ -78,7 +78,7 @@ public class Fat extends AbstractAfterCalculator{
 		calculateChildren(node);
 	}*/
 	
-	Map<String,Integer> getChilrenRelation(ElementNode ancestor,ElementNode node)
+	private Map<String,Integer> getChilrenRelation(ElementNode ancestor,ElementNode node)
 	{
 		String[] ancSplit = ancestor.getFullName().split("\\.");
 		String[] tarSplit = null;
