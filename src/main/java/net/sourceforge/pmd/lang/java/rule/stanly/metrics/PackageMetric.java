@@ -4,6 +4,7 @@ public class PackageMetric {
 	private int NumberOfMethods;//Number of Method
 	private int NumberOfClasses;// inner class
 	private int NumberOfClass;	// unit class + inner class
+	private int NumberOfAbstract;//abstract class
 	private int NumberOfFields;
 	private int	Units;//Num Of Class
 	private int TotalCC;
@@ -12,7 +13,7 @@ public class PackageMetric {
 	private int Fat;
 	private float ADCPerUnit;
 	private int AfferentCoupling;
-	private int EfferentCoupling;
+	private int EfferentCoupling;	
 	private float Abstractness;
 	private float Instability;
 	private float Distance;
@@ -35,6 +36,12 @@ public class PackageMetric {
 	}
 	public void addNumberOfClasses(int numberOfClasses) {
 		NumberOfClasses += numberOfClasses;
+	}
+	public int getNumberOfAbstract() {
+		return NumberOfAbstract;
+	}
+	public void addNumberOfAbstract(int numberOfAbstract) {
+		NumberOfAbstract += numberOfAbstract;
 	}
 	public int getNumberOfClass() {
 		return NumberOfClass;

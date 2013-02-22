@@ -33,7 +33,15 @@ public class Coupling extends AbstractAfterCalculator {
 		float instability = (float)efferent / (float)(afferent + efferent);
 		
 		node.metric.setInstability(instability);
-		//float abstractness = 
+		
+		int numOfAbstract = node.metric.getNumberOfAbstract();
+		int numOfUnit = node.metric.getUnits();
+		float abstractness = (float)numOfAbstract / (float)numOfUnit;
+		
+		node.metric.setAbstractness(abstractness);
+		
+		float distance = (abstractness + instability - 1) / (float)Math.sqrt(2);		
+		node.metric.setDistance(distance);
 	}
 	private void calcMetric(ClassDomain node)
 	{

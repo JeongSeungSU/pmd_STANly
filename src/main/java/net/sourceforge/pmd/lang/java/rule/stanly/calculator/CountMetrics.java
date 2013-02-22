@@ -54,7 +54,16 @@ public class CountMetrics extends AbstractCalculator {
 				nodeList.add(0,entryStack.pop());
 			if(entryStack.size() != 0)
 				((PackageDomain)entryStack.peek()).metric.addUnits(1);
-			
+			if(node instanceof ASTClassOrInterfaceDeclaration)
+			{
+				if(((ASTClassOrInterfaceDeclaration) node).isAbstract() || ((ASTClassOrInterfaceDeclaration) node).isInterface())
+					((PackageDomain)entryStack.peek()).metric.addNumberOfAbstract(1);
+			}
+			if(node instanceof ASTEnumDeclaration)
+			{
+				if(((ASTEnumDeclaration) node).isAbstract())
+					((PackageDomain)entryStack.peek()).metric.addNumberOfAbstract(1);
+			}
 			while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.LIBRARY)
 				nodeList.add(0,entryStack.pop());
 			if(entryStack.size() != 0)
@@ -86,7 +95,7 @@ public class CountMetrics extends AbstractCalculator {
 			((LibraryDomain)nodeList.get(0)).metric.addNumberOfClass(1);
 		}
 		else
-		{
+		{			
 			((PackageDomain)nodeList.get(1)).metric.addNumberOfClass(1);
 			((LibraryDomain)nodeList.get(0)).metric.addNumberOfClass(1);
 		}
