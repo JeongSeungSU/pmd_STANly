@@ -15,6 +15,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTCastExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTMultiplicativeExpression;
@@ -31,6 +32,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
+import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
 /**
@@ -43,6 +45,7 @@ public class MethodAnlaysis {
 	private Map<ASTPrimaryExpression, MethodResult> processedPrimaryExpression;
 	private Map<String,AbstractASTAnalysisNode> ASTParserNodeList;
 	final private String ReturnTypeSperator = "StanlyTypeIndicate"; 
+	final private String UnknownTypeName = "unknown";
 			
 	public MethodAnlaysis(DomainRelationList relationlist)
 	{
@@ -70,6 +73,8 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTTypeArgument.class.toString(), new TypeArgumentAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//PrimitiveType
 		ASTParserNodeList.put(ASTPrimitiveType.class.toString(), new PrimitiveTypeAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//Literal
+		ASTParserNodeList.put(ASTLiteral.class.toString(), new LiteralAnalysisNode(RelationList,processedPrimaryExpression,this));
 		
 		//argumentList아래것들...
 		//PreDecrementExpression
@@ -99,6 +104,12 @@ public class MethodAnlaysis {
 	
 	private AbstractASTAnalysisNode MacthingASTParserNode(AbstractJavaNode node) throws MethodAnalysisException
 	{
+		
+		//삭제해야됨
+		if(MacroFunctions.NULLTrue(node))
+		{
+			int i =0;
+		}
 		String nodename = node.getClass().toString();
 		
 		if(!ASTParserNodeList.containsKey(nodename))
@@ -111,7 +122,10 @@ public class MethodAnlaysis {
 	{
 		return ReturnTypeSperator + Type + ReturnTypeSperator;
 	}
-	
+	public String GetUnknownTypeName()
+	{
+		return UnknownTypeName;
+	}
 	public MethodResult ProcessMethodCallAndAccess(AbstractJavaNode node, ElementNode sourcenode) throws MethodAnalysisException
 	{
 		AbstractASTAnalysisNode parsernode = MacthingASTParserNode(node);
@@ -135,8 +149,11 @@ public class MethodAnlaysis {
 		}
 		catch(MethodAnalysisException methodexception)
 		{
-			methodexception.PrintCauseException();
-			methodexception.printStackTrace();
+			if(!methodexception.Error.equals("처리할 필요 없음"))
+			{
+				methodexception.PrintCauseException();
+				methodexception.printStackTrace();
+			}
 		}
 		catch(Exception e)
 		{

@@ -206,7 +206,7 @@ public class RelationManager {
 
 		//Relation method ,Access 
 		RelationChainManager.AnalysisMethodCallandAccess(node, elementnode);
-		
+/*		
 		ASTBlock block = node.getFirstChildOfType(ASTBlock.class);
 		if (block != null) 
 		{
@@ -230,7 +230,7 @@ public class RelationManager {
 			}
 		}
 		//////////////Refactoring중/////////////////////////
-		
+	*/	
 	}
 //////////////Refactoring중/////////////////////////
 	private void StatementAnalysis(ASTStatement statement, ElementNode elementnode)

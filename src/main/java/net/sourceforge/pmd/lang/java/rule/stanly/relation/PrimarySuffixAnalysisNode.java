@@ -43,8 +43,7 @@ public class PrimarySuffixAnalysisNode extends AbstractASTAnalysisNode {
 		{
 			NowString += "."+SuffixNode.getImage();
 		}
-		
-		return new MethodResult(NowString, "unknown",IsArgument);
+		return new MethodResult(NowString, MethodAnlysistor.GetUnknownTypeName(),IsArgument);
 	}
 
 }

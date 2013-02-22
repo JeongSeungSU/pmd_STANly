@@ -3,10 +3,15 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
 import java.util.Map;
 
 import net.sourceforge.pmd.lang.java.ast.ASTAllocationExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
+import net.sourceforge.pmd.lang.java.ast.ASTExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTInstanceOfExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
+import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
@@ -33,7 +38,7 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 	{
 		ASTPrimaryPrefix Prefixnode = (ASTPrimaryPrefix)analysisnode;
 		String NowString = "";
-		String ResultTypeName = "unknown";
+		String ResultTypeName = MethodAnlysistor.GetUnknownTypeName();
 		//자기자신안에 들어가 있는 오브젝트 예
 		//a.b()가 아니라 b()이렇게 되어있는놈 자기 자신밖에 호출 못하는 놈인가 아닌가
 		boolean IsThisObject = false;		
@@ -41,12 +46,22 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 		if(Prefixnode.usesSuperModifier())
 			NowString = "Super";
 		else if(Prefixnode.usesThisModifier())
+		{
 			NowString = sourcenode.getParent().getFullName();
+			ResultTypeName = NowString; 
+		}
 		else
 		{
-			ASTName name = Prefixnode.getFirstChildOfType(ASTName.class);
-			if(!MacroFunctions.NULLTrue(name))
+			if(Prefixnode.jjtGetNumChildren() > 1)
+				throw new MethodAnalysisException("PrimaryPrefix의 자식이 두개이상이네요 처리해줘야 되요...");
+			
+			AbstractJavaNode ChildAnalysisNode = (AbstractJavaNode)Prefixnode.jjtGetChild(0);
+			if(MacroFunctions.NULLTrue(ChildAnalysisNode))
+				throw new MethodAnalysisException("PrimaryPrefix의 자식이 한개도 없네요...");
+			
+			if(ChildAnalysisNode.getClass() == ASTName.class)
 			{
+				ASTName name = (ASTName)ChildAnalysisNode;
 				String[] TypeName = name.getImage().split("\\.");
 				MethodResult Type = MethodAnlysistor.ProcessMethodCallAndAccess(name,sourcenode);
 				String Isdot = "";
@@ -59,27 +74,54 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 				
 				if(Type.IsProcess == true)
 				{
-					NowString += Isdot + Type.TargetResult;
-					NowString = MethodAnlysistor.TypeSperateApplyer(Type.TypeName) + NowString;
+					NowString += Isdot + MethodAnlysistor.TypeSperateApplyer(Type.TypeName) +Type.TargetResult;
 					ResultTypeName = Type.TypeName;
 				}
 				else
 				{
-					NowString += Isdot + TypeName[0];
-					NowString = MethodAnlysistor.TypeSperateApplyer("Unknown") + NowString;
+					NowString += Isdot + MethodAnlysistor.TypeSperateApplyer(MethodAnlysistor.GetUnknownTypeName()) +TypeName[0];
+					if(TypeName.length > 1)
+						NowString += "." + TypeName[1];
 				}
-
-				if(TypeName.length > 1)
-					NowString += "." + TypeName[1];
 			}
-			
-			ASTAllocationExpression allocation = Prefixnode.getFirstChildOfType(ASTAllocationExpression.class);
-			if(!MacroFunctions.NULLTrue(allocation))
+			else if(ChildAnalysisNode.getClass() == ASTAllocationExpression.class)
 			{
+				ASTAllocationExpression allocation = (ASTAllocationExpression)ChildAnalysisNode;
 				ASTClassOrInterfaceType allocationtype = allocation.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
-				//여기에 추가할 필요 있음...생성자다 알려줄 필요가 있음...
-				NowString = MethodAnlysistor.ProcessMethodCallAndAccess(allocationtype, sourcenode).TypeName;
+				if(MacroFunctions.NULLTrue(allocationtype))
+					throw new MethodAnalysisException("처리할 필요 없음");
+				ResultTypeName = MethodAnlysistor.ProcessMethodCallAndAccess(allocationtype, sourcenode).TypeName;
+				NowString = ResultTypeName;
+				
+				ASTArguments arguments = allocation.getFirstDescendantOfType(ASTArguments.class);
+				if(!MacroFunctions.NULLTrue(arguments))
+					NowString += MethodAnlysistor.ProcessMethodCallAndAccess(arguments, sourcenode).TargetResult;
 			}
+			else if(ChildAnalysisNode.getClass() == ASTLiteral.class)
+			{
+				ASTLiteral	literal	= (ASTLiteral)ChildAnalysisNode;
+				MethodResult literalresult = MethodAnlysistor.ProcessMethodCallAndAccess(literal, sourcenode);
+				NowString = literalresult.TargetResult;
+				ResultTypeName = literalresult.TypeName;
+			}
+			else if(ChildAnalysisNode.getClass() == ASTResultType.class)
+			{
+				ASTResultType resulttype = (ASTResultType)ChildAnalysisNode;
+				ASTClassOrInterfaceType classtype = resulttype.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
+				if(MacroFunctions.NULLTrue(classtype))
+					throw new MethodAnalysisException("primary prefix 인데 resulttype에서 뭔가 추가적으로 처리해줘야됨");
+				
+				ResultTypeName = MethodAnlysistor.ProcessMethodCallAndAccess(classtype, sourcenode).TypeName;
+				NowString = ResultTypeName; 
+			}
+			else if(ChildAnalysisNode.getClass() == ASTExpression.class)
+			{
+				// 여긴 버림 아마 내부에 계속 들어가서 알아서 처리될것임...
+				throw new MethodAnalysisException("처리할 필요 없음");
+			}
+			else
+				throw new MethodAnalysisException("PrimaryPrefix의 childNode에서 처리되지 않는 타입인"
+												  +ChildAnalysisNode.getClass().toString() + " 이 발견되었어요" );
 		}
 		return new MethodResult(NowString, ResultTypeName , IsThisObject);
 	}

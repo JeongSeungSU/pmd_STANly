@@ -42,7 +42,7 @@ public class NameAnalysisNode extends AbstractASTAnalysisNode {
 		NameDeclaration tmp = (NameDeclaration)name.getNameDeclaration();
 		
 		if(MacroFunctions.NULLTrue(tmp)){
-			return new MethodResult(name.getImage(),"unknown",false);
+			return new MethodResult(name.getImage(),MethodAnlysistor.GetUnknownTypeName(),false);
 		}
 		
 		JavaNode typenode = (JavaNode)tmp.getNode().getNthParent(1);
@@ -52,7 +52,7 @@ public class NameAnalysisNode extends AbstractASTAnalysisNode {
 		else if(typenode.getClass() == ASTMethodDeclaration.class)
 			typenode = (JavaNode)typenode.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
 		else if(typenode.getClass() == ASTFormalParameter.class)
-			typenode = (JavaNode)typenode.getFirstParentOfType(ASTType.class);
+			typenode = (JavaNode)typenode.getFirstChildOfType(ASTType.class);
 		else
 			throw new MethodAnalysisException("ASTName에서" + typenode.getClass().toString() + "타입을 못찾음...");
 
@@ -62,7 +62,7 @@ public class NameAnalysisNode extends AbstractASTAnalysisNode {
 		if( MacroFunctions.NULLTrue(CallType)){
 			CallType = typenode.getFirstDescendantOfType(ASTPrimitiveType.class);
 			if(MacroFunctions.NULLTrue(CallType))
-				return new MethodResult(name.getImage(),"unknown",false);
+				return new MethodResult(name.getImage(),MethodAnlysistor.GetUnknownTypeName(),false);
 		}
 
 		MethodResult result = new MethodResult();

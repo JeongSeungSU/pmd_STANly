@@ -8,6 +8,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
+import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
 /**
@@ -33,7 +34,7 @@ public class ArgumentsAnalysisNode extends AbstractASTAnalysisNode {
 		ASTArgumentList argumentlist = arguments.getFirstChildOfType(ASTArgumentList.class);
 		if(argumentlist == null)
 		{
-			return new MethodResult("()","unknown",true);
+			return new MethodResult("()",MethodAnlysistor.GetUnknownTypeName(),true);
 		}
 		int argumentcount = argumentlist.jjtGetNumChildren();
 		String ParameterText = "(";
@@ -43,14 +44,17 @@ public class ArgumentsAnalysisNode extends AbstractASTAnalysisNode {
 			ASTExpression expression = (ASTExpression)argumentlist.jjtGetChild(i);
 			//여기서 타입 나눠서 줘야함...ㅇㅋ?
 			MethodResult argumentresult =  MethodAnlysistor.ProcessMethodCallAndAccess(expression, sourcenode);
-			ParameterText += argumentresult.TargetResult + ",";
+			if(argumentresult.TypeName.equals(MethodAnlysistor.GetUnknownTypeName()))
+				ParameterText += argumentresult.TargetResult + ",";
+			else
+				ParameterText += MethodAnlysistor.TypeSperateApplyer(argumentresult.TypeName) + ",";
 		}
 		if(argumentcount > 0)
 			ParameterText = ParameterText.substring(0,ParameterText.length()-1);
 		
 		ParameterText += ")";
 		
-		return new MethodResult(ParameterText,"unknown",true);
+		return new MethodResult(ParameterText,MethodAnlysistor.GetUnknownTypeName(),true);
 	}
 
 }

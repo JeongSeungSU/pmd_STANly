@@ -8,6 +8,11 @@ import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
+/**
+ * primaryexpression혹 리턴타입이 있는것중 하나가 리턴 없으면 마지막꺼...
+ * @since 2013. 2. 21.오후 6:49:34
+ * @author JeongSeungsu
+ */
 public class AdditiveExpressionAnalysisNode extends AbstractASTAnalysisNode {
 
 	public AdditiveExpressionAnalysisNode(DomainRelationList relationlist,
@@ -27,13 +32,13 @@ public class AdditiveExpressionAnalysisNode extends AbstractASTAnalysisNode {
 			AbstractJavaNode childnode = (AbstractJavaNode) additiveexpression.jjtGetChild(i); 
 			MethodResult result = MethodAnlysistor.ProcessMethodCallAndAccess(childnode, sourcenode);
 			
-			if(result.TypeName.equalsIgnoreCase("unknown"))
+			if(result.TypeName.equalsIgnoreCase(MethodAnlysistor.GetUnknownTypeName()))
 				ReturnType = result.TargetResult;
 			else
 				return result;
 		}
 		
-		return new MethodResult(ReturnType,"unknown",false);
+		return new MethodResult(ReturnType,MethodAnlysistor.GetUnknownTypeName(),false);
 	}
 
 }

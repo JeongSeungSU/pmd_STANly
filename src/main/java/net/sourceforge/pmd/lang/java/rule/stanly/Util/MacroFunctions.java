@@ -1,5 +1,8 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.Util;
 
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
 public final class MacroFunctions {
 
 	/**
@@ -15,5 +18,20 @@ public final class MacroFunctions {
 			return true;
 		else
 			return false;
+	}
+	final public static String NotRegularExpressionReplaceFirst(String source,String change, String changed)
+	{
+		String res = "";
+
+		int start =source.indexOf(change);
+		int end = start + change.length();
+		if(start != -1)
+		{
+			res = source.substring(0,start);
+			res += changed;
+			res += source.substring(end,source.length());
+		}
+				
+		return res;
 	}
 }

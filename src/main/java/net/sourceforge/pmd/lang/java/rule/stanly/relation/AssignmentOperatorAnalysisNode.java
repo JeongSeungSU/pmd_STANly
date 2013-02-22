@@ -2,6 +2,8 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
 
 import java.util.Map;
 
+import net.sourceforge.pmd.lang.java.ast.ASTAndExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTAssignmentOperator;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
@@ -17,9 +19,10 @@ public class AssignmentOperatorAnalysisNode extends AbstractASTAnalysisNode{
 	}
 
 	@Override
-	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,
-			ElementNode sourcenode) throws MethodAnalysisException {
-		// TODO Auto-generated method stub
+	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
+	{
+		ASTAssignmentOperator assignmentoperator = (ASTAssignmentOperator)analysisnode;
+		assignmentoperator.comment();
 		return null;
 	}
 
