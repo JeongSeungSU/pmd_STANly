@@ -7,7 +7,7 @@ import java.util.Stack;
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
-import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Tangled;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Coupling;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;
@@ -38,7 +38,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculators.add(new CountMetrics());
 			calculators.add(new CyclomaticComplexity());
 			calculators.add(new CouplingBetweenObjects());
-			calculators.add(new LackOfCohesion());
+			calculators.add(new LackOfCohesion());			
 		}
 		if(manager == null)
 		{
