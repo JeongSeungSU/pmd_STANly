@@ -26,8 +26,17 @@ public class AndExpressionAnalysisNode extends AbstractASTAnalysisNode {
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
 		ASTAndExpression andexpression = (ASTAndExpression)analysisnode;
-		//왜 안들어와...
-		throw new MethodAnalysisException("ASTAndExpression 들어왔음 ... 구현해");
+		MethodResult childresult = new MethodResult("",MethodAnlysistor.GetUnknownTypeName(),true);
+		
+		for(int i = 0 ; i < andexpression.jjtGetNumChildren(); i++)
+		{
+			AbstractJavaNode childnode = (AbstractJavaNode)andexpression.jjtGetChild(i);
+			childresult = MethodAnlysistor.ProcessMethodCallAndAccess(childnode, sourcenode);
+			
+			if(!childresult.TypeName.equals(MethodAnlysistor.GetUnknownTypeName()))
+				return childresult;
+		}
+		return childresult;
 	}
 
 }

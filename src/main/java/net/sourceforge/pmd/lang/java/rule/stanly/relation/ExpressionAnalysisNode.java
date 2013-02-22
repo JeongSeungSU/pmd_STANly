@@ -2,8 +2,14 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
 
 import java.util.Map;
 
+import net.sourceforge.pmd.lang.java.ast.ASTConditionalAndExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTEqualityExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTInstanceOfExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTRelationalExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpressionNotPlusMinus;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
@@ -22,11 +28,32 @@ public class ExpressionAnalysisNode extends AbstractASTAnalysisNode {
 	{
 		ASTExpression expression = (ASTExpression)analysisnode;
 		if(expression.jjtGetNumChildren() > 1)
-			throw new MethodAnalysisException("Expresssion 차일드 노드가2개다... 이건 큰 문제");
+			return new MethodResult("",MethodAnlysistor.GetUnknownTypeName(),false);
 		
-		MethodResult result = MethodAnlysistor.ProcessMethodCallAndAccess((AbstractJavaNode) expression.jjtGetChild(0), sourcenode);
+		MethodResult result = ExceptionProcess((AbstractJavaNode) expression.jjtGetChild(0), sourcenode);
+		
 		
 		return result;
 	}
+	
+	private MethodResult ExceptionProcess(AbstractJavaNode exceptionnode,ElementNode sourcenode) throws MethodAnalysisException
+	{
+		MethodResult result = new MethodResult("",MethodAnlysistor.GetUnknownTypeName(),true);
+		if(exceptionnode.getClass() == ASTInstanceOfExpression.class)
+			return result;
+		else if(exceptionnode.getClass() == ASTConditionalOrExpression.class
+				|| exceptionnode.getClass() == ASTRelationalExpression.class
+				|| exceptionnode.getClass() == ASTUnaryExpressionNotPlusMinus.class
+				|| exceptionnode.getClass() == ASTEqualityExpression.class
+				|| exceptionnode.getClass() == ASTConditionalAndExpression.class)
+		{
+			result.TypeName = "boolean";
+			return result;
+		}
+		else
+			result = MethodAnlysistor.ProcessMethodCallAndAccess(exceptionnode, sourcenode);
+		return result;
+	}
+	
 
 }

@@ -31,6 +31,8 @@ public final class MacroFunctions {
 			res += changed;
 			res += source.substring(end,source.length());
 		}
+		else
+			return source;
 				
 		return res;
 	}

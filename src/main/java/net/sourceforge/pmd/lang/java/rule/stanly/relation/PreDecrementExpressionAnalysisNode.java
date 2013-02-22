@@ -17,10 +17,9 @@ public class PreDecrementExpressionAnalysisNode extends AbstractASTAnalysisNode 
 	}
 
 	@Override
-	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,
-			ElementNode sourcenode) throws MethodAnalysisException {
-		// TODO Auto-generated method stub
-		return null;
+	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
+	{
+		return new MethodResult("","int",true);
 	}
 
 }

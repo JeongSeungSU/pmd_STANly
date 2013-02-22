@@ -22,8 +22,7 @@ public class AssignmentOperatorAnalysisNode extends AbstractASTAnalysisNode{
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
 		ASTAssignmentOperator assignmentoperator = (ASTAssignmentOperator)analysisnode;
-		assignmentoperator.comment();
-		return null;
+		throw new MethodAnalysisException("AssignmentOperator들어왔음 구현해줘야함");
 	}
 
 }

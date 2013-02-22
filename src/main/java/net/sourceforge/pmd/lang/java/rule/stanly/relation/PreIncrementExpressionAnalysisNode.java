@@ -2,6 +2,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
 
 import java.util.Map;
 
+import net.sourceforge.pmd.lang.java.ast.ASTPreIncrementExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
@@ -17,10 +18,9 @@ public class PreIncrementExpressionAnalysisNode extends AbstractASTAnalysisNode 
 	}
 
 	@Override
-	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,
-			ElementNode sourcenode) throws MethodAnalysisException {
-		// TODO Auto-generated method stub
-		return null;
+	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
+	{
+		return new MethodResult("","int",true);
 	}
 
 }

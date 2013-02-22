@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
+import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFormalParameter;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
@@ -45,22 +46,27 @@ public class NameAnalysisNode extends AbstractASTAnalysisNode {
 			return new MethodResult(name.getImage(),MethodAnlysistor.GetUnknownTypeName(),false);
 		}
 		
-		JavaNode typenode = (JavaNode)tmp.getNode().getNthParent(1);
+		JavaNode typenode1 = (JavaNode)tmp.getNode().getNthParent(1);
+		JavaNode typenode2 = null; 
 		
-		if (typenode.getClass() == ASTVariableDeclarator.class) 
-			typenode = (JavaNode) typenode.getNthParent(1);
-		else if(typenode.getClass() == ASTMethodDeclaration.class)
-			typenode = (JavaNode)typenode.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
-		else if(typenode.getClass() == ASTFormalParameter.class)
-			typenode = (JavaNode)typenode.getFirstChildOfType(ASTType.class);
+		if (typenode1.getClass() == ASTVariableDeclarator.class) 
+			typenode2 = (JavaNode) typenode1.getNthParent(1);
+		else if(typenode1.getClass() == ASTMethodDeclaration.class)
+			typenode2 = (JavaNode)typenode1.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
+		else if(typenode1.getClass() == ASTFormalParameter.class)
+			typenode2 = (JavaNode)typenode1.getFirstChildOfType(ASTType.class);
 		else
-			throw new MethodAnalysisException("ASTName에서" + typenode.getClass().toString() + "타입을 못찾음...");
+			throw new MethodAnalysisException("ASTName에서" + typenode1.getClass().toString() + "타입을 못찾음...");
 
-		//primitive type을 넣어야 한다... 음.. 이게 여기만 들어가는건지 여기저기 들어갈지는 모름...
-		AbstractJavaNode CallType = typenode.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
+		AbstractJavaNode CallType = null;
+		
+		if(MacroFunctions.NULLTrue(typenode2))
+			CallType = (AbstractJavaNode)typenode1.getFirstParentOfType(ASTEnumDeclaration.class);
+		else
+			CallType = typenode2.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
 		
 		if( MacroFunctions.NULLTrue(CallType)){
-			CallType = typenode.getFirstDescendantOfType(ASTPrimitiveType.class);
+			CallType = typenode2.getFirstDescendantOfType(ASTPrimitiveType.class);
 			if(MacroFunctions.NULLTrue(CallType))
 				return new MethodResult(name.getImage(),MethodAnlysistor.GetUnknownTypeName(),false);
 		}

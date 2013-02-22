@@ -11,6 +11,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
+import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
@@ -108,16 +109,30 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 			{
 				ASTResultType resulttype = (ASTResultType)ChildAnalysisNode;
 				ASTClassOrInterfaceType classtype = resulttype.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
-				if(MacroFunctions.NULLTrue(classtype))
-					throw new MethodAnalysisException("primary prefix 인데 resulttype에서 뭔가 추가적으로 처리해줘야됨");
+				if(!MacroFunctions.NULLTrue(classtype))
+				{
+					ResultTypeName = MethodAnlysistor.ProcessMethodCallAndAccess(classtype, sourcenode).TypeName;
+					NowString = ResultTypeName;
+				}
+				else
+				{
+					ASTPrimitiveType primitivetype = resulttype.getFirstDescendantOfType(ASTPrimitiveType.class);
+					if(MacroFunctions.NULLTrue(primitivetype))
+						return new MethodResult("",MethodAnlysistor.GetUnknownTypeName(),false);
+					MethodResult result = MethodAnlysistor.ProcessMethodCallAndAccess(primitivetype, sourcenode);
+					ResultTypeName = result.TypeName; 
+					NowString = result.TargetResult;
+				}
 				
-				ResultTypeName = MethodAnlysistor.ProcessMethodCallAndAccess(classtype, sourcenode).TypeName;
-				NowString = ResultTypeName; 
 			}
 			else if(ChildAnalysisNode.getClass() == ASTExpression.class)
 			{
-				// 여긴 버림 아마 내부에 계속 들어가서 알아서 처리될것임...
-				throw new MethodAnalysisException("처리할 필요 없음");
+				ASTExpression expression = (ASTExpression)ChildAnalysisNode;
+				
+				MethodResult expressionresult = MethodAnlysistor.ProcessMethodCallAndAccess(expression, sourcenode);
+				
+				NowString = expressionresult.TargetResult;
+				ResultTypeName = expressionresult.TypeName;
 			}
 			else
 				throw new MethodAnalysisException("PrimaryPrefix의 childNode에서 처리되지 않는 타입인"
@@ -125,5 +140,4 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 		}
 		return new MethodResult(NowString, ResultTypeName , IsThisObject);
 	}
-	
 }

@@ -14,6 +14,8 @@ import net.sourceforge.pmd.lang.java.ast.ASTBlockStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTCastExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
@@ -46,6 +48,7 @@ public class MethodAnlaysis {
 	private Map<String,AbstractASTAnalysisNode> ASTParserNodeList;
 	final private String ReturnTypeSperator = "StanlyTypeIndicate"; 
 	final private String UnknownTypeName = "unknown";
+	
 			
 	public MethodAnlaysis(DomainRelationList relationlist)
 	{
@@ -75,6 +78,8 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTPrimitiveType.class.toString(), new PrimitiveTypeAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//Literal
 		ASTParserNodeList.put(ASTLiteral.class.toString(), new LiteralAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTEnumDeclaration
+		ASTParserNodeList.put(ASTEnumDeclaration.class.toString(), new EnumDeclarationAnalysisNode(RelationList,processedPrimaryExpression,this));
 		
 		//argumentList아래것들...
 		//PreDecrementExpression
@@ -99,7 +104,6 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTAndExpression.class.toString(), new AndExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//Expression???
 		ASTParserNodeList.put(ASTExpression.class.toString(), new ExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
-		
 	}
 	
 	private AbstractASTAnalysisNode MacthingASTParserNode(AbstractJavaNode node) throws MethodAnalysisException
