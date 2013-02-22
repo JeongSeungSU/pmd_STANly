@@ -44,7 +44,7 @@ public class LiteralAnalysisNode extends AbstractASTAnalysisNode {
 			AbstractJavaNode childenode= (AbstractJavaNode)literal.jjtGetChild(0);
 			
 			if(childenode.getClass() == ASTNullLiteral.class)
-				result.TypeName = MethodAnlysistor.GetUnknownTypeName();
+				result.TypeName = "null";
 			else if(childenode.getClass() == ASTBooleanLiteral.class)
 				result.TypeName = "boolean";
 			else

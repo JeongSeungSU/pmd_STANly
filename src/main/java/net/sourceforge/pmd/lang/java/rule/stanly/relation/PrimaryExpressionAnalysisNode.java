@@ -38,7 +38,6 @@ public class PrimaryExpressionAnalysisNode extends AbstractASTAnalysisNode{
 	@Override
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException {
 		
-
 		ASTPrimaryExpression primaryexpression = (ASTPrimaryExpression)analysisnode;
 		
 		//중복되면 이미 처리되있는 데이터를 리턴해줌...

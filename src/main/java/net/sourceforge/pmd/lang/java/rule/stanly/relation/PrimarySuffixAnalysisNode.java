@@ -3,6 +3,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly.relation;
 import java.util.Map;
 
 import net.sourceforge.pmd.lang.java.ast.ASTArguments;
+import net.sourceforge.pmd.lang.java.ast.ASTMemberSelector;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
@@ -26,6 +27,9 @@ public class PrimarySuffixAnalysisNode extends AbstractASTAnalysisNode {
 		// TODO Auto-generated constructor stub
 	}
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.pmd.lang.java.rule.stanly.relation.AbstractASTAnalysisNode#AnalysisAST(net.sourceforge.pmd.lang.java.ast.AbstractJavaNode, net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode)
+	 */
 	@Override
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
@@ -41,7 +45,11 @@ public class PrimarySuffixAnalysisNode extends AbstractASTAnalysisNode {
 		}
 		else
 		{
-			NowString += "."+SuffixNode.getImage();
+			ASTMemberSelector selector = SuffixNode.getFirstDescendantOfType(ASTMemberSelector.class);
+			if(!MacroFunctions.NULLTrue(selector))
+				NowString += MethodAnlysistor.ProcessMethodCallAndAccess(selector,sourcenode).TargetResult;
+			else
+				NowString += "."+SuffixNode.getImage();
 		}
 		return new MethodResult(NowString, MethodAnlysistor.GetUnknownTypeName(),IsArgument);
 	}

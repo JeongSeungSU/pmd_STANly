@@ -32,10 +32,8 @@ public class ArgumentsAnalysisNode extends AbstractASTAnalysisNode {
 	{
 		ASTArguments arguments = (ASTArguments)analysisnode;
 		ASTArgumentList argumentlist = arguments.getFirstChildOfType(ASTArgumentList.class);
-		if(argumentlist == null)
-		{
+		if(MacroFunctions.NULLTrue(argumentlist))
 			return new MethodResult("()",MethodAnlysistor.GetUnknownTypeName(),true);
-		}
 		int argumentcount = argumentlist.jjtGetNumChildren();
 		String ParameterText = "(";
 		

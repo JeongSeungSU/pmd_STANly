@@ -59,18 +59,26 @@ public class AfterRelations {
 			
 			targetString = relation.getTarget();
 			sourceNode = relation.getSourceNode();
-			targetNode = sourceNode.getParent().findNode(targetString);
-
 			
 			
-			if(targetNode == null)//찾을수 없느 관계는 추후 삭제함 YHC
-				;//domainRelation.remove(relation);
-			else
-			{
-				relation.setTargetNode(targetNode);
-				//System.out.println(targetNode.getFullName() + " == " + targetString);
-				System.out.println(sourceNode.getFullName() + " --" + relation.getRelation().name() + "--> " + targetNode.getFullName());
-			}
+			//Unknown:Calls,Access처리중  JSS
+			//if(relation.getRelation() == Relations.UNKNOWN)
+			//	UnknownRelationAnalysis(relation);
+			//else 
+			//{
+				targetNode = sourceNode.getParent().findNode(targetString);
+				
+				// 찾을수 없느 관계는 추후 삭제함 YHC
+				if (targetNode != null) 
+				{
+					relation.setTargetNode(targetNode);
+					// System.out.println(targetNode.getFullName() + " == " +
+					// targetString);
+					System.out.println(sourceNode.getFullName() + " --"
+							+ relation.getRelation().name() + "--> "
+							+ targetNode.getFullName());
+				}
+			//}
 		}		
 	}
 	public void RemoveNullTargetRelations(){//찾을수 없느 관계는 여기서 삭제함 YHC
@@ -144,6 +152,25 @@ public class AfterRelations {
 				}
 			}
 			makePackageSet(newNode);
+		}
+	}
+	
+	/**
+	 *
+	 * @since 2013. 2. 23.오전 1:23:06
+	 * @author JeongSeungsu
+	 * @param relation
+	 */
+	private void UnknownRelationAnalysis(DomainRelation relation)
+	{
+		String targetString = relation.getTarget();
+		if(targetString.charAt(targetString.length()) == ')')
+		{
+			relation.setRelation(Relations.CALLS);
+		}
+		else
+		{
+			relation.setRelation(Relations.ACCESSES);
 		}
 	}
 	private String mergeStrArray(String[] strs)

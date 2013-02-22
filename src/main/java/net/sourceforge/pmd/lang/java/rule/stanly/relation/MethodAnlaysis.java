@@ -18,6 +18,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
+import net.sourceforge.pmd.lang.java.ast.ASTMemberSelector;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTMultiplicativeExpression;
@@ -80,6 +81,8 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTLiteral.class.toString(), new LiteralAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//ASTEnumDeclaration
 		ASTParserNodeList.put(ASTEnumDeclaration.class.toString(), new EnumDeclarationAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTMemberSelector
+		ASTParserNodeList.put(ASTMemberSelector.class.toString(), new MemberSelectorAnalysisNode(RelationList,processedPrimaryExpression,this));
 		
 		//argumentList아래것들...
 		//PreDecrementExpression

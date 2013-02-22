@@ -44,7 +44,7 @@ public class DomainRelationList {
 		relation.setTargetNode(targetNode);
 		
 		System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
-							"-> \t Target : " + relation.getTarget());
+								"-> \t Target : " + relation.getTarget());
 		RelationList.add(0,relation);
 	}
 }
