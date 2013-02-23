@@ -10,6 +10,7 @@ public enum ElementNodeType {
 	INTERFACE, 
 	FIELD, 
 	CONSTRUCTOR, 
-	METHOD
+	METHOD,
+	ANNOTATION
 }
 

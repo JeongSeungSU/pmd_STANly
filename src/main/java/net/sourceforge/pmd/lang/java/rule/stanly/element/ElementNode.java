@@ -131,6 +131,7 @@ public abstract class ElementNode {
 			case CLASS:
 			case INTERFACE:
 			case ENUM:
+			case ANNOTATION:
 				newNode = new ClassDomain(this,type,name);
 				break;
 			case FIELD:
