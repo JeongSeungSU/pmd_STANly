@@ -33,6 +33,14 @@ public class PrimarySuffixAnalysisNode extends AbstractASTAnalysisNode {
 	@Override
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
+		if( analysisnode.getImage() != null)
+		{
+		if(analysisnode.getImage().indexOf("create") != -1)
+		{
+			int i = 0;
+			i = 10;
+		}
+		}
 		boolean IsArgument = false;
 		String NowString = "";
 		ASTPrimarySuffix SuffixNode = (ASTPrimarySuffix)analysisnode;  

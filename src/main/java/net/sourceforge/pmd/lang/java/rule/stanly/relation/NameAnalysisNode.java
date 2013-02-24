@@ -5,7 +5,9 @@ import java.util.Map;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
 import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFormalParameter;
+import net.sourceforge.pmd.lang.java.ast.ASTLocalVariableDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
@@ -49,8 +51,12 @@ public class NameAnalysisNode extends AbstractASTAnalysisNode {
 		JavaNode typenode1 = (JavaNode)tmp.getNode().getNthParent(1);
 		JavaNode typenode2 = null; 
 		
-		if (typenode1.getClass() == ASTVariableDeclarator.class) 
-			typenode2 = (JavaNode) typenode1.getNthParent(1);
+		if (typenode1.getClass() == ASTVariableDeclarator.class)
+		{
+			typenode2 = (JavaNode) typenode1.getFirstParentOfType(ASTLocalVariableDeclaration.class);
+			if(MacroFunctions.NULLTrue(typenode2))
+				typenode2 = (JavaNode) typenode1.getFirstParentOfType(ASTFieldDeclaration.class);
+		}
 		else if(typenode1.getClass() == ASTMethodDeclaration.class)
 			typenode2 = (JavaNode)typenode1.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
 		else if(typenode1.getClass() == ASTFormalParameter.class)

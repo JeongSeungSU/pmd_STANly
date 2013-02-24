@@ -37,6 +37,17 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 	@Override
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
+		if(analysisnode.jjtGetNumChildren() > 0)
+		{
+		if( analysisnode.jjtGetChild(0).getImage() != null)
+		{
+		if(analysisnode.jjtGetChild(0).getImage().equalsIgnoreCase("MapDigraph") )
+		{
+			int i = 0;
+			i = 10;
+		}
+		}
+		}
 		ASTPrimaryPrefix Prefixnode = (ASTPrimaryPrefix)analysisnode;
 		String NowString = "";
 		String ResultTypeName = MethodAnlysistor.GetUnknownTypeName();

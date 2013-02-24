@@ -62,10 +62,10 @@ public class AfterRelations {
 			
 			
 			//Unknown:Calls,Access처리중  JSS
-			//if(relation.getRelation() == Relations.UNKNOWN)
-			//	UnknownRelationAnalysis(relation);
-			//else 
-			//{
+			if(relation.getRelation() == Relations.UNKNOWN)
+				UnknownRelationAnalysis(relation);
+			else 
+			{
 				targetNode = sourceNode.getParent().findNode(targetString);
 				
 				// 찾을수 없느 관계는 추후 삭제함 YHC
@@ -78,7 +78,7 @@ public class AfterRelations {
 							+ relation.getRelation().name() + "--> "
 							+ targetNode.getFullName());
 				}
-			//}
+			}
 		}		
 	}
 	public void RemoveNullTargetRelations(){//찾을수 없느 관계는 여기서 삭제함 YHC
@@ -163,15 +163,19 @@ public class AfterRelations {
 	 */
 	private void UnknownRelationAnalysis(DomainRelation relation)
 	{
+		//Set<String,>
 		String targetString = relation.getTarget();
-		if(targetString.charAt(targetString.length()) == ')')
+		if(targetString.charAt(targetString.length()-1) == ')')
 		{
 			relation.setRelation(Relations.CALLS);
+			System.out.println(relation.getRelation().toString() + " : " + targetString);
+
 		}
 		else
 		{
 			relation.setRelation(Relations.ACCESSES);
 		}
+		
 	}
 	private String mergeStrArray(String[] strs)
 	{
