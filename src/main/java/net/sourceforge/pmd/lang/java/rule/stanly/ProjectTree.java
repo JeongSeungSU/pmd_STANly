@@ -210,6 +210,26 @@ public class ProjectTree extends AbstractJavaRule {
 		return data;
 	}
 	
+	public Object visit(ASTAnnotationTypeDeclaration node, Object data) {
+		
+		//node
+		ElementNode thisNode;
+		ElementNode parent = entryStack.peek();
+		String name = node.getImage();
+
+		//System.out.println("        new enum node : " + name);
+		
+		
+		thisNode = parent.addChildren(ElementNodeType.ANNOTATION, name);
+		
+		entryStack.push(thisNode);		
+		super.visit(node, data);
+		for(AbstractCalculator calculator: calculators)
+			calculator.calcMetric(entryStack,node,data);
+		entryStack.pop();
+		return data;
+	}
+	
 	public Object visit(ASTFieldDeclaration node, Object data)
 	{
 		ElementNode thisNode;
@@ -330,6 +350,25 @@ public class ProjectTree extends AbstractJavaRule {
 		entryStack.pop();
 		
 		
+		return data;
+	}
+	
+	
+	public Object visit(ASTAnnotationMethodDeclaration node, Object data) {
+		
+		ElementNode thisNode;
+		ElementNode parent = entryStack.peek();
+		String name = node.getImage();
+
+		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
+		
+		//manager.AddRelation(node,thisNode);
+		
+		entryStack.push(thisNode);		
+		super.visit(node, data);
+		for(AbstractCalculator calculator: calculators)
+			calculator.calcMetric(entryStack,node,data);
+		entryStack.pop();
 		return data;
 	}
 	////////////////////////////////////////////////////////////////////////
@@ -495,14 +534,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculator.calcMetric(entryStack,node,data);
 		return data;
 	}
-
-	public Object visit(ASTAnnotationTypeDeclaration node, Object data) {
-		super.visit(node, data);
-		for(AbstractCalculator calculator: calculators)
-			calculator.calcMetric(entryStack,node,data);
-		return data;
-	}
-
+	
 	public Object visit(ASTAnnotationTypeBody node, Object data) {
 		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
@@ -516,13 +548,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculator.calcMetric(entryStack,node,data);
 		return data;
 	}
-
-	public Object visit(ASTAnnotationMethodDeclaration node, Object data) {
-		super.visit(node, data);
-		for(AbstractCalculator calculator: calculators)
-			calculator.calcMetric(entryStack,node,data);
-		return data;
-	}
+	
 
 	public Object visit(ASTDefaultValue node, Object data) {
 		super.visit(node, data);

@@ -8,8 +8,8 @@ public class LibraryMetric {
 	private float Tangled;
 	private float ACDPackage;
 	private float ACDUnit;
-	private float Distance;
-	private float DistanceAbsolute;
+	private float totalDistance;
+	private float totalDistanceAbsolute;
 	private int totalWMC;
 	private int totalDIT;
 	private int totalNOC;
@@ -54,16 +54,16 @@ public class LibraryMetric {
 		ACDUnit = aCDUnit;
 	}
 	public float getDistance() {
-		return Distance;
+		return Packages == 0 ? 0 : totalDistance / (float)Packages;
 	}
-	public void setDistance(float distance) {
-		Distance = distance;
+	public void addDistance(float distance) {
+		totalDistance += distance;
 	}
 	public float getDistanceAbsolute() {
-		return DistanceAbsolute;
+		return Packages == 0 ? 0 : totalDistanceAbsolute / (float)Packages;
 	}
-	public void setDistanceAbsolute(float distanceAbsolute) {
-		DistanceAbsolute = distanceAbsolute;
+	public void addDistanceAbsolute(float distanceAbsolute) {
+		totalDistanceAbsolute += distanceAbsolute;
 	}
 	public float getWMC() {
 		return (float)totalWMC / (float)NumberOfClass;
