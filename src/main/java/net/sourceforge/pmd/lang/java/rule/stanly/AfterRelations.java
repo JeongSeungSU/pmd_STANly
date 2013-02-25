@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCalculator;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.ComponentDepandency;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Coupling;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.DepthOfInheritanceTree;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
@@ -35,6 +36,7 @@ public class AfterRelations {
 			calculators.add(new ResponseForClass());
 			calculators.add(new Tangled());
 			calculators.add(new Coupling());
+			calculators.add(new ComponentDepandency());
 		}
 	}
 	public void analysis(){
