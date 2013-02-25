@@ -18,6 +18,4 @@ public class FieldDomain extends ElementNode {
 		if(metric == null)
 			metric = new AttributeMetric();
 	}
-
-	
 }

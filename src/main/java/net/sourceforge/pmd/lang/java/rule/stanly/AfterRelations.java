@@ -3,6 +3,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodParsingData;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Coupling;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.DepthOfInheritanceTree;
@@ -37,13 +38,20 @@ public class AfterRelations {
 			calculators.add(new Coupling());
 		}
 	}
-	public void analysis(){
+	
+	public void analysisAnother(){
 		// TODO Auto-generated method stub
 		FindTarget();
+	}
+	public void analysisunknown()
+	{
+		UnknownRelationAnalysis();
+		
 		RemoveNullTargetRelations();
 		for(AbstractAfterCalculator calculator:calculators)
 			calculator.calcMetric(projectNode);
 	}
+	
 
 	public void FindTarget(){
 		List<DomainRelation> domainRelation = manager.getDomainRelationList();
@@ -61,23 +69,19 @@ public class AfterRelations {
 			sourceNode = relation.getSourceNode();
 			
 			
-			//Unknown:Calls,Access처리중  JSS
-			if(relation.getRelation() == Relations.UNKNOWN)
-				UnknownRelationAnalysis(relation);
-			else 
+			// Unknown:Calls,Access처리중 JSS
+
+			targetNode = sourceNode.getParent().findNode(targetString);
+
+			// 찾을수 없느 관계는 추후 삭제함 YHC
+			if (targetNode != null) 
 			{
-				targetNode = sourceNode.getParent().findNode(targetString);
-				
-				// 찾을수 없느 관계는 추후 삭제함 YHC
-				if (targetNode != null) 
-				{
-					relation.setTargetNode(targetNode);
-					// System.out.println(targetNode.getFullName() + " == " +
-					// targetString);
-					System.out.println(sourceNode.getFullName() + " --"
-							+ relation.getRelation().name() + "--> "
-							+ targetNode.getFullName());
-				}
+				relation.setTargetNode(targetNode);
+				// System.out.println(targetNode.getFullName() + " == " +
+				// targetString);
+				System.out.println(sourceNode.getFullName() + " --"
+						+ relation.getRelation().name() + "--> "
+						+ targetNode.getFullName());
 			}
 		}		
 	}
@@ -161,22 +165,33 @@ public class AfterRelations {
 	 * @author JeongSeungsu
 	 * @param relation
 	 */
-	private void UnknownRelationAnalysis(DomainRelation relation)
-	{
-		//Set<String,>
-		String targetString = relation.getTarget();
-		if(targetString.charAt(targetString.length()-1) == ')')
-		{
-			relation.setRelation(Relations.CALLS);
-			System.out.println(relation.getRelation().toString() + " : " + targetString);
+ private void UnknownRelationAnalysis()
+ {
+		List<DomainRelation> domainRelation = manager.getDomainRelationList();
+		String targetString;
+		ElementNode sourceNode;
+		ElementNode targetNode;
 
-		}
-		else
+		for (DomainRelation relation : domainRelation) 
 		{
-			relation.setRelation(Relations.ACCESSES);
+			if (relation.getRelation() != Relations.UNKNOWN)
+				continue;
+
+			targetString = relation.getTarget();
+			sourceNode = relation.getSourceNode();
+
+			MethodParsingData data = new MethodParsingData();
+			data.MakeTokenizedData(targetString);
+
+			//요기서 찾는다.
+			FindCallOrAccessTargetNode(relation,data);
 		}
-		
 	}
+ 	//제작중
+ 	private ElementNode FindCallOrAccessTargetNode(DomainRelation relation,MethodParsingData data)
+ 	{
+ 		return null;
+ 	}
 	private String mergeStrArray(String[] strs)
 	{
 		String mergeStr = strs[0];

@@ -32,7 +32,7 @@ public class EnumDeclarationAnalysisNode extends AbstractASTAnalysisNode {
 		else if(enumdeclaration.getQualifiedName() != null)
 			ClassName = enumdeclaration.getQualifiedName();
 		else
-			ClassName = enumdeclaration.getImage() + " (Cannot Found!)";
+			ClassName = enumdeclaration.getImage();
 		
 		return new MethodResult("",ClassName,true);
 	}

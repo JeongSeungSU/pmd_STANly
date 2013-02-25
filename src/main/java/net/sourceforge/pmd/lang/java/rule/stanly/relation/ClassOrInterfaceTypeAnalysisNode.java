@@ -51,7 +51,7 @@ public class ClassOrInterfaceTypeAnalysisNode extends AbstractASTAnalysisNode {
 		else if(classorinterfacetype.getQualifiedName() != null)
 			ClassName = classorinterfacetype.getQualifiedName();
 		else
-			ClassName = classorinterfacetype.getImage() + " (Cannot Found!)";
+			ClassName = classorinterfacetype.getImage();
 		
 		return new MethodResult("",ClassName+ArgumentList,true);
 	}

@@ -15,7 +15,13 @@ public abstract class ElementNode {
 	
 	protected ElementNode parent;
 	protected List<ElementNode> children;
+	/**
+	 * 자신이 Target
+	 */
 	protected List<DomainRelation> relationSources;
+	/**
+	 * 자신이 Source
+	 */
 	protected List<DomainRelation> relationTargets;
 	
 	protected String name;

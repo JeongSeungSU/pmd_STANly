@@ -93,7 +93,7 @@ public class RelationManager {
 		else if(type.getQualifiedName() != null)
 			ClassName = type.getQualifiedName();
 		else
-			ClassName = type.getImage() + " (Cannot Found!)";
+			ClassName = type.getImage();
 		return ClassName+ArgumentList;
 	}
 	

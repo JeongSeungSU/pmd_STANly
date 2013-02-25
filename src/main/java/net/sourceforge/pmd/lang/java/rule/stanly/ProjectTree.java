@@ -64,7 +64,8 @@ public class ProjectTree extends AbstractJavaRule {
 		{
 			AfterRelations afterRelation = new AfterRelations(projectNode,manager);
 			afterRelation.makePackageSet();
-			afterRelation.analysis();
+			afterRelation.analysisAnother();
+			afterRelation.analysisunknown();
 			return data;
 		}
 		LibraryDomain currentLibraryNode = null;
