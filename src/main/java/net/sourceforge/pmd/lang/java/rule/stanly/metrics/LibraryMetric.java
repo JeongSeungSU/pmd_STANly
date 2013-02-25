@@ -26,6 +26,10 @@ public class LibraryMetric {
 	public float getUnitPerPackage() {
 		return Packages == 0 ? 0 : (float)Unit / (float)Packages;
 	}
+	public int getUnits()
+	{
+		return Unit;
+	}
 	public void addUnits(int unit) {
 		Unit += unit;
 	}
