@@ -15,7 +15,7 @@ public class PackagetSetAverage extends AbstractAfterCalculator {
 		int numberOfLibraries = 0;
 		for(ElementNode child:node.getChildren())			
 			if(child.getType() == ElementNodeType.LIBRARY)
-				numberOfLibraries = ((LibraryDomain)child).metric.getPackages();
+				numberOfLibraries++;
 		node.metric.setLibraries(numberOfLibraries);
 	}
 	

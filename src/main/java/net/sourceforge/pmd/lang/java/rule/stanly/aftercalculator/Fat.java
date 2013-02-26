@@ -1,6 +1,9 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
@@ -40,9 +43,17 @@ public class Fat extends AbstractAfterCalculator{
 	public void calcMetric(PackageSetDomain node)
 	{
 		calculateChildren(node);
-		Map<String,Integer> relations = getChilrenRelation(node,node);
+		Map<String,Integer> relations = getPackageRelation(node,node);
 		node.metric.setFat(relations.size());
-		addToLibraryDomain(node.getParent(),node.metric.getFat());
+		addToLibraryFatPackage(node.getParent(),node.metric.getFat());
+		
+		/*List<String> strRel;
+		if(relations.size() > 0)
+		{
+			strRel = new ArrayList<String>(relations.keySet());
+			Collections.sort(strRel);
+			System.out.println(strRel.size());
+		}*/
 	}
 	
 	public void calcMetric(PackageDomain node)
@@ -50,22 +61,29 @@ public class Fat extends AbstractAfterCalculator{
 		calculateChildren(node);
 		Map<String,Integer> relations = getChilrenRelation(node,node);		
 		node.metric.setFat(relations.size());
-		addToLibraryDomain(node.getParent(),node.metric.getFat());
+		addToLibraryFatUnit(node.getParent(),node.metric.getFat());
 	}
 	
 	public void calcMetric(ClassDomain node)
 	{
 		Map<String,Integer> relations = getChilrenRelation(node,node);
 		node.metric.setFat(relations.size());
-		addToLibraryDomain(node.getParent(),node.metric.getFat());
+		//addToLibraryDomain(node.getParent(),node.metric.getFat());
 	}
 	
-	public void addToLibraryDomain(ElementNode node,int fat)
+	public void addToLibraryFatPackage(ElementNode node,int fat)
 	{
 		while(node != null && !(node instanceof LibraryDomain))
 			node = node.getParent();
 		if(node instanceof LibraryDomain)
-			((LibraryDomain)node).metric.addFat(fat);
+			((LibraryDomain)node).metric.addFatPackages(fat);
+	}
+	public void addToLibraryFatUnit(ElementNode node,int fat)
+	{
+		while(node != null && !(node instanceof LibraryDomain))
+			node = node.getParent();
+		if(node instanceof LibraryDomain)
+			((LibraryDomain)node).metric.addFatUnits(fat);
 	}
 	/*
 	public void calcMetric(MethodDomain node)
@@ -107,6 +125,28 @@ public class Fat extends AbstractAfterCalculator{
 		}
 		return relations;
 	}
-	
+	private Map<String,Integer> getPackageRelation(ElementNode ancestor,ElementNode node)
+	{
+		Map<String,Integer> relations = new HashMap<String,Integer>();
+		for(ElementNode child:node.getChildren())
+		{		
+			for(DomainRelation rel:child.getRelationTargets())
+			{
+				if(!rel.getTargetNode().isAncestor(ancestor))	continue;
+				if(!rel.getSourceNode().getPackageName().equals(rel.getTargetNode().getPackageName()))
+				{
+					String key = rel.getSourceNode().getPackageName() + ">" + rel.getTargetNode().getPackageName();
+					Integer value = 0;
+					if(relations.containsKey(key))
+						value = relations.get(key);
+					value++;
+					relations.put(key,value);
+				}
+			}
+			if(child.getChildren().size() > 0)
+				relations.putAll(getPackageRelation(ancestor,child));
+		}
+		return relations;
+	}
 	
 }

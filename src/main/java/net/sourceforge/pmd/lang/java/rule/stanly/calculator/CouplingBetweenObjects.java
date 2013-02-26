@@ -29,7 +29,7 @@ public class CouplingBetweenObjects extends AbstractCalculator {
 	private Set<String> typesFoundSoFar;
 
 	@Override
-	public void calcMetric(Stack<ElementNode> entryStack,ASTCompilationUnit cu, Object data) {
+	public void preCalcMetric(Stack<ElementNode> entryStack,ASTCompilationUnit cu, Object data) {
 		typesFoundSoFar = new HashSet<String>();
 		//couplingCount = 0;
 

@@ -126,6 +126,8 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		entryStack.push(currentLibraryNode);
 		entryStack.push(currentPackageNode);
+		for(AbstractCalculator calculator: calculators)
+			calculator.preCalcMetric(entryStack,node,data);
 		super.visit(node, data);
 		for(AbstractCalculator calculator: calculators)
 			calculator.calcMetric(entryStack,node,data);

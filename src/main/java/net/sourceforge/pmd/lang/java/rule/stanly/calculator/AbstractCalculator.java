@@ -70,6 +70,7 @@ public abstract class AbstractCalculator {
 
 	public void calcMetric(Stack<ElementNode> entryStack,ASTRSIGNEDSHIFT node, Object data) {}
 
+	public void preCalcMetric(Stack<ElementNode> entryStack,ASTCompilationUnit node, Object data) {}
 	public void calcMetric(Stack<ElementNode> entryStack,ASTCompilationUnit node, Object data) {}
 
 	public void calcMetric(Stack<ElementNode> entryStack,ASTEnumDeclaration node, Object data) {}

@@ -4,7 +4,8 @@ public class LibraryMetric {
 	private int Unit;
 	private int Packages;
 	private int NumberOfClass;	// unit class + inner class
-	private int Fat;
+	private int FatPackages;
+	private int FatUnits;
 	private float Tangled;
 	private float ACDPackage;
 	private float ACDUnit;
@@ -32,12 +33,18 @@ public class LibraryMetric {
 	}
 	public void addUnits(int unit) {
 		Unit += unit;
+	}	
+	public int getFatPackages() {
+		return FatPackages;
 	}
-	public int getFat() {
-		return Fat;
+	public void addFatPackages(int fatPackages) {
+		FatPackages += fatPackages;
 	}
-	public void addFat(int fat) {
-		Fat += fat;
+	public int getFatUnits() {
+		return FatUnits;
+	}
+	public void addFatUnits(int fatUnits) {
+		FatUnits += fatUnits;
 	}
 	public float getTangled() {
 		return Tangled;

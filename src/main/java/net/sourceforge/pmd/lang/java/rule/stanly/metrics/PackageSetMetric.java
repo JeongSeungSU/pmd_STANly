@@ -6,7 +6,7 @@ public class PackageSetMetric{
 	private int NumberOfClasses;// inner class
 	private int NumberOfClass;	// unit class + inner class
 	private int NumberOfFields;
-	private int LOC;
+	//private int LOC;
 	private int totalELOC;
 	private int totalUnit;
 	private int TotalCC;
@@ -24,7 +24,7 @@ public class PackageSetMetric{
 	public float getFieldsPerClass() {
 		return NumberOfClass == 0 ? 0 : (float)NumberOfFields / (float)NumberOfClass;
 	}
-	public int getLOC() {
+	/*public int getLOC() {
 		return LOC;
 	}
 	public void setLOC(int loc) {
@@ -33,7 +33,7 @@ public class PackageSetMetric{
 	public void addLOC(int loc) {
 		// TODO Auto-generated method stub
 		LOC += loc;
-	}
+	}*/
 	
 	public float getAverageCC() {
 		return NumberOfMethods == 0 ? 0 : (float)TotalCC / (float)NumberOfMethods;
