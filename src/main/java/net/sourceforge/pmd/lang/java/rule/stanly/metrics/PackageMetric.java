@@ -11,7 +11,7 @@ public class PackageMetric {
 	private int LOC;
 	
 	private int Fat;
-	private float ADCPerUnit;
+	private float ACDPerUnit;
 	private int AfferentCoupling;
 	private int EfferentCoupling;	
 	private float Abstractness;
@@ -100,11 +100,11 @@ public class PackageMetric {
 	public void setFat(int fAT) {
 		Fat = fAT;
 	}
-	public float getADCPerUnit() {
-		return ADCPerUnit;
+	public float getACDPerUnit() {
+		return ACDPerUnit;
 	}
-	public void setADCPerUnit(float aDCPerUnit) {
-		ADCPerUnit = aDCPerUnit;
+	public void setACDPerUnit(float aCDPerUnit) {
+		ACDPerUnit = aCDPerUnit;
 	}
 	public int getAfferentCoupling() {
 		return AfferentCoupling;

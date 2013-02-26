@@ -69,7 +69,22 @@ public abstract class ElementNode {
 		this.relationTargets = new ArrayList<DomainRelation>();
 		relationTargets.add(relation);
 	}
+	
+	public String getPackageName(){
+		ElementNode pkgNode = this;
+		while(pkgNode != null && pkgNode.getType() != ElementNodeType.PACKAGE)
+			pkgNode = pkgNode.getParent();
+		return pkgNode.getFullName();
+	}
+	public String getUnitName(){
+		ElementNode unitNode = this;
+		while(unitNode != null && unitNode.getParent().getType() != ElementNodeType.PACKAGE)
+			unitNode = unitNode.getParent();
+		return unitNode.getFullName();
+	}
 	public String getFullName() {
+		if(parent.type == ElementNodeType.PROJECT)
+			return "";
 		if(parent.type == ElementNodeType.LIBRARY)	
 			return name;
 		if(name.equals("."))//PackageSet의 경우 "."은 부모를 의미
