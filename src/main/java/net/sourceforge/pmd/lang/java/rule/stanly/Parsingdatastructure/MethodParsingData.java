@@ -18,11 +18,8 @@ public class MethodParsingData {
 	
 	public void MakeTokenizedData(String Target)
 	{
-		MethodTokenizeData nowdata = new MethodTokenizeData("", "", "", "");
-		
-		boolean Type = false;
-		boolean Argument = false;
-		boolean TypeArgument = false;
+		MethodTokenizeData nowdata = new MethodTokenizeData("", "");
+		int result;
 		
 		for(int i =0 ; i < Target.length(); i++)
 		{
@@ -31,49 +28,46 @@ public class MethodParsingData {
 				case 'S':
 					if(DetermineTypeSeperat(Target,i) > i)
 					{
-						Type = true;
-						i = DetermineTypeSeperat(Target,i);
+						i = DetermineTypeSeperat(Target, i);
+						result = TypeMode(Target, i);
+						nowdata.Type = Target.substring(i, result);
+						i = result + TypeSeperate.length() - 1;
 					}
+					else nowdata.Content += Target.charAt(i);
 					break;
 				case '<':
-					TypeArgument = true;
+					result = ArgumentOrTypeMode(Target,i, '<', '>');
+					nowdata.TypeArgument = DotSeparator(Target.substring(i+1,result));
+					i = result;
 					break;
 				case '(':
-					Argument = true;
+					result = ArgumentOrTypeMode(Target,i, '(', ')');
+					nowdata.Argument = DotSeparator(Target.substring(i+1,result));
+					i = result;
 					break;
 				case '.':
 					AddTokenizedData(nowdata);
-					nowdata = new MethodTokenizeData("", "" , "", "");
+					nowdata = new MethodTokenizeData("","");
 					continue;
+				default:
+					nowdata.Content += Target.charAt(i);
 			}
-			
-			if(Type)
-			{
-				int result = TypeMode(Target,i);
-				nowdata.Type = Target.substring(i,result);
-				i = result + TypeSeperate.length() - 1;
-				Type = false;
-			}
-			else if(TypeArgument)
-			{
-				int result = ArgumentOrTypeMode(Target,i, '<', '>');
-				nowdata.TypeArgument = Target.substring(i+1,result);
-				i = result;
-				TypeArgument = false;
-			}
-			else if(Argument)
-			{
-				int result = ArgumentOrTypeMode(Target,i, '(', ')');
-				nowdata.Argument = Target.substring(i+1,result);
-				if(nowdata.Argument.equals(""))
-					nowdata.Argument = " ";
-				i = result;
-				Argument = false;
-			}
-			else
-				nowdata.Content += Target.charAt(i);
 		}
 		AddTokenizedData(nowdata);
+		
+		for(String typeargument :nowdata.TypeArgument)
+		{
+			MethodParsingData typeargumentdata = new MethodParsingData();
+			typeargumentdata.MakeTokenizedData(typeargument);
+			nowdata.TypeArgumentTonkenizeList.add(typeargumentdata);
+		}
+		
+		for(String argument :nowdata.Argument)
+		{
+			MethodParsingData argumentdata = new MethodParsingData();
+			argumentdata.MakeTokenizedData(argument);
+			nowdata.TypeArgumentTonkenizeList.add(argumentdata);
+		}
 	}
 
 	private int ArgumentOrTypeMode(String Target, int nowpos, char start, char end)
@@ -130,10 +124,59 @@ public class MethodParsingData {
 		return nowPos;
 	}
 
-	
 	private void AddTokenizedData(MethodTokenizeData data)
 	{
 		MethodTokenizedDataList.add(data);
 	}
 	
+	public MethodTokenizeData GetTokenizeData(int index)
+	{
+		if(index < 0 || index > MethodTokenizedDataList.size() - 1)
+			return null;
+		return MethodTokenizedDataList.get(index);
+	}
+	
+	public int Size()
+	{
+		return MethodTokenizedDataList.size();
+	}
+	
+	
+	public List<String> DotSeparator(String stringdata)
+	{
+		String nowString = "";
+		List<String> StringList= new ArrayList<String>(); 
+		int result;
+		
+		for(int i =0 ; i < stringdata.length(); i++)
+		{
+			switch(stringdata.charAt(i))
+			{
+				case 'S':
+					if(DetermineTypeSeperat(stringdata,i) > i)
+					{
+						i = DetermineTypeSeperat(stringdata,i);
+						result = TypeMode(stringdata,i);
+						i = result + TypeSeperate.length() - 1;
+					}
+					else nowString += stringdata.charAt(i);
+					break;
+				case '<':
+					i = ArgumentOrTypeMode(stringdata,i, '<', '>');
+					break;
+				case '(':
+					i = ArgumentOrTypeMode(stringdata,i, '(', ')');
+					break;
+				case ',':
+					StringList.add(nowString);
+					nowString = "";
+					continue;
+				default:
+					nowString += stringdata.charAt(i);
+			}
+		}
+		StringList.add(nowString);
+		
+		return StringList;
+	}
 }

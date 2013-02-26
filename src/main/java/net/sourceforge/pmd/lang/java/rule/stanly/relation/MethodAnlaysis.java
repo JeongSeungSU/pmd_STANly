@@ -30,6 +30,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
+import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
 import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
@@ -83,6 +84,8 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTEnumDeclaration.class.toString(), new EnumDeclarationAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//ASTMemberSelector
 		ASTParserNodeList.put(ASTMemberSelector.class.toString(), new MemberSelectorAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTResultType
+		ASTParserNodeList.put(ASTResultType.class.toString(), new ResultTypeAnalysisNode(RelationList,processedPrimaryExpression,this));
 		
 		//argumentList아래것들...
 		//PreDecrementExpression
@@ -111,18 +114,14 @@ public class MethodAnlaysis {
 	
 	private AbstractASTAnalysisNode MacthingASTParserNode(AbstractJavaNode node) throws MethodAnalysisException
 	{
-		
-		//삭제해야됨
 		if(MacroFunctions.NULLTrue(node))
-		{
-			int i =0;
-		}
+			throw new MethodAnalysisException("MacthingASTParserNode 함수에 Null값이 들어옴");
+		
 		String nodename = node.getClass().toString();
 		
 		if(!ASTParserNodeList.containsKey(nodename))
-		{
 			throw new MethodAnalysisException("ASTParserNodeList에 "+ nodename +"이 없습니다.");
-		}
+		
 		return ASTParserNodeList.get(nodename);
 	}
 	public String TypeSperateApplyer(String Type)

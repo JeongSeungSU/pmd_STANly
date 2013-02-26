@@ -37,17 +37,7 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 	@Override
 	public MethodResult AnalysisAST(AbstractJavaNode analysisnode,ElementNode sourcenode) throws MethodAnalysisException 
 	{
-		if(analysisnode.jjtGetNumChildren() > 0)
-		{
-		if( analysisnode.jjtGetChild(0).getImage() != null)
-		{
-		if(analysisnode.jjtGetChild(0).getImage().equalsIgnoreCase("MapDigraph") )
-		{
-			int i = 0;
-			i = 10;
-		}
-		}
-		}
+
 		ASTPrimaryPrefix Prefixnode = (ASTPrimaryPrefix)analysisnode;
 		String NowString = "";
 		String ResultTypeName = MethodAnlysistor.GetUnknownTypeName();
@@ -119,22 +109,10 @@ public class PrimaryPrefixAnalysisNode extends AbstractASTAnalysisNode {
 			else if(ChildAnalysisNode.getClass() == ASTResultType.class)
 			{
 				ASTResultType resulttype = (ASTResultType)ChildAnalysisNode;
-				ASTClassOrInterfaceType classtype = resulttype.getFirstDescendantOfType(ASTClassOrInterfaceType.class);
-				if(!MacroFunctions.NULLTrue(classtype))
-				{
-					ResultTypeName = MethodAnlysistor.ProcessMethodCallAndAccess(classtype, sourcenode).TypeName;
-					NowString = ResultTypeName;
-				}
-				else
-				{
-					ASTPrimitiveType primitivetype = resulttype.getFirstDescendantOfType(ASTPrimitiveType.class);
-					if(MacroFunctions.NULLTrue(primitivetype))
-						return new MethodResult("",MethodAnlysistor.GetUnknownTypeName(),false);
-					MethodResult result = MethodAnlysistor.ProcessMethodCallAndAccess(primitivetype, sourcenode);
-					ResultTypeName = result.TypeName; 
-					NowString = result.TargetResult;
-				}
+				MethodResult result = MethodAnlysistor.ProcessMethodCallAndAccess(resulttype, sourcenode);
 				
+				NowString = result.TargetResult;
+				ResultTypeName = result.TypeName;
 			}
 			else if(ChildAnalysisNode.getClass() == ASTExpression.class)
 			{

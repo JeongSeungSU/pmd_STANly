@@ -59,6 +59,11 @@ public class RelationManager {
 		return RelationList.GetList();
 	}
 	
+	public void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
+	{
+		RelationList.AddRelation(relationkind, source, target, sourceNode, targetNode);
+	}
+	
 	/**
 	 * 클래스 타입을 스트링으로 뽑아내기..
 	 * @since 2013. 2. 5.오후 7:53:55

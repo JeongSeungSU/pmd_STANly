@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
@@ -20,6 +22,9 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnalysisException;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnlaysis;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodResult;
 
 public class ProjectTree extends AbstractJavaRule {
 	private List<AbstractCalculator> calculators = null;
@@ -320,10 +325,24 @@ public class ProjectTree extends AbstractJavaRule {
 		ElementNode thisNode;
 		ElementNode parent = entryStack.peek();
 		String name = node.getMethodName();
+	
 		//if(name.equals("tableModelFrom"))
 		//	//System.out.println();
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
 		//System.out.println("            new method node : " + name);
+	
+		//return type 받기
+		MethodResult result = null;
+		try
+		{
+			MethodAnlaysis analysis = new MethodAnlaysis(null);
+			result = analysis.ProcessMethodCallAndAccess((AbstractJavaNode) node.getFirstChildOfType(ASTResultType.class), thisNode);
+		}
+		catch(MethodAnalysisException e)
+		{
+			e.PrintCauseException();
+		}
+		((MethodDomain)thisNode).returntype =  result.TypeName;
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
 		//if(thisNode.getFullName().equals("net.sourceforge.pmd.lang.java.rule.stanly.ProjectTree.visit"))
