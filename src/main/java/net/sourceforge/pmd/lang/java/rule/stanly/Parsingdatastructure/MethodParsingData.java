@@ -54,22 +54,27 @@ public class MethodParsingData {
 			}
 		}
 		AddTokenizedData(nowdata);
-		
-		for(String typeargument :nowdata.TypeArgument)
+		InitArgumentOrTypeTokenizedData(nowdata);
+
+	}
+	
+	private void InitArgumentOrTypeTokenizedData(MethodTokenizeData data)
+	{
+		for(String typeargument :data.TypeArgument)
 		{
 			MethodParsingData typeargumentdata = new MethodParsingData();
 			typeargumentdata.MakeTokenizedData(typeargument);
-			nowdata.TypeArgumentTonkenizeList.add(typeargumentdata);
+			data.TypeArgumentTonkenizeList.add(typeargumentdata);
 		}
 		
-		for(String argument :nowdata.Argument)
+		for(String argument :data.Argument)
 		{
 			MethodParsingData argumentdata = new MethodParsingData();
 			argumentdata.MakeTokenizedData(argument);
-			nowdata.TypeArgumentTonkenizeList.add(argumentdata);
+			data.ArgumentTokenizeList.add(argumentdata);
 		}
 	}
-
+	
 	private int ArgumentOrTypeMode(String Target, int nowpos, char start, char end)
 	{
 		Stack<Integer> TopofSeperateSearch = new Stack<Integer>();
@@ -112,7 +117,7 @@ public class MethodParsingData {
 		
 		if (Target.charAt(nowPos) == 'S') 
 		{
-			if (Target.length() - 1 >= nowPos + typeSeperateLenth) 
+			if (Target.length() >= nowPos + typeSeperateLenth) 
 			{
 				String typedetermine = Target.substring(nowPos, nowPos + typeSeperateLenth);
 				if (typedetermine.equals(TypeSeperate))
@@ -155,17 +160,22 @@ public class MethodParsingData {
 				case 'S':
 					if(DetermineTypeSeperat(stringdata,i) > i)
 					{
-						i = DetermineTypeSeperat(stringdata,i);
-						result = TypeMode(stringdata,i);
+						int start = DetermineTypeSeperat(stringdata,i);
+						result = TypeMode(stringdata,start);
+						nowString += stringdata.substring(i, result + TypeSeperate.length());
 						i = result + TypeSeperate.length() - 1;
 					}
 					else nowString += stringdata.charAt(i);
 					break;
 				case '<':
-					i = ArgumentOrTypeMode(stringdata,i, '<', '>');
+					result = ArgumentOrTypeMode(stringdata,i, '<', '>');
+					nowString += stringdata.substring(i, result+1);
+					i = result;
 					break;
 				case '(':
-					i = ArgumentOrTypeMode(stringdata,i, '(', ')');
+					result = ArgumentOrTypeMode(stringdata,i, '(', ')');
+					nowString += stringdata.substring(i, result+1);
+					i = result;
 					break;
 				case ',':
 					StringList.add(nowString);

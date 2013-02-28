@@ -64,10 +64,10 @@ public class AfterRelations {
 		for(int i = 0; i< CallOrAccessList.GetList().size(); i++)
 		{
 			DomainRelation relation = CallOrAccessList.GetList().get(i);
-			/*if(relation.getRelation()== Relations.ACCESSES)
+			
 			System.out.println(relation.getSourceNode().getFullName() + " --"
 					+ relation.getRelation().name() + "--> "
-					+ relation.getTargetNode().getFullName());*/
+					+ relation.getTargetNode().getFullName());
 		}
 		
 		manager.getDomainRelationList().addAll(CallOrAccessList.GetList());
@@ -115,8 +115,6 @@ public class AfterRelations {
 	}
 	public void RemoveNullTargetRelations(){//찾을수 없느 관계는 여기서 삭제함 YHC
 		List<DomainRelation> domainRelation = manager.getDomainRelationList();
-		ElementNode sourceNode;
-		ElementNode targetNode;
 		for(int i=0;i<domainRelation.size();i++)
 		{
 			if(domainRelation.get(i).getTargetNode() == null || domainRelation.get(i).getRelation() == Relations.UNKNOWN)	
@@ -310,14 +308,9 @@ public class AfterRelations {
 				//////// Argument분석
 				if (nodeList.size() > 1) 
 				{
-					List<String> argumentlist = new ArrayList<String>();//data.ArgumentSeparator(tokendata.Argument);
 					List<String> convertargumentlist = new ArrayList<String>();
-					for(String argument : argumentlist)
-					{
-						MethodParsingData argumentdata = new MethodParsingData();
-						argumentdata.MakeTokenizedData(argument);
-						convertargumentlist.add(FindCallOrAccessTargetNode(relation,argumentdata));
-					}
+					for(MethodParsingData argument : tokendata.ArgumentTokenizeList)
+						convertargumentlist.add(FindCallOrAccessTargetNode(relation,argument));
 
 					//////////////argument비교
 					boolean matchingmethod = false;
@@ -383,6 +376,9 @@ public class AfterRelations {
  				//타입이 없다면 처리할 필요 없다.
  				if(tokendata.Type.equals(""))
  					continue;
+ 				//content가 없다면 걍 타입 리턴..
+ 				if(tokendata.Content.equals(""))
+ 					return tokendata.Type;
  				
  				MethodParsingData typeparsingdata = new MethodParsingData();
  				typeparsingdata.MakeTokenizedData(tokendata.Type);
