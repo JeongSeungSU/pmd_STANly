@@ -74,7 +74,15 @@ public class MethodParsingData {
 			data.ArgumentTokenizeList.add(argumentdata);
 		}
 	}
-	
+	public String GetContentTokenData(int start,int end )
+	{
+		String UpperName = "";
+		for(int i = start; i < end; i++)
+			UpperName += this.GetTokenizeData(i).Content + ".";
+		
+		UpperName = UpperName.substring(0,UpperName.length()-1);
+		return UpperName;
+	}
 	private int ArgumentOrTypeMode(String Target, int nowpos, char start, char end)
 	{
 		Stack<Integer> TopofSeperateSearch = new Stack<Integer>();
@@ -162,6 +170,10 @@ public class MethodParsingData {
 					{
 						int start = DetermineTypeSeperat(stringdata,i);
 						result = TypeMode(stringdata,start);
+						if(result + TypeSeperate.length() > stringdata.length())
+						{
+							int z =0;
+						}
 						nowString += stringdata.substring(i, result + TypeSeperate.length());
 						i = result + TypeSeperate.length() - 1;
 					}

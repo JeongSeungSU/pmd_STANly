@@ -39,7 +39,7 @@ public class CastExpressionAnalysisNode extends AbstractASTAnalysisNode {
 		String casttypename = MethodAnlysistor.ProcessMethodCallAndAccess(castType, sourcenode).TypeName;
 		casttypename = MethodAnlysistor.TypeSperateApplyer(casttypename);
 		
-		return new MethodResult(casttypename,"",true);
+		return new MethodResult(casttypename,"unknown",true);
 	}
 
 }

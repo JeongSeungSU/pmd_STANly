@@ -217,9 +217,11 @@ public class AfterRelations {
  	private String FindCallOrAccessTargetNode(DomainRelation relation,MethodParsingData data)
  	{
  		String ReturnData = "unknown";
- 		if(relation.getTarget().equals("de.odysseus.ithaka.digraph.util.fas.SimpleFeedbackArcSetProvider.StanlyTypeIndicateunknownStanlyTypeIndicateMapDigraph<de.odysseus.ithaka.digraph.util.fas.V,de.odysseus.ithaka.digraph.util.fas.E>.getDefaultDigraphFactory().create()"))
+ 		if(relation.getTarget().equals("net.sourceforge.pmd.renderers.XMLRenderer.getWriter()"))
  		{
  			int i =0;
+ 			i=10;
+ 			int j = i;
  		}
  		for(int index = 0 ; index < data.Size(); index++)
  		{
@@ -239,20 +241,22 @@ public class AfterRelations {
 				if(IsUnknownType(UpperClass))
 					return "unknown";
 				
-				
 
 				List<ElementNode> ClassList = SearchNodeNameClassOrInterface(UpperClass);
 				if (ClassList.size() <= 0)
 					return "unknown";
 				else if (ClassList.size() > 1) 
 				{
-					MethodParsingData parsedata = new MethodParsingData();
-					parsedata.MakeTokenizedData(prevtokendata.Type);
+					MethodParsingData parsedata = null;
 					String UpperName = "";
-					for(int i = 0; i < parsedata.Size(); i++)
-						UpperName += parsedata.GetTokenizeData(i).Content + ".";
-					
-					UpperName = UpperName.substring(0,UpperName.length()-1);
+					if(prevtokendata.Type.equals(""))
+						UpperName = data.GetContentTokenData(0, index);
+					else
+					{
+						parsedata = new MethodParsingData();
+						parsedata.MakeTokenizedData(prevtokendata.Type);
+						UpperName = parsedata.GetContentTokenData(0, parsedata.Size());
+					}
 					
 					for(Iterator<ElementNode> it = ClassList.iterator(); it.hasNext(); )
 					{
@@ -267,7 +271,9 @@ public class AfterRelations {
 				}
 				ElementNode classelementnode;
 				if(ClassList.size() > 1 || ClassList.size() == 0 )
-					System.out.println("헐!");
+				{	
+					//System.out.println("헐!");
+				}
 				classelementnode = ClassList.get(0);
 				// 그 메서드의 부모 클래스를 가져왔다!!
 
@@ -324,7 +330,7 @@ public class AfterRelations {
 							if(convertargumentlist.size() - 1 < i)
 								break;
 							
-							if(!convertargumentlist.get(i).equals("unknown") || !!convertargumentlist.get(i).equals("null"))
+							if(!convertargumentlist.get(i).equals("unknown") || !convertargumentlist.get(i).equals("null"))
 							{
 								if(!ParameterList.get(i).equalsIgnoreCase(convertargumentlist.get(i)))
 								{
@@ -363,8 +369,10 @@ public class AfterRelations {
 				{
 					CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , nodeList.get(0).getFullName() , relation.getSourceNode(), nodeList.get(0));
 					MethodParsingData parsingdata = new MethodParsingData();
-					parsingdata.MakeTokenizedData(((MethodDomain)nodeList.get(0)).returntype);
+					String ReturnType = ((MethodDomain)nodeList.get(0)).returntype;
+					parsingdata.MakeTokenizedData(ReturnType);
 					tokendata.Content = parsingdata.GetTokenizeData(parsingdata.Size()-1).Content;
+					tokendata.Type = ReturnType;
 				}
 				else
 				{
@@ -421,7 +429,14 @@ public class AfterRelations {
 				else if(ClassNode.size() == 0)
 					return "unknown";
 				
-				ElementNode TargetNode = SearchOneClassNodeField(ClassNode.get(0),tokendata.Content);
+				ElementNode TargetNode = null;
+				//고쳐야됨
+				for(int i = 0 ; i < ClassNode.size(); i++)
+				{
+					TargetNode = SearchOneClassNodeField(ClassNode.get(i),tokendata.Content);
+					if(!MacroFunctions.NULLTrue(TargetNode))
+						break;
+				}
 				
 				if(MacroFunctions.NULLTrue(TargetNode))
 				{
