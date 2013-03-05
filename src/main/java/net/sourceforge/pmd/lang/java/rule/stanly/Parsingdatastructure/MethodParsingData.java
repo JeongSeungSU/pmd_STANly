@@ -16,6 +16,12 @@ public class MethodParsingData {
 		MethodTokenizedDataList = new ArrayList<MethodTokenizeData>();
 	}
 	
+	public MethodParsingData(String data)
+	{
+		MethodTokenizedDataList = new ArrayList<MethodTokenizeData>();
+		MakeTokenizedData(data);
+	}
+	
 	public void MakeTokenizedData(String Target)
 	{
 		MethodTokenizeData nowdata = new MethodTokenizeData("", "");
@@ -47,6 +53,7 @@ public class MethodParsingData {
 					break;
 				case '.':
 					AddTokenizedData(nowdata);
+					InitArgumentOrTypeTokenizedData(nowdata);
 					nowdata = new MethodTokenizeData("","");
 					continue;
 				default:

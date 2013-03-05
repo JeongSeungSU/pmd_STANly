@@ -16,7 +16,9 @@ import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTEqualityExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTInclusiveOrExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
 import net.sourceforge.pmd.lang.java.ast.ASTMemberSelector;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
@@ -31,6 +33,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
+import net.sourceforge.pmd.lang.java.ast.ASTShiftExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
 import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
@@ -110,6 +113,12 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTAndExpression.class.toString(), new AndExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//Expression???
 		ASTParserNodeList.put(ASTExpression.class.toString(), new ExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTShiftExpression
+		ASTParserNodeList.put(ASTShiftExpression.class.toString(), new ShiftExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTEqualityExpression
+		ASTParserNodeList.put(ASTEqualityExpression.class.toString(), new EqualityExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTInclusiveOrExpression
+		ASTParserNodeList.put(ASTInclusiveOrExpression.class.toString(), new InclusiveOrExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
 	}
 	
 	private AbstractASTAnalysisNode MacthingASTParserNode(AbstractJavaNode node) throws MethodAnalysisException

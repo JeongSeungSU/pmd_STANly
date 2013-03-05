@@ -1,5 +1,9 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
+import java.awt.print.Printable;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,20 +64,33 @@ public class AfterRelations {
 	public void analysisunknown()
 	{
 		UnknownRelationAnalysis();
-		
-		for(int i = 0; i< CallOrAccessList.GetList().size(); i++)
-		{
-			DomainRelation relation = CallOrAccessList.GetList().get(i);
-			
-			System.out.println(relation.getSourceNode().getFullName() + " --"
-					+ relation.getRelation().name() + "--> "
-					+ relation.getTargetNode().getFullName());
-		}
-		
+
 		manager.getDomainRelationList().addAll(CallOrAccessList.GetList());
 		
 		RemoveNullTargetRelations();
 		
+/*		 try {
+		      ////////////////////////////////////////////////////////////////
+		      BufferedWriter out = new BufferedWriter(new FileWriter("E:\\Users\\JeongSeungsu\\Desktop\\exe.txt"));
+		      
+		  	for(int i = 0; i< manager.getDomainRelationList().size(); i++)
+			{
+				DomainRelation relation = manager.getDomainRelationList().get(i);
+			
+		      String s = relation.getSourceNode().getFullName() + " --"
+						+ relation.getRelation().name() + "--> "
+						+ relation.getTargetNode().getFullName();
+			
+		      out.write(s); out.newLine();
+			}
+		      out.close();
+		      ////////////////////////////////////////////////////////////////
+		    } catch (IOException e) {
+		        System.err.println(e); // 에러가 있다면 메시지 출력
+		        System.exit(1);
+		    }
+		 
+		System.out.println("끝");*/
 		for(AbstractAfterCalculator calculator:calculators)
 			calculator.calcMetric(projectNode);
 	}
@@ -104,9 +121,9 @@ public class AfterRelations {
 				relation.setTargetNode(targetNode);
 				// System.out.println(targetNode.getFullName() + " == " +
 				// targetString);
-				System.out.println(sourceNode.getFullName() + " --"
+				/*System.out.println(sourceNode.getFullName() + " --"
 						+ relation.getRelation().name() + "--> "
-						+ targetNode.getFullName());
+						+ targetNode.getFullName());*/
 				
 				sourceNode.AddRelationTarget(relation);
 				targetNode.AddRelationSource(relation);
@@ -217,12 +234,6 @@ public class AfterRelations {
  	private String FindCallOrAccessTargetNode(DomainRelation relation,MethodParsingData data)
  	{
  		String ReturnData = "unknown";
- 		if(relation.getTarget().equals("net.sourceforge.pmd.renderers.XMLRenderer.getWriter()"))
- 		{
- 			int i =0;
- 			i=10;
- 			int j = i;
- 		}
  		for(int index = 0 ; index < data.Size(); index++)
  		{
  			MethodTokenizeData prevtokendata = data.GetTokenizeData(index-1);
@@ -234,14 +245,25 @@ public class AfterRelations {
  				//여기서 Method와 이름이 같은 모든 노드를 찾는다.
  				List<ElementNode> nodeList = SearchNodeNameMethod(tokendata.Content);
  				
-				String UpperClass = prevtokendata.Content;
+ 				String UpperClass = "";
+ 				String MethodClassType = "";
+ 				if(MacroFunctions.NULLTrue(prevtokendata))
+ 				{
+ 					UpperClass = tokendata.Type;
+ 					MethodClassType = tokendata.Type;
+ 				}
+ 				else
+ 				{
+ 					UpperClass = prevtokendata.Content;
+ 					MethodClassType = prevtokendata.Type;
+ 				}
+ 					
 				
 				if(IsPrimitiveType(UpperClass))
 					return "unknown";
 				if(IsUnknownType(UpperClass))
 					return "unknown";
 				
-
 				List<ElementNode> ClassList = SearchNodeNameClassOrInterface(UpperClass);
 				if (ClassList.size() <= 0)
 					return "unknown";
@@ -249,12 +271,12 @@ public class AfterRelations {
 				{
 					MethodParsingData parsedata = null;
 					String UpperName = "";
-					if(prevtokendata.Type.equals(""))
+					if(MethodClassType.equals(""))
 						UpperName = data.GetContentTokenData(0, index);
 					else
 					{
 						parsedata = new MethodParsingData();
-						parsedata.MakeTokenizedData(prevtokendata.Type);
+						parsedata.MakeTokenizedData(MethodClassType);
 						UpperName = parsedata.GetContentTokenData(0, parsedata.Size());
 					}
 					
@@ -262,18 +284,16 @@ public class AfterRelations {
 					{
 						ElementNode Classnode = it.next();
 						String fullname = Classnode.getFullName();
-						if(!prevtokendata.Type.equals("unknown"))
+						if(!MethodClassType.equals("unknown"))
 						{
 							if(!fullname.equals(UpperName))
 								it.remove();
 						}
 					}
 				}
+				if(ClassList.size() == 0 )
+					return "unknown";	//여기 수정해야됨
 				ElementNode classelementnode;
-				if(ClassList.size() > 1 || ClassList.size() == 0 )
-				{	
-					//System.out.println("헐!");
-				}
 				classelementnode = ClassList.get(0);
 				// 그 메서드의 부모 클래스를 가져왔다!!
 
@@ -297,16 +317,13 @@ public class AfterRelations {
 						List<ElementNode> childList = node.getChildren();
 						for (ElementNode childnode : childList) 
 						{
-							if (childnode.getType() == ElementNodeType.METHOD) 
+							if (childnode.getType() == ElementNodeType.METHOD && childnode.getName().equals(tokendata.Content)) 
 							{
-								if (childnode.getName().equals(tokendata.Content)) 
-								{
-									nodeList.add(childnode);
-									IsEnd = true;
-								}
+								nodeList.add(childnode);
+								IsEnd = true;
 							}
 						}
-						if (IsEnd)
+						if(IsEnd)
 							break;
 					}
 				}
@@ -323,22 +340,8 @@ public class AfterRelations {
 					ElementNode MatchingMethodNode = null;
 					for(ElementNode methodnode :nodeList)
 					{
-						boolean ismatchingParameter = true;
 						List<String> ParameterList = ((MethodDomain)methodnode).parameters;
-						for(int i = 0; i< ParameterList.size(); i++)
-						{
-							if(convertargumentlist.size() - 1 < i)
-								break;
-							
-							if(!convertargumentlist.get(i).equals("unknown") || !convertargumentlist.get(i).equals("null"))
-							{
-								if(!ParameterList.get(i).equalsIgnoreCase(convertargumentlist.get(i)))
-								{
-									ismatchingParameter = false;
-									break;
-								}
-							}
-						}
+						boolean ismatchingParameter = CompareArgument(ParameterList, convertargumentlist);
 						//Argument가 매칭되는것이 있다면!!
 						if(ismatchingParameter)
 						{
@@ -357,9 +360,7 @@ public class AfterRelations {
 						for(DomainRelation searchreturnlation : RelationList)
 						{
 							if(searchreturnlation.getRelation() == Relations.RETURNS)
-							{
 								prevtokendata.Content = searchreturnlation.getTarget();
-							}
 						}
 						prevtokendata.Content = "unknown";
 					}
@@ -376,6 +377,7 @@ public class AfterRelations {
 				}
 				else
 				{
+					
 					//암것도 안함
 				}
 			}
@@ -425,11 +427,12 @@ public class AfterRelations {
 				List<ElementNode> ClassNode = SearchNodeNameClassOrInterface(ClassName);
 				
 				if( ClassNode.size() > 1)
-					System.out.println("문제있다. ACCESS부분이다. 같은 이름의 클래스가 2개 ㅠㅠ");
+				{}//System.out.println("문제있다. ACCESS부분이다. 같은 이름의 클래스가 2개 ㅠㅠ");
 				else if(ClassNode.size() == 0)
 					return "unknown";
 				
 				ElementNode TargetNode = null;
+				
 				//고쳐야됨
 				for(int i = 0 ; i < ClassNode.size(); i++)
 				{
@@ -452,7 +455,56 @@ public class AfterRelations {
 		
  		
  	}
- 	
+ 	private boolean CompareArgument(List<String> methodargument, List<String> analysisarguments )
+ 	{
+ 		//아규먼트 갯수가 다르면 당연히 매칭되지 않았다.
+ 		if( methodargument.size() != analysisarguments.size())
+ 			return false;
+ 		
+ 		for(int i = 0; i< analysisarguments.size(); i++)
+		{
+			if(analysisarguments.size() - 1 < i)	//얜 뭐지?????
+				return false;
+			
+			//unknown이나 null이면 무조건 통과
+			if(!analysisarguments.get(i).equals("unknown") || !analysisarguments.get(i).equals("null"))
+			{
+				MethodParsingData methodargumentdata = new MethodParsingData(methodargument.get(i));
+				MethodParsingData analysisargumentsdata = new MethodParsingData(analysisarguments.get(i));
+				if(!CompareMatchingFullnameEndSubname(methodargumentdata,analysisargumentsdata))
+					return false;
+			}
+		}
+ 		return true;
+ 	}
+ 	private boolean CompareMatchingFullnameEndSubname(MethodParsingData data1, MethodParsingData data2)
+ 	{
+ 		MethodParsingData bigsizedata = null;
+ 		MethodParsingData smallsizedata = null;
+ 		
+ 		if(data1.Size() > data2.Size())
+ 		{
+ 			bigsizedata 	= data1;
+ 			smallsizedata 	= data2;
+ 		}
+ 		else
+ 		{
+ 			bigsizedata 	= data2;
+ 			smallsizedata 	= data1;
+ 		}
+ 		boolean IsMatching = true;
+ 		for(int smallindex = smallsizedata.Size()-1 ; smallindex >= 0  ; smallindex--)
+ 		{
+ 			int bigindex = bigsizedata.Size() - smallindex - 1;
+ 			String smallsizetokenstring = smallsizedata.GetTokenizeData(smallindex).Content;
+ 			String bigsizetokenstring 	= bigsizedata.GetTokenizeData(bigindex).Content;
+ 			
+ 			if(!smallsizetokenstring.equals(bigsizetokenstring))
+ 				IsMatching = false;
+ 		}
+ 		return IsMatching;
+ 		
+ 	}
  	private boolean IsPrimitiveType(String data)
  	{
  		if(data.equals(boolean.class.toString()))
@@ -540,16 +592,11 @@ public class AfterRelations {
 	}
 	private void SearchRecursiveNameNode(String name,ElementNode node, ElementNodeType type, List<ElementNode> SearchData)
 	{
-		if(node.getType() == type)
-		{
-			if(node.getName().equals(name))
-				SearchData.add(node);
-		}
-		else
-		{
-			for(ElementNode childnode :node.getChildren())
-				SearchRecursiveNameNode(name,childnode, type, SearchData);
-		}
+		if(node.getType() == type && node.getName().equals(name))
+			SearchData.add(node);
+
+		for(ElementNode childnode :node.getChildren())
+			SearchRecursiveNameNode(name,childnode, type, SearchData);
 	}
 	
 	private String mergeStrArray(String[] strs)

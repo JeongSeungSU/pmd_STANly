@@ -45,13 +45,7 @@ public class ArgumentsAnalysisNode extends AbstractASTAnalysisNode {
 			if(argumentresult.TypeName.equals(MethodAnlysistor.GetUnknownTypeName()))
 				ParameterText += argumentresult.TargetResult + ",";
 			else
-			{
-				if(argumentresult.TypeName.equals(""))
-				{
-					int j = 0;
-				}
 				ParameterText += MethodAnlysistor.TypeSperateApplyer(argumentresult.TypeName) + ",";
-			}
 		}
 		if(argumentcount > 0)
 			ParameterText = ParameterText.substring(0,ParameterText.length()-1);
