@@ -83,6 +83,8 @@ public abstract class ElementNode {
 		return unitNode.getFullName();
 	}
 	public String getFullName() {
+		if(parent == null)
+			return "";
 		if(parent.type == ElementNodeType.PROJECT)
 			return "";
 		if(parent.type == ElementNodeType.LIBRARY)	

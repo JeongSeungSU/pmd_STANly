@@ -1,23 +1,16 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
-import java.awt.print.Printable;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
-
-import org.apache.tools.ant.types.Commandline.Argument;
 
 
 import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodParsingData;
 import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodTokenizeData;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCalculator;
-import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.ComponentDepandency;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Coupling;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.DepthOfInheritanceTree;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
@@ -25,7 +18,6 @@ import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.NumberOfChildre
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.PackagetSetAverage;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.ResponseForClass;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Tangled;
-import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
@@ -53,12 +45,13 @@ public class AfterRelations {
 			calculators.add(new ResponseForClass());
 			calculators.add(new Tangled());
 			calculators.add(new Coupling());
-			calculators.add(new ComponentDepandency());
+			//calculators.add(new ComponentDepandency());
 		}
 	}
 	
 	public void analysisAnother(){
 		// TODO Auto-generated method stub
+		System.out.println("Relation 계산 시작");
 		FindTarget();
 	}
 	public void analysisunknown()
@@ -68,39 +61,47 @@ public class AfterRelations {
 		manager.getDomainRelationList().addAll(CallOrAccessList.GetList());
 		
 		RemoveNullTargetRelations();
+		System.out.println("Relation 계산 끝");
 		
-/*		 try {
-		      ////////////////////////////////////////////////////////////////
-		      BufferedWriter out = new BufferedWriter(new FileWriter("E:\\Users\\JeongSeungsu\\Desktop\\exe.txt"));
-		      
-		  	for(int i = 0; i< manager.getDomainRelationList().size(); i++)
-			{
-				DomainRelation relation = manager.getDomainRelationList().get(i);
-			
-		      String s = relation.getSourceNode().getFullName() + " --"
-						+ relation.getRelation().name() + "--> "
-						+ relation.getTargetNode().getFullName();
-			
-		      out.write(s); out.newLine();
-			}
-		      out.close();
-		      ////////////////////////////////////////////////////////////////
-		    } catch (IOException e) {
-		        System.err.println(e); // 에러가 있다면 메시지 출력
-		        System.exit(1);
-		    }
-		 
-		System.out.println("끝");*/
+		
+		
+		
+		//데이터 검증
+		System.out.println("데이터 검증 시작");
+		DataVerification(manager.getDomainRelationList(),projectNode);
+		System.out.println("데이터 검증 끝");
+		
+		
+		System.out.println("metric 계산 시작");
 		for(AbstractAfterCalculator calculator:calculators)
 			calculator.calcMetric(projectNode);
 	}
-	
+	private void DataVerification(List<DomainRelation> relationlist, ElementNode node)
+	{
+		List<DomainRelation> SourceList = new ArrayList<DomainRelation>();
+		List<DomainRelation> TargetList = new ArrayList<DomainRelation>();
+		for(int i = 0 ; i < relationlist.size() ; i++)
+		{
+			DomainRelation relation = relationlist.get(i);
+			if(relation.getSourceNode().getFullName().equals(node.getFullName()))
+				SourceList.add(relation);
+			if(relation.getTargetNode().getFullName().equals(node.getFullName()))
+				TargetList.add(relation);
+		}
+		if(node.getRelationSources().size() != TargetList.size())
+			System.out.println(node.getFullName() + " 가 Target인 List 수 이상 ");
+		if(node.getRelationTargets().size() != SourceList.size())
+			System.out.println(node.getFullName() + " 가 Source인 List 수 이상 ");
+		
+		for(ElementNode childnode : node.getChildren())
+			DataVerification(relationlist,childnode);
+	}
 
 	public void FindTarget(){
 		List<DomainRelation> domainRelation = manager.getDomainRelationList();
 		String targetString;
 		ElementNode sourceNode;
-		ElementNode targetNode;
+		ElementNode targetNode = null;
 
 		for(DomainRelation relation:domainRelation)
 		{
@@ -113,20 +114,18 @@ public class AfterRelations {
 			
 			
 			// Unknown:Calls,Access처리중 JSS
-			targetNode = sourceNode.getParent().findNode(targetString);
-
-			// 찾을수 없느 관계는 추후 삭제함 YHC
-			if (targetNode != null) 
+			if(relation.getRelation() != Relations.UNKNOWN)
 			{
-				relation.setTargetNode(targetNode);
-				// System.out.println(targetNode.getFullName() + " == " +
-				// targetString);
-				/*System.out.println(sourceNode.getFullName() + " --"
-						+ relation.getRelation().name() + "--> "
-						+ targetNode.getFullName());*/
-				
-				sourceNode.AddRelationTarget(relation);
-				targetNode.AddRelationSource(relation);
+				targetNode = sourceNode.getParent().findNode(targetString);
+
+
+				// 찾을수 없느 관계는 추후 삭제함 YHC
+				if (targetNode != null) 
+				{
+					relation.setTargetNode(targetNode);
+					sourceNode.AddRelationTarget(relation);
+					targetNode.AddRelationSource(relation);
+				}
 			}
 		}		
 	}
@@ -346,7 +345,12 @@ public class AfterRelations {
 						if(ismatchingParameter)
 						{
 							matchingmethod = true;
-							CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , methodnode.getFullName() , relation.getSourceNode(), methodnode);
+							DomainRelation newrelation = CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , methodnode.getFullName() , relation.getSourceNode(), methodnode);
+							if(!MacroFunctions.NULLTrue(newrelation))
+							{
+								relation.getSourceNode().AddRelationTarget(newrelation);
+								methodnode.AddRelationSource(newrelation);
+							}
 							MatchingMethodNode = methodnode; 
 							break;
 						}
@@ -368,7 +372,13 @@ public class AfterRelations {
 				}
 				else if(nodeList.size() == 1)
 				{
-					CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , nodeList.get(0).getFullName() , relation.getSourceNode(), nodeList.get(0));
+					DomainRelation newrelation = CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , nodeList.get(0).getFullName() , relation.getSourceNode(), nodeList.get(0));
+					if(!MacroFunctions.NULLTrue(newrelation))
+					{
+						relation.getSourceNode().AddRelationTarget(newrelation);
+						nodeList.get(0).AddRelationSource(newrelation);
+					}
+					
 					MethodParsingData parsingdata = new MethodParsingData();
 					String ReturnType = ((MethodDomain)nodeList.get(0)).returntype;
 					parsingdata.MakeTokenizedData(ReturnType);
@@ -448,7 +458,12 @@ public class AfterRelations {
 				}
 				
 				
-				CallOrAccessList.AddRelation(Relations.ACCESSES, relation.getSource(), TargetNode.getFullName(), relation.getSourceNode(), TargetNode);
+				DomainRelation newrelation = CallOrAccessList.AddRelation(Relations.ACCESSES, relation.getSource(), TargetNode.getFullName(), relation.getSourceNode(), TargetNode);
+				if(!MacroFunctions.NULLTrue(newrelation))
+				{
+					relation.getSourceNode().AddRelationTarget(newrelation);
+					TargetNode.AddRelationSource(newrelation);
+				}
  			}
  		}
 		return ReturnData;

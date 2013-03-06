@@ -67,10 +67,12 @@ public class ProjectTree extends AbstractJavaRule {
 			StartOfJavafile = ((RuleContext)data).getSourceCodeFilename();
 		else if(StartOfJavafile.equals(((RuleContext)data).getSourceCodeFilename()))
 		{
+			
 			AfterRelations afterRelation = new AfterRelations(projectNode,manager);
 			afterRelation.makePackageSet();
 			afterRelation.analysisAnother();
 			afterRelation.analysisunknown();
+			System.out.println("metric 계산끝");
 			return data;
 		}
 		LibraryDomain currentLibraryNode = null;
@@ -160,7 +162,6 @@ public class ProjectTree extends AbstractJavaRule {
 			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
 			//System.out.println("        new class node : " + name);
 		}
-		
 		manager.AddRelation(node, thisNode);
 		
 		entryStack.push(thisNode);
