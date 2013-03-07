@@ -64,7 +64,34 @@ public class MethodParsingData {
 		InitArgumentOrTypeTokenizedData(nowdata);
 
 	}
-	
+ 	public boolean CompareMatchingFullnameEndSubname(MethodParsingData data)
+ 	{
+ 		MethodParsingData bigsizedata = null;
+ 		MethodParsingData smallsizedata = null;
+ 		
+ 		if(this.Size() > data.Size())
+ 		{
+ 			bigsizedata 	= this;
+ 			smallsizedata 	= data;
+ 		}
+ 		else
+ 		{
+ 			bigsizedata 	= data;
+ 			smallsizedata 	= this;
+ 		}
+ 		boolean IsMatching = true;
+ 		for(int smallindex = smallsizedata.Size()-1 ; smallindex >= 0  ; smallindex--)
+ 		{
+ 			int bigindex = bigsizedata.Size() - smallindex - 1;
+ 			String smallsizetokenstring = smallsizedata.GetTokenizeData(smallindex).Content;
+ 			String bigsizetokenstring 	= bigsizedata.GetTokenizeData(bigindex).Content;
+ 			
+ 			if(!smallsizetokenstring.equals(bigsizetokenstring))
+ 				IsMatching = false;
+ 		}
+ 		return IsMatching;
+ 		
+ 	}
 	private void InitArgumentOrTypeTokenizedData(MethodTokenizeData data)
 	{
 		for(String typeargument :data.TypeArgument)

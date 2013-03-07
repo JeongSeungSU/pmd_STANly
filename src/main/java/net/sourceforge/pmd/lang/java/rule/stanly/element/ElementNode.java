@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
+import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodParsingData;
 
 
 
@@ -26,6 +27,10 @@ public abstract class ElementNode {
 	
 	protected String name;
 	int ChildrenCount=0;
+	
+	int LeftSideValue;
+	int RightSideValue;
+	
 	public ElementNode(ElementNode parent, ElementNodeType type,String name)
 	{
 		this.parent = parent;
@@ -34,6 +39,8 @@ public abstract class ElementNode {
 		this.children = new ArrayList<ElementNode>();
 		this.relationSources = new ArrayList<DomainRelation>();
 		this.relationTargets = new ArrayList<DomainRelation>();
+		this.LeftSideValue = -1;
+		this.RightSideValue = -1;
 	}
 
 	public ElementNode(ElementNodeType type,String name)
@@ -45,6 +52,22 @@ public abstract class ElementNode {
 		//this.children = new ArrayList<ElementNode>();
 	}
 	
+	public int getLeftSideValue() {
+		return LeftSideValue;
+	}
+
+	public void setLeftSideValue(int leftSideValue) {
+		LeftSideValue = leftSideValue;
+	}
+
+	public int getRightSideValue() {
+		return RightSideValue;
+	}
+
+	public void setRightSideValue(int rightSideValue) {
+		RightSideValue = rightSideValue;
+	}
+
 	public ElementNodeType getType() {
 		return type;
 	}
@@ -59,14 +82,10 @@ public abstract class ElementNode {
 	}
 	public void AddRelationSource(DomainRelation relation)
 	{
-		//if(relationSources == null)
-		this.relationSources = new ArrayList<DomainRelation>();
 		relationSources.add(relation);
 	}
 	public void AddRelationTarget(DomainRelation relation)
 	{
-		//if(relationTargets == null)
-		this.relationTargets = new ArrayList<DomainRelation>();
 		relationTargets.add(relation);
 	}
 	
@@ -173,8 +192,38 @@ public abstract class ElementNode {
 		
 		return newNode;
 	}
+	private void findchildnodetomatching(MethodParsingData targetdata, List<ElementNode> nodelist)
+	{
+		MethodParsingData sourcedata = new MethodParsingData(getFullName());
+		
+		if(sourcedata.CompareMatchingFullnameEndSubname(targetdata))
+			nodelist.add(this);
+		else
+		{
+			for(ElementNode childnode:getChildren())
+				childnode.findchildnodetomatching(targetdata,nodelist);
+		}
+	}
 	public ElementNode findNode(String targetString) {
 		// TODO Auto-generated method stub
+		/*
+		ElementNode libnode = this;
+		while(libnode.type != ElementNodeType.LIBRARY)
+			libnode = libnode.getParent();
+
+		List<ElementNode> foundNodeList = new ArrayList<ElementNode>();
+		
+		libnode.findchildnodetomatching(new MethodParsingData(targetString), foundNodeList);
+	
+		if(foundNodeList.size() ==1)
+			return foundNodeList.get(0);
+		else
+			return null;
+		
+		*/
+				
+			
+		
 		ElementNode targetNode = null;
 		//targetString.startsWith(prefix)
 		if(type == ElementNodeType.LIBRARY)
@@ -222,6 +271,11 @@ public abstract class ElementNode {
 		else targetNode = getParent().findNode(targetString);
 		
 		return targetNode;
+		
+		
+		
+		
+		
 	}
 
 	private String removeTemplate(String targetString, int sp) {

@@ -13,6 +13,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTName;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
+import net.sourceforge.pmd.lang.java.ast.ASTResource;
 import net.sourceforge.pmd.lang.java.ast.ASTType;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
@@ -60,6 +61,8 @@ public class NameAnalysisNode extends AbstractASTAnalysisNode {
 		else if(typenode1.getClass() == ASTMethodDeclaration.class)
 			typenode2 = (JavaNode)typenode1.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
 		else if(typenode1.getClass() == ASTFormalParameter.class)
+			typenode2 = (JavaNode)typenode1.getFirstChildOfType(ASTType.class);
+		else if(typenode1.getClass() == ASTResource.class)
 			typenode2 = (JavaNode)typenode1.getFirstChildOfType(ASTType.class);
 		else
 			throw new MethodAnalysisException("ASTName에서" + typenode1.getClass().toString() + "타입을 못찾음...");

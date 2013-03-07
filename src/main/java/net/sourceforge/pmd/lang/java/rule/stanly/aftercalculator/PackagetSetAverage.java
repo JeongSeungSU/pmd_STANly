@@ -7,7 +7,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class PackagetSetAverage extends AbstractAfterCalculator {
+public class PackagetSetAverage implements AbstractAfterCalculator {
 
 	public void calcMetric(ProjectDomain node)
 	{

@@ -30,7 +30,7 @@ public class DomainRelationList {
 			Relations rel = relation.getRelation();
 			String tar = relation.getTarget();
 			if(srcNode == sourceNode && rel == relationkind && tar.equals(target))
-				return null;//중복제거
+				return relation;//중복제거
 		}
 		
 		DomainRelation relation = new DomainRelation();

@@ -32,6 +32,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
+import net.sourceforge.pmd.lang.java.ast.ASTResource;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.ast.ASTShiftExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
@@ -119,6 +120,8 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTEqualityExpression.class.toString(), new EqualityExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//ASTInclusiveOrExpression
 		ASTParserNodeList.put(ASTInclusiveOrExpression.class.toString(), new InclusiveOrExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTResource
+		ASTParserNodeList.put(ASTResource.class.toString(), new ResourceAnalysisNode(RelationList,processedPrimaryExpression,this));
 	}
 	
 	private AbstractASTAnalysisNode MacthingASTParserNode(AbstractJavaNode node) throws MethodAnalysisException

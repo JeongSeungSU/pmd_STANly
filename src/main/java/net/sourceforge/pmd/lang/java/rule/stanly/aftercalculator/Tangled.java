@@ -11,7 +11,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class Tangled extends AbstractAfterCalculator {
+public class Tangled implements AbstractAfterCalculator {
 	public void calcMetric(ProjectDomain node)
 	{
 		visitChildren((ElementNode)node);

@@ -14,6 +14,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.AbstractAfterCa
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Coupling;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.DepthOfInheritanceTree;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Fat;
+import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.LackOfCohesion;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.NumberOfChildren;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.PackagetSetAverage;
 import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.ResponseForClass;
@@ -45,6 +46,7 @@ public class AfterRelations {
 			calculators.add(new ResponseForClass());
 			calculators.add(new Tangled());
 			calculators.add(new Coupling());
+			calculators.add(new LackOfCohesion());
 			//calculators.add(new ComponentDepandency());
 		}
 	}
@@ -53,7 +55,12 @@ public class AfterRelations {
 		// TODO Auto-generated method stub
 		System.out.println("Relation 계산 시작");
 		FindTarget();
+
+		//Managing Hierarchical Data in MySQL
+		//디비에서 찾기 쉽게 양옆에 숫자를 넣음..
+		TraveltoHierarchicalDatainSQL(projectNode, 0);
 	}
+	
 	public void analysisunknown()
 	{
 		UnknownRelationAnalysis();
@@ -67,34 +74,59 @@ public class AfterRelations {
 		
 		
 		//데이터 검증
+		
+		DataVerification(manager.getDomainRelationList());
+		
+		/*		
 		System.out.println("데이터 검증 시작");
-		DataVerification(manager.getDomainRelationList(),projectNode);
+		DataVerificationtest(manager.getDomainRelationList(),projectNode);
 		System.out.println("데이터 검증 끝");
+		*/
 		
 		
 		System.out.println("metric 계산 시작");
 		for(AbstractAfterCalculator calculator:calculators)
 			calculator.calcMetric(projectNode);
 	}
-	private void DataVerification(List<DomainRelation> relationlist, ElementNode node)
+	
+	private void DataVerification(List<DomainRelation> relationlist)
+	{
+		for(int i = 0 ; i < relationlist.size() ; i++)
+		{
+			DomainRelation relation = relationlist.get(i);
+			if(relation.getRelation() == Relations.CALLS || 
+			   relation.getRelation() == Relations.ACCESSES)
+			{
+				relation.getSourceNode().getRelationTargets().add(relation);
+				relation.getTargetNode().getRelationSources().add(relation);
+			}
+		}
+	}
+	//꼭 나중에 이 함수 삭제 할 것! 아니면 테스트 케이스로 빼기
+	private void DataVerificationtest(List<DomainRelation> relationlist, ElementNode node)
 	{
 		List<DomainRelation> SourceList = new ArrayList<DomainRelation>();
 		List<DomainRelation> TargetList = new ArrayList<DomainRelation>();
 		for(int i = 0 ; i < relationlist.size() ; i++)
 		{
 			DomainRelation relation = relationlist.get(i);
-			if(relation.getSourceNode().getFullName().equals(node.getFullName()))
+			if(relation.getSourceNode() == node)
 				SourceList.add(relation);
-			if(relation.getTargetNode().getFullName().equals(node.getFullName()))
+			if(relation.getTargetNode() == node)
 				TargetList.add(relation);
 		}
+		
 		if(node.getRelationSources().size() != TargetList.size())
+		{
 			System.out.println(node.getFullName() + " 가 Target인 List 수 이상 ");
+		}
 		if(node.getRelationTargets().size() != SourceList.size())
+		{
 			System.out.println(node.getFullName() + " 가 Source인 List 수 이상 ");
+		}
 		
 		for(ElementNode childnode : node.getChildren())
-			DataVerification(relationlist,childnode);
+			DataVerificationtest(relationlist,childnode);
 	}
 
 	public void FindTarget(){
@@ -113,19 +145,18 @@ public class AfterRelations {
 			sourceNode = relation.getSourceNode();
 			
 			
+			
 			// Unknown:Calls,Access처리중 JSS
 			if(relation.getRelation() != Relations.UNKNOWN)
 			{
 				targetNode = sourceNode.getParent().findNode(targetString);
-
-
 				// 찾을수 없느 관계는 추후 삭제함 YHC
-				if (targetNode != null) 
-				{
-					relation.setTargetNode(targetNode);
-					sourceNode.AddRelationTarget(relation);
-					targetNode.AddRelationSource(relation);
-				}
+				if (targetNode == null)
+					continue;
+				
+				relation.setTargetNode(targetNode);
+				sourceNode.AddRelationTarget(relation);
+				targetNode.AddRelationSource(relation);
 			}
 		}		
 	}
@@ -345,12 +376,7 @@ public class AfterRelations {
 						if(ismatchingParameter)
 						{
 							matchingmethod = true;
-							DomainRelation newrelation = CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , methodnode.getFullName() , relation.getSourceNode(), methodnode);
-							if(!MacroFunctions.NULLTrue(newrelation))
-							{
-								relation.getSourceNode().AddRelationTarget(newrelation);
-								methodnode.AddRelationSource(newrelation);
-							}
+							CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , methodnode.getFullName() , relation.getSourceNode(), methodnode);
 							MatchingMethodNode = methodnode; 
 							break;
 						}
@@ -372,12 +398,7 @@ public class AfterRelations {
 				}
 				else if(nodeList.size() == 1)
 				{
-					DomainRelation newrelation = CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , nodeList.get(0).getFullName() , relation.getSourceNode(), nodeList.get(0));
-					if(!MacroFunctions.NULLTrue(newrelation))
-					{
-						relation.getSourceNode().AddRelationTarget(newrelation);
-						nodeList.get(0).AddRelationSource(newrelation);
-					}
+					CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , nodeList.get(0).getFullName() , relation.getSourceNode(), nodeList.get(0));
 					
 					MethodParsingData parsingdata = new MethodParsingData();
 					String ReturnType = ((MethodDomain)nodeList.get(0)).returntype;
@@ -458,12 +479,7 @@ public class AfterRelations {
 				}
 				
 				
-				DomainRelation newrelation = CallOrAccessList.AddRelation(Relations.ACCESSES, relation.getSource(), TargetNode.getFullName(), relation.getSourceNode(), TargetNode);
-				if(!MacroFunctions.NULLTrue(newrelation))
-				{
-					relation.getSourceNode().AddRelationTarget(newrelation);
-					TargetNode.AddRelationSource(newrelation);
-				}
+				CallOrAccessList.AddRelation(Relations.ACCESSES, relation.getSource(), TargetNode.getFullName(), relation.getSourceNode(), TargetNode);
  			}
  		}
 		return ReturnData;
@@ -486,40 +502,13 @@ public class AfterRelations {
 			{
 				MethodParsingData methodargumentdata = new MethodParsingData(methodargument.get(i));
 				MethodParsingData analysisargumentsdata = new MethodParsingData(analysisarguments.get(i));
-				if(!CompareMatchingFullnameEndSubname(methodargumentdata,analysisargumentsdata))
+				if(!methodargumentdata.CompareMatchingFullnameEndSubname(analysisargumentsdata))
 					return false;
 			}
 		}
  		return true;
  	}
- 	private boolean CompareMatchingFullnameEndSubname(MethodParsingData data1, MethodParsingData data2)
- 	{
- 		MethodParsingData bigsizedata = null;
- 		MethodParsingData smallsizedata = null;
- 		
- 		if(data1.Size() > data2.Size())
- 		{
- 			bigsizedata 	= data1;
- 			smallsizedata 	= data2;
- 		}
- 		else
- 		{
- 			bigsizedata 	= data2;
- 			smallsizedata 	= data1;
- 		}
- 		boolean IsMatching = true;
- 		for(int smallindex = smallsizedata.Size()-1 ; smallindex >= 0  ; smallindex--)
- 		{
- 			int bigindex = bigsizedata.Size() - smallindex - 1;
- 			String smallsizetokenstring = smallsizedata.GetTokenizeData(smallindex).Content;
- 			String bigsizetokenstring 	= bigsizedata.GetTokenizeData(bigindex).Content;
- 			
- 			if(!smallsizetokenstring.equals(bigsizetokenstring))
- 				IsMatching = false;
- 		}
- 		return IsMatching;
- 		
- 	}
+
  	private boolean IsPrimitiveType(String data)
  	{
  		if(data.equals(boolean.class.toString()))
@@ -600,11 +589,23 @@ public class AfterRelations {
 	{
 		List<ElementNode> nodeList = new ArrayList<ElementNode>();
 		
-		SearchRecursiveNameNode(name, projectNode, ElementNodeType.CLASS, nodeList);
-		SearchRecursiveNameNode(name, projectNode, ElementNodeType.INTERFACE, nodeList);
+		SearchRecursiveNameNodeClassOrInterface(name, projectNode,  nodeList);
 		
 		return nodeList;
 	}
+	//속도 향상을 위한...
+	private void SearchRecursiveNameNodeClassOrInterface(String name,ElementNode node, List<ElementNode> SearchData)
+	{
+		if(( (node.getType() == ElementNodeType.CLASS) 		|| 
+		     (node.getType() == ElementNodeType.INTERFACE)  ||
+		     (node.getType() == ElementNodeType.ENUM))
+		      && node.getName().equals(name))
+			SearchData.add(node);
+
+		for(ElementNode childnode :node.getChildren())
+			SearchRecursiveNameNodeClassOrInterface(name,childnode, SearchData);
+	}
+	
 	private void SearchRecursiveNameNode(String name,ElementNode node, ElementNodeType type, List<ElementNode> SearchData)
 	{
 		if(node.getType() == type && node.getName().equals(name))
@@ -632,5 +633,12 @@ public class AfterRelations {
 		}
 		return (String[])strC.toArray(new String[0]);
 	}
-
+	private int TraveltoHierarchicalDatainSQL(ElementNode node,int value)
+	{
+		node.setLeftSideValue(++value);
+		for(ElementNode childnode : node.getChildren())
+			value = TraveltoHierarchicalDatainSQL(childnode,value);
+		node.setRightSideValue(++value);
+		return value;
+	}
 }

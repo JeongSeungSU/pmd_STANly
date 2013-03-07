@@ -9,7 +9,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class DepthOfInheritanceTree extends AbstractAfterCalculator {
+public class DepthOfInheritanceTree implements AbstractAfterCalculator {
 	
 	
 	public void calcMetric(ProjectDomain node)
