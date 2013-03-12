@@ -26,13 +26,13 @@ public class Coupling implements AbstractAfterCalculator {
 		node.metric.setAfferentCoupling(afferent);
 		node.metric.setEfferentCoupling(efferent);
 		
-		float instability = (float)efferent / (float)(afferent + efferent);
+		float instability = (afferent + efferent == 0) ? 0 : (float)efferent / (float)(afferent + efferent);
 		
 		node.metric.setInstability(instability);
 		
 		int numOfAbstract = node.metric.getNumberOfAbstract();
 		int numOfUnit = node.metric.getUnits();
-		float abstractness = (float)numOfAbstract / (float)numOfUnit;
+		float abstractness = (numOfUnit == 0) ? 0 : (float)numOfAbstract / (float)numOfUnit;
 		
 		node.metric.setAbstractness(abstractness);
 		
