@@ -101,9 +101,10 @@ public abstract class ElementNode {
 			unitNode = unitNode.getParent();
 		return unitNode.getFullName();
 	}
+	
 	public String getFullName() {
 		if(parent == null)
-			return "";
+			return "Project";
 		if(parent.type == ElementNodeType.PROJECT)
 			return "";
 		if(parent.type == ElementNodeType.LIBRARY)	

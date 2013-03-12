@@ -56,12 +56,13 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 	{
 		
 	//	node.metric.setACDPackage(acd);
-		
+		/*
 		float packageACD = calcACD(PackagesName,PackageRel);				
 		node.metric.setACDPackage(packageACD);
 		
 		float unitACD = calcACD(UnitsName,UnitRel);
 		node.metric.setACDUnit(unitACD);
+		*/
 		
 		/*List<String> strRel;
 		if(UnitRel.size() > 0)
