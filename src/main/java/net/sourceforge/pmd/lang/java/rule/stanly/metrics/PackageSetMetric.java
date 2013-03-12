@@ -8,6 +8,45 @@ public class PackageSetMetric{
 	private int NumberOfFields;
 	//private int LOC;
 	private int totalELOC;
+	public int getNumberOfPackages() {
+		return NumberOfPackages;
+	}
+
+	public void setNumberOfPackages(int numberOfPackages) {
+		NumberOfPackages = numberOfPackages;
+	}
+
+	public void setNumberOfMethods(int numberOfMethods) {
+		NumberOfMethods = numberOfMethods;
+	}
+
+	public void setNumberOfClasses(int numberOfClasses) {
+		NumberOfClasses = numberOfClasses;
+	}
+
+	public void setNumberOfClass(int numberOfClass) {
+		NumberOfClass = numberOfClass;
+	}
+
+	public void setNumberOfFields(int numberOfFields) {
+		NumberOfFields = numberOfFields;
+	}
+
+	public void setTotalELOC(int totalELOC) {
+		this.totalELOC = totalELOC;
+	}
+
+	public void setTotalUnit(int totalUnit) {
+		this.totalUnit = totalUnit;
+	}
+
+	public void setTotalCC(int totalCC) {
+		TotalCC = totalCC;
+	}
+
+	public void setFat(int fat) {
+		Fat = fat;
+	}
 	private int totalUnit;
 	private int TotalCC;
 	private int Fat;

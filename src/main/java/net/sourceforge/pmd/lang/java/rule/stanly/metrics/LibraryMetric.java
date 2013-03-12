@@ -118,8 +118,71 @@ public class LibraryMetric {
 	public int getLCOM() {
 		return totalLCOM;
 	}
+	public int gettotalNOC() {
+		return totalNOC;
+	}
 	public void addLCOM(int lCOM) {
 		totalLCOM += lCOM;
+	}
+	public int getUnit() {
+		return Unit;
+	}
+	public void setUnit(int unit) {
+		Unit = unit;
+	}
+	public float getTotalDistance() {
+		return totalDistance;
+	}
+	public void setTotalDistance(float totalDistance) {
+		this.totalDistance = totalDistance;
+	}
+	public float getTotalDistanceAbsolute() {
+		return totalDistanceAbsolute;
+	}
+	public void setTotalDistanceAbsolute(float totalDistanceAbsolute) {
+		this.totalDistanceAbsolute = totalDistanceAbsolute;
+	}
+	public int getTotalWMC() {
+		return totalWMC;
+	}
+	public void setTotalWMC(int totalWMC) {
+		this.totalWMC = totalWMC;
+	}
+	public int getTotalDIT() {
+		return totalDIT;
+	}
+	public void setTotalDIT(int totalDIT) {
+		this.totalDIT = totalDIT;
+	}
+	public int getTotalNOC() {
+		return totalNOC;
+	}
+	public void setTotalNOC(int totalNOC) {
+		this.totalNOC = totalNOC;
+	}
+	public int getTotalLCOM() {
+		return totalLCOM;
+	}
+	public void setTotalLCOM(int totalLCOM) {
+		this.totalLCOM = totalLCOM;
+	}
+	public void setPackages(int packages) {
+		Packages = packages;
+	}
+	public void setNumberOfClass(int numberOfClass) {
+		NumberOfClass = numberOfClass;
+	}
+	public void setFatPackages(int fatPackages) {
+		FatPackages = fatPackages;
+	}
+	public void setFatUnits(int fatUnits) {
+		FatUnits = fatUnits;
+	}
+	public void setTotalCBO(int totalCBO) {
+		this.totalCBO = totalCBO;
+	}
+	public void setTotalRFC(int totalRFC) {
+		this.totalRFC = totalRFC;
 	}
 	public int getNumberOfClass() {
 		return NumberOfClass;
