@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
-import net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator.Coupling;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;
@@ -66,7 +63,6 @@ public class ProjectTree extends AbstractJavaRule {
 			StartOfJavafile = ((RuleContext)data).getSourceCodeFilename();
 		else if(StartOfJavafile.equals(((RuleContext)data).getSourceCodeFilename()))
 		{
-			
 			AfterRelations afterRelation = new AfterRelations(projectNode,manager);
 			afterRelation.makePackageSet();
 			afterRelation.analysisAnother();
