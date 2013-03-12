@@ -18,10 +18,8 @@ public class DomainRelationList {
 		return RelationList;
 	}
 	
-	public void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
+	public DomainRelation AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
 	{		
-		if(target.equals("String"))
-			return;
 		
 		//중복 제거 YHC
 		for(DomainRelation relation: RelationList)
@@ -32,7 +30,7 @@ public class DomainRelationList {
 			Relations rel = relation.getRelation();
 			String tar = relation.getTarget();
 			if(srcNode == sourceNode && rel == relationkind && tar.equals(target))
-				return;//중복제거
+				return relation;//중복제거
 		}
 		
 		DomainRelation relation = new DomainRelation();
@@ -46,5 +44,6 @@ public class DomainRelationList {
 		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
 			//					"-> \t Target : " + relation.getTarget());
 		RelationList.add(0,relation);
+		return relation;
 	}
 }

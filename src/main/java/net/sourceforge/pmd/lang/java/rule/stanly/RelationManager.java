@@ -32,6 +32,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnlaysis;
 import net.sourceforge.pmd.lang.java.symboltable.NameDeclaration;
@@ -57,6 +58,11 @@ public class RelationManager {
 	 */
 	public List<DomainRelation >getDomainRelationList(){
 		return RelationList.GetList();
+	}
+	
+	public void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)
+	{
+		RelationList.AddRelation(relationkind, source, target, sourceNode, targetNode);
 	}
 	
 	/**
@@ -127,20 +133,21 @@ public class RelationManager {
 	void AddRelation(ASTClassOrInterfaceDeclaration node, ElementNode elementnode)
 	{
 
-		List<ASTExtendsList> extendlist = node.findDescendantsOfType(ASTExtendsList.class);
-		List<ASTImplementsList> Implementslist = node.findDescendantsOfType(ASTImplementsList.class);
-		if(extendlist.size() > 0)
+		ASTExtendsList extendlist = node.getFirstChildOfType(ASTExtendsList.class);
+		ASTImplementsList Implementslist = node.getFirstChildOfType(ASTImplementsList.class);
+		
+		if(!MacroFunctions.NULLTrue(extendlist))
 		{
-			List<ASTClassOrInterfaceType> list = extendlist.get(0).findChildrenOfType(ASTClassOrInterfaceType.class);
+			List<ASTClassOrInterfaceType> list = extendlist.findChildrenOfType(ASTClassOrInterfaceType.class);
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Extends
 				RelationList.AddRelation(Relations.EXTENDS,elementnode.getFullName(),ClassOrInterfaceTypeToString(type),elementnode,null);
 			}
 		}
-		if(Implementslist.size() > 0 )
+		if(!MacroFunctions.NULLTrue(Implementslist))
 		{
-			List<ASTClassOrInterfaceType> list = Implementslist.get(0).findChildrenOfType(ASTClassOrInterfaceType.class);
+			List<ASTClassOrInterfaceType> list = Implementslist.findChildrenOfType(ASTClassOrInterfaceType.class);
 			for(ASTClassOrInterfaceType type : list)
 			{
 				//Imeplements

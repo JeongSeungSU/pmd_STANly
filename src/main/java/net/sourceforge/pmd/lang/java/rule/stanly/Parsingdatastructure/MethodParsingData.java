@@ -16,13 +16,16 @@ public class MethodParsingData {
 		MethodTokenizedDataList = new ArrayList<MethodTokenizeData>();
 	}
 	
+	public MethodParsingData(String data)
+	{
+		MethodTokenizedDataList = new ArrayList<MethodTokenizeData>();
+		MakeTokenizedData(data);
+	}
+	
 	public void MakeTokenizedData(String Target)
 	{
-		MethodTokenizeData nowdata = new MethodTokenizeData("", "", "", "");
-		
-		boolean Type = false;
-		boolean Argument = false;
-		boolean TypeArgument = false;
+		MethodTokenizeData nowdata = new MethodTokenizeData("", "");
+		int result;
 		
 		for(int i =0 ; i < Target.length(); i++)
 		{
@@ -31,51 +34,89 @@ public class MethodParsingData {
 				case 'S':
 					if(DetermineTypeSeperat(Target,i) > i)
 					{
-						Type = true;
-						i = DetermineTypeSeperat(Target,i);
+						i = DetermineTypeSeperat(Target, i);
+						result = TypeMode(Target, i);
+						nowdata.Type = Target.substring(i, result);
+						i = result + TypeSeperate.length() - 1;
 					}
+					else nowdata.Content += Target.charAt(i);
 					break;
 				case '<':
-					TypeArgument = true;
+					result = ArgumentOrTypeMode(Target,i, '<', '>');
+					nowdata.TypeArgument = DotSeparator(Target.substring(i+1,result));
+					i = result;
 					break;
 				case '(':
-					Argument = true;
+					result = ArgumentOrTypeMode(Target,i, '(', ')');
+					nowdata.Argument = DotSeparator(Target.substring(i+1,result));
+					i = result;
 					break;
 				case '.':
 					AddTokenizedData(nowdata);
-					nowdata = new MethodTokenizeData("", "" , "", "");
+					InitArgumentOrTypeTokenizedData(nowdata);
+					nowdata = new MethodTokenizeData("","");
 					continue;
+				default:
+					nowdata.Content += Target.charAt(i);
 			}
-			
-			if(Type)
-			{
-				int result = TypeMode(Target,i);
-				nowdata.Type = Target.substring(i,result);
-				i = result + TypeSeperate.length() - 1;
-				Type = false;
-			}
-			else if(TypeArgument)
-			{
-				int result = ArgumentOrTypeMode(Target,i, '<', '>');
-				nowdata.TypeArgument = Target.substring(i+1,result);
-				i = result;
-				TypeArgument = false;
-			}
-			else if(Argument)
-			{
-				int result = ArgumentOrTypeMode(Target,i, '(', ')');
-				nowdata.Argument = Target.substring(i+1,result);
-				if(nowdata.Argument.equals(""))
-					nowdata.Argument = " ";
-				i = result;
-				Argument = false;
-			}
-			else
-				nowdata.Content += Target.charAt(i);
 		}
 		AddTokenizedData(nowdata);
-	}
+		InitArgumentOrTypeTokenizedData(nowdata);
 
+	}
+ 	public boolean CompareMatchingFullnameEndSubname(MethodParsingData data)
+ 	{
+ 		MethodParsingData bigsizedata = null;
+ 		MethodParsingData smallsizedata = null;
+ 		
+ 		if(this.Size() > data.Size())
+ 		{
+ 			bigsizedata 	= this;
+ 			smallsizedata 	= data;
+ 		}
+ 		else
+ 		{
+ 			bigsizedata 	= data;
+ 			smallsizedata 	= this;
+ 		}
+ 		boolean IsMatching = true;
+ 		for(int smallindex = smallsizedata.Size()-1 ; smallindex >= 0  ; smallindex--)
+ 		{
+ 			int bigindex = bigsizedata.Size() - smallindex - 1;
+ 			String smallsizetokenstring = smallsizedata.GetTokenizeData(smallindex).Content;
+ 			String bigsizetokenstring 	= bigsizedata.GetTokenizeData(bigindex).Content;
+ 			
+ 			if(!smallsizetokenstring.equals(bigsizetokenstring))
+ 				IsMatching = false;
+ 		}
+ 		return IsMatching;
+ 		
+ 	}
+	private void InitArgumentOrTypeTokenizedData(MethodTokenizeData data)
+	{
+		for(String typeargument :data.TypeArgument)
+		{
+			MethodParsingData typeargumentdata = new MethodParsingData();
+			typeargumentdata.MakeTokenizedData(typeargument);
+			data.TypeArgumentTonkenizeList.add(typeargumentdata);
+		}
+		
+		for(String argument :data.Argument)
+		{
+			MethodParsingData argumentdata = new MethodParsingData();
+			argumentdata.MakeTokenizedData(argument);
+			data.ArgumentTokenizeList.add(argumentdata);
+		}
+	}
+	public String GetContentTokenData(int start,int end )
+	{
+		String UpperName = "";
+		for(int i = start; i < end; i++)
+			UpperName += this.GetTokenizeData(i).Content + ".";
+		
+		UpperName = UpperName.substring(0,UpperName.length()-1);
+		return UpperName;
+	}
 	private int ArgumentOrTypeMode(String Target, int nowpos, char start, char end)
 	{
 		Stack<Integer> TopofSeperateSearch = new Stack<Integer>();
@@ -118,7 +159,7 @@ public class MethodParsingData {
 		
 		if (Target.charAt(nowPos) == 'S') 
 		{
-			if (Target.length() - 1 >= nowPos + typeSeperateLenth) 
+			if (Target.length() >= nowPos + typeSeperateLenth) 
 			{
 				String typedetermine = Target.substring(nowPos, nowPos + typeSeperateLenth);
 				if (typedetermine.equals(TypeSeperate))
@@ -130,10 +171,68 @@ public class MethodParsingData {
 		return nowPos;
 	}
 
-	
 	private void AddTokenizedData(MethodTokenizeData data)
 	{
 		MethodTokenizedDataList.add(data);
 	}
 	
+	public MethodTokenizeData GetTokenizeData(int index)
+	{
+		if(index < 0 || index > MethodTokenizedDataList.size() - 1)
+			return null;
+		return MethodTokenizedDataList.get(index);
+	}
+	
+	public int Size()
+	{
+		return MethodTokenizedDataList.size();
+	}
+	
+	
+	public List<String> DotSeparator(String stringdata)
+	{
+		String nowString = "";
+		List<String> StringList= new ArrayList<String>(); 
+		int result;
+		
+		for(int i =0 ; i < stringdata.length(); i++)
+		{
+			switch(stringdata.charAt(i))
+			{
+				case 'S':
+					if(DetermineTypeSeperat(stringdata,i) > i)
+					{
+						int start = DetermineTypeSeperat(stringdata,i);
+						result = TypeMode(stringdata,start);
+						if(result + TypeSeperate.length() > stringdata.length())
+						{
+							int z =0;
+						}
+						nowString += stringdata.substring(i, result + TypeSeperate.length());
+						i = result + TypeSeperate.length() - 1;
+					}
+					else nowString += stringdata.charAt(i);
+					break;
+				case '<':
+					result = ArgumentOrTypeMode(stringdata,i, '<', '>');
+					nowString += stringdata.substring(i, result+1);
+					i = result;
+					break;
+				case '(':
+					result = ArgumentOrTypeMode(stringdata,i, '(', ')');
+					nowString += stringdata.substring(i, result+1);
+					i = result;
+					break;
+				case ',':
+					StringList.add(nowString);
+					nowString = "";
+					continue;
+				default:
+					nowString += stringdata.charAt(i);
+			}
+		}
+		StringList.add(nowString);
+		
+		return StringList;
+	}
 }

@@ -127,7 +127,8 @@ public class CyclomaticComplexity extends AbstractCalculator {
 			// Ternary statement always has a complexity of at least 1
 			boolCompTern++;
 
-			((MethodDomain)(entryStack.peek())).metric.addCC(boolCompTern);
+			if(entryStack.peek() instanceof MethodDomain)
+				((MethodDomain)(entryStack.peek())).metric.addCC(boolCompTern);
 		}
 	}
 

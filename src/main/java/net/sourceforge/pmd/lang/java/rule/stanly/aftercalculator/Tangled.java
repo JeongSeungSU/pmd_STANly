@@ -11,7 +11,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class Tangled extends AbstractAfterCalculator {
+public class Tangled implements AbstractAfterCalculator {
 	public void calcMetric(ProjectDomain node)
 	{
 		visitChildren((ElementNode)node);
@@ -41,7 +41,8 @@ public class Tangled extends AbstractAfterCalculator {
 			}
 		}
 		tangleCount /= 2; // 2번 카운팅 되므로 나누기 2를 해준다.
-		node.metric.setTangled(tangleCount / totalCount);
+		
+		node.metric.setTangled(totalCount == 0 ? 0 : tangleCount / totalCount);
 	}
 	
 	private void visitChildren(ElementNode node)

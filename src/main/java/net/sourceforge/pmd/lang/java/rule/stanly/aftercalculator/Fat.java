@@ -14,7 +14,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class Fat extends AbstractAfterCalculator{
+public class Fat implements AbstractAfterCalculator{
 	
 	public void calculateChildren(ElementNode node)
 	{

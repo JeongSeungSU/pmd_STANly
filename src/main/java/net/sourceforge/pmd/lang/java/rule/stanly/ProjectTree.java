@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
@@ -12,7 +14,6 @@ import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CyclomaticComplexity;
-import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LackOfCohesion;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
@@ -20,6 +21,9 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnalysisException;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnlaysis;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodResult;
 
 public class ProjectTree extends AbstractJavaRule {
 	private List<AbstractCalculator> calculators = null;
@@ -38,7 +42,7 @@ public class ProjectTree extends AbstractJavaRule {
 			calculators.add(new CountMetrics());
 			calculators.add(new CyclomaticComplexity());
 			calculators.add(new CouplingBetweenObjects());
-			calculators.add(new LackOfCohesion());			
+			//calculators.add(new LackOfCohesiona());			
 		}
 		if(manager == null)
 		{
@@ -62,12 +66,19 @@ public class ProjectTree extends AbstractJavaRule {
 			StartOfJavafile = ((RuleContext)data).getSourceCodeFilename();
 		else if(StartOfJavafile.equals(((RuleContext)data).getSourceCodeFilename()))
 		{
+			
 			AfterRelations afterRelation = new AfterRelations(projectNode,manager);
 			afterRelation.makePackageSet();
 			afterRelation.analysisAnother();
 			afterRelation.analysisunknown();
+			System.out.println("metric 계산끝");
+			
+			StanlyControler.setRootNode(projectNode);
+			StanlyControler.setRelationList(manager.getDomainRelationList());
+			
 			return data;
 		}
+		
 		LibraryDomain currentLibraryNode = null;
 		PackageDomain currentPackageNode = null;
 		
@@ -155,7 +166,6 @@ public class ProjectTree extends AbstractJavaRule {
 			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
 			//System.out.println("        new class node : " + name);
 		}
-		
 		manager.AddRelation(node, thisNode);
 		
 		entryStack.push(thisNode);
@@ -320,10 +330,24 @@ public class ProjectTree extends AbstractJavaRule {
 		ElementNode thisNode;
 		ElementNode parent = entryStack.peek();
 		String name = node.getMethodName();
+	
 		//if(name.equals("tableModelFrom"))
 		//	//System.out.println();
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
 		//System.out.println("            new method node : " + name);
+	
+		//return type 받기
+		MethodResult result = null;
+		try
+		{
+			MethodAnlaysis analysis = new MethodAnlaysis(null);
+			result = analysis.ProcessMethodCallAndAccess((AbstractJavaNode) node.getFirstChildOfType(ASTResultType.class), thisNode);
+		}
+		catch(MethodAnalysisException e)
+		{
+			e.PrintCauseException();
+		}
+		((MethodDomain)thisNode).returntype =  result.TypeName;
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
 		//if(thisNode.getFullName().equals("net.sourceforge.pmd.lang.java.rule.stanly.ProjectTree.visit"))

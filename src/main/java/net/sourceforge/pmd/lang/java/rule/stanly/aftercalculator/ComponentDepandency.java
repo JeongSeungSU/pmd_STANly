@@ -13,7 +13,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
-public class ComponentDepandency extends AbstractAfterCalculator {
+public class ComponentDepandency implements AbstractAfterCalculator {
 	
 	Map<String,Integer> PackageRel = null;
 	Map<String,Integer> UnitRel = null;
