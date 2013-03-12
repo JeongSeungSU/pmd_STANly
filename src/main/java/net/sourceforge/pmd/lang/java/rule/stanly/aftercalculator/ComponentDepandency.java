@@ -93,7 +93,7 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 			for(String newRelTarget:visitable)
 				rel.add(nodeName + ">" + newRelTarget);
 			//rel.putAll(calcCD(nodeName,nameSet,rel));
-			System.out.println(nodeName + " " + visitable.size() );
+			//System.out.println(nodeName + " " + visitable.size() );
 		}
 		int N = nameSet.size();
 		/*for(int k=0;k<N;k++)
