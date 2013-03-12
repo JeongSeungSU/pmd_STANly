@@ -175,7 +175,15 @@ public abstract class ElementNode {
 		// TODO Auto-generated method stub
 		ElementNode targetNode = null;
 		//targetString.startsWith(prefix)
-		if(type == ElementNodeType.LIBRARY)
+		if(type == ElementNodeType.PROJECT)
+		{
+			for(ElementNode childnode:getChildren())
+			{
+				targetNode = childnode.findNode(targetString);
+				if(targetNode != null) break;
+			}
+		}
+		else if(type == ElementNodeType.LIBRARY)
 		{
 			for(ElementNode childnode:getChildren())
 			{				
