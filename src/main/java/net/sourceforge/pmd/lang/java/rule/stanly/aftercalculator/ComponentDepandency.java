@@ -2,8 +2,10 @@ package net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
@@ -14,23 +16,87 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
 public class ComponentDepandency implements AbstractAfterCalculator {
 	
-	Map<String,Integer> PackageRel = null;
-	Map<String,Integer> UnitRel = null;
+	Set<String> PackageRel = null;
+	Set<String> UnitRel = null;
 	List<String> PackagesName = null;
 	List<String> UnitsName = null;
+	Set<String> alreadDone = null;
+	
 	public void calcMetric(ProjectDomain node)
 	{
-		PackageRel = new HashMap<String,Integer>();
-		UnitRel = new HashMap<String,Integer>();
+		PackageRel = new HashSet<String>();
+		UnitRel = new HashSet<String>();
 		PackagesName = new ArrayList<String>();
 		UnitsName = new ArrayList<String>();
 		visitChildren(node);
 	}
 
-	private float calcACD(List<String> nameSet,Map<String,Integer> rel)
+	private Set<String> calcCD(String startNodeName,Set<String> visited,List<String> nameSet,Set<String> rel)
 	{
+		Set<String> newRel= new HashSet<String>();
+		Set<String> visitable;
+		visited.add(startNodeName);
+		for(String nextNodeName:nameSet)
+		{
+			if(visited.contains(nextNodeName))	continue;
+			String key1 = startNodeName + ">" + nextNodeName;
+			if(!rel.contains(key1))	continue;
+			
+			visitable = calcCD(nextNodeName,visited,nameSet,rel);
+			
+			for(String newRelTarget:visitable)
+				rel.add(startNodeName + ">" + newRelTarget);
+			
+			newRel.addAll(visitable);
+			newRel.add(nextNodeName);
+			
+		}
+		
+		
+		return newRel;
+	}
+	
+	private void fillVisitable(Set<String> visitable, List<String> nameSet, String nodeName,Set<String> rel)
+	{
+		for(String nextName:nameSet)
+		{
+			if(nextName.equals(nameSet))	continue;
+			visitable.add(nextName);
+		}
+	}
+	
+	private float calcACD(List<String> nameSet,Set<String> rel)
+	{
+		Set<String> visitable;
+		boolean doneFlag;
+		alreadDone = new HashSet<String>();
+		for(String nodeName:nameSet)
+		{
+			visitable = new HashSet<String>();			
+			alreadDone.add(nodeName);
+			doneFlag = false;
+			for(String touch:alreadDone)
+			{
+				if(touch.equals(nodeName))	continue;
+				if(rel.contains(nodeName+">"+touch) && rel.contains(touch+">"+nodeName))
+				{
+					doneFlag = true;
+					fillVisitable(visitable,nameSet,nodeName,rel);					
+					break;
+				}
+			}
+			if(!doneFlag)
+			{
+				Set<String> visited = new HashSet<String>();
+				visitable.addAll(calcCD(nodeName,visited,nameSet,rel));
+			}
+			for(String newRelTarget:visitable)
+				rel.add(nodeName + ">" + newRelTarget);
+			//rel.putAll(calcCD(nodeName,nameSet,rel));
+			System.out.println(nodeName + " " + visitable.size() );
+		}
 		int N = nameSet.size();
-		for(int k=0;k<N;k++)
+		/*for(int k=0;k<N;k++)
 		{
 			for(int i=0;i<N;i++)
 			{
@@ -45,7 +111,7 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 						rel.put(key1, 1);
 				}
 			}
-		}
+		}*/
 		double mccd = (N * (N-1));
 		double ccd = rel.size();
 		double acd = ccd / mccd * 100;
@@ -74,18 +140,20 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 	
 	public void calcMetric(PackageDomain node)
 	{
-		Map<String,Integer> relations = getUnitRelation(node,node,true);
+		Set<String> innerRelations = getUnitRelation(node,node,true);
+		List<String> innerNameSet = new ArrayList<String>();
 		
-		UnitRel.putAll(relations);
-		UnitRel.putAll(getUnitRelation(node,node,false));
+		UnitRel.addAll(innerRelations);
+		UnitRel.addAll(getUnitRelation(node,node,false));
 		
-		PackageRel.putAll(getPackageRelation(node,node));
+		PackageRel.addAll(getPackageRelation(node,node));
 		
 		
 		PackagesName.add(node.getFullName());
 		for(ElementNode child:node.getChildren())
-			UnitsName.add(child.getFullName());
-		
+			innerNameSet.add(child.getFullName());
+		UnitsName.addAll(innerNameSet);
+		/*		
 		int N = node.getChildren().size();
 		for(int k=0;k<N;k++)
 		{
@@ -106,7 +174,12 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 		float mccd = (N * (N-1));
 		float ccd = relations.size();
 		float acd = ccd / mccd * 100;
+		*/
 		
+		//for(ElementNode child:node.getChildren())
+		//	innerNameSet.add(child.getFullName());
+		
+		float acd = calcACD(innerNameSet,innerRelations);
 		node.metric.setACDPerUnit(acd);
 		
 		
@@ -132,11 +205,11 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 		}
 	}
 
-	private Map<String,Integer> getUnitRelation(ElementNode ancestor,ElementNode node, boolean sameAnc)
+	private Set<String> getUnitRelation(ElementNode ancestor,ElementNode node, boolean sameAnc)
 	{
 		String tarUnitName;
 		String srcUnitName;
-		Map<String,Integer> relations = new HashMap<String,Integer>();
+		Set<String> relations = new HashSet<String>();
 		for(ElementNode child:node.getChildren())
 		{		
 			srcUnitName = child.getUnitName();
@@ -148,21 +221,20 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 				{
 					//String key = rel.getSourceNode().getPackageName() + "."  + srcSplit[ancSplit.length] + ">" + 
 					//			 rel.getTargetNode().getPackageName() + "."  + tarSplit[ancSplit.length];
-					String key = rel.getSourceNode().getUnitName() + ">" + rel.getTargetNode().getUnitName();
-					Integer value = 1;
-					relations.put(key,value);
+					String key = rel.getSourceNode().getUnitName() + ">" + rel.getTargetNode().getUnitName();					
+					relations.add(key);
 				}
 			}
 			if(child.getChildren().size() > 0)
-				relations.putAll(getUnitRelation(ancestor,child,sameAnc));
+				relations.addAll(getUnitRelation(ancestor,child,sameAnc));
 		}
 		return relations;
 	}
 	
 	
-	private Map<String,Integer> getPackageRelation(ElementNode ancestor,ElementNode node )
+	private Set<String> getPackageRelation(ElementNode ancestor,ElementNode node )
 	{
-		Map<String,Integer> relations = new HashMap<String,Integer>();
+		Set<String> relations = new HashSet<String>();
 		for(ElementNode child:node.getChildren())
 		{
 	
@@ -170,12 +242,11 @@ public class ComponentDepandency implements AbstractAfterCalculator {
 			{
 				if(rel.getTargetNode().isAncestor(ancestor) == true)	continue;
 				String key = rel.getSourceNode().getPackageName() + ">" + rel.getTargetNode().getPackageName();
-				Integer value = 1;
-				relations.put(key,value);
+				relations.add(key);
 
 			}
 			if(child.getChildren().size() > 0)
-				relations.putAll(getPackageRelation(ancestor,child));
+				relations.addAll(getPackageRelation(ancestor,child));
 		}
 		return relations;
 	}
