@@ -67,7 +67,7 @@ public class ProjectTree extends AbstractJavaRule {
 			afterRelation.makePackageSet();
 			afterRelation.analysisAnother();
 			afterRelation.analysisunknown();
-			System.out.println("metric 계산끝");
+			//System.out.println("metric 계산끝");
 			
 			StanlyControler.setRootNode(projectNode);
 			StanlyControler.setRelationList(manager.getDomainRelationList());
@@ -79,6 +79,8 @@ public class ProjectTree extends AbstractJavaRule {
 		PackageDomain currentPackageNode = null;
 		
 		String folderName = ((RuleContext)data).getSourceCodeFilename();
+		String RootPath = StanlyControler.getRootPath();
+		folderName = folderName.substring(RootPath.length()+1, folderName.length());
 		ASTPackageDeclaration apd = node.getPackageDeclaration();
 		char Sperate;
 		
@@ -113,7 +115,7 @@ public class ProjectTree extends AbstractJavaRule {
 		}
 		if(currentLibraryNode == null)
 		{
-			System.out.println("new folder node : " + folderName);
+			//System.out.println("new folder node : " + folderName);
 			currentLibraryNode = (LibraryDomain)projectNode.addChildren(ElementNodeType.LIBRARY, folderName);
 		}
 		
@@ -127,7 +129,7 @@ public class ProjectTree extends AbstractJavaRule {
 		}
 		if(currentPackageNode == null)
 		{
-			System.out.println("    new package node : " + packageName);			
+			//System.out.println("    new package node : " + packageName);			
 			currentPackageNode = (PackageDomain)currentLibraryNode.addChildren(ElementNodeType.PACKAGE,packageName);
 		}
 		

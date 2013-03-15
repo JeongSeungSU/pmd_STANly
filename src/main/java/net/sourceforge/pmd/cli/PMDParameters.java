@@ -7,6 +7,7 @@ import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.RulePriority;
 import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.LanguageVersion;
+import net.sourceforge.pmd.lang.java.rule.stanly.StanlyControler;
 
 import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.IStringConverter;
@@ -104,6 +105,7 @@ public class PMDParameters {
     public static PMDConfiguration transformParametersIntoConfiguration(PMDParameters params) {
     	PMDConfiguration configuration = new PMDConfiguration();
     	configuration.setInputPaths(params.getSourceDir());
+    	StanlyControler.setRootPath(params.getSourceDir());
     	configuration.setReportFormat(params.getFormat());
     	configuration.setBenchmark(params.isBenchmark());
     	configuration.setDebug(params.isDebug());

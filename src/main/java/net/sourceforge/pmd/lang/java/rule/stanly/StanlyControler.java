@@ -36,8 +36,17 @@ public class StanlyControler {
 
 	static private List<DomainRelation> RelationList;
 	static private ElementNode	RootNode;
+	static private String RootPath = "";
 	
 	
+	public static String getRootPath() {
+		return RootPath;
+	}
+
+	public static void setRootPath(String rootPath) {
+		RootPath = rootPath;
+	}
+
 	public static List<DomainRelation> getRelationList() {
 		return RelationList;
 	}
@@ -63,6 +72,7 @@ public class StanlyControler {
 	
 	public static StanlyAnalysisData StartAnalysis(String Path)
 	{
+		StanlyControler.setRootPath(Path);
 		PMDParameters pmdparameter = new PMDParameters();
 		PMDConfiguration configuration = transformParametersIntoConfiguration(pmdparameter,Path);
 		

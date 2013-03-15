@@ -52,7 +52,7 @@ public class AfterRelations {
 	
 	public void analysisAnother(){
 		// TODO Auto-generated method stub
-		System.out.println("Relation 계산 시작");
+		//System.out.println("Relation 계산 시작");
 		FindTarget();
 
 		//Managing Hierarchical Data in MySQL
@@ -67,7 +67,7 @@ public class AfterRelations {
 		manager.getDomainRelationList().addAll(CallOrAccessList.GetList());
 		
 		RemoveNullTargetRelations();
-		System.out.println("Relation 계산 끝");
+		//System.out.println("Relation 계산 끝");
 		
 		
 		
@@ -83,7 +83,7 @@ public class AfterRelations {
 		*/
 		
 		
-		System.out.println("metric 계산 시작");
+		//System.out.println("metric 계산 시작");
 		for(AbstractAfterCalculator calculator:calculators)
 			calculator.calcMetric(projectNode);
 	}
@@ -117,11 +117,11 @@ public class AfterRelations {
 		
 		if(node.getRelationSources().size() != TargetList.size())
 		{
-			System.out.println(node.getFullName() + " 가 Target인 List 수 이상 ");
+			//System.out.println(node.getFullName() + " 가 Target인 List 수 이상 ");
 		}
 		if(node.getRelationTargets().size() != SourceList.size())
 		{
-			System.out.println(node.getFullName() + " 가 Source인 List 수 이상 ");
+			//System.out.println(node.getFullName() + " 가 Source인 List 수 이상 ");
 		}
 		
 		for(ElementNode childnode : node.getChildren())
@@ -174,7 +174,7 @@ public class AfterRelations {
 				targetNode.AddRelationSource(relation);
 			}*/
 		}
-		System.out.println("Number of Relations : " + domainRelation.size());
+		//System.out.println("Number of Relations : " + domainRelation.size());
 	}
 	public void makePackageSet() {
 		// TODO Auto-generated method stub
