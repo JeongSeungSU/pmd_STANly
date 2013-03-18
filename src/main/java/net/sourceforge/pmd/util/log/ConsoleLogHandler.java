@@ -17,10 +17,28 @@ import java.util.logging.LogRecord;
  */
 public class ConsoleLogHandler extends Handler {
 
+	@Override
+	public void close() throws SecurityException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void flush() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void publish(LogRecord logrecord) {
+		// TODO Auto-generated method stub
+		
+	}
+/*
     private static final Formatter FORMATTER = new PmdLogFormatter();
 
     public void publish(LogRecord logRecord) {
-        System.out.println(FORMATTER.format(logRecord));
+        //System.out.println(FORMATTER.format(logRecord));
         if (logRecord.getThrown() != null) {
             // Use the same channel, to make sure that the stacktrace comes
             // after the message on the console (using printStackTrace
@@ -28,7 +46,7 @@ public class ConsoleLogHandler extends Handler {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter, true);
             logRecord.getThrown().printStackTrace(printWriter);
-            System.out.println(stringWriter.toString());
+            //System.out.println(stringWriter.toString());
         }
     }
     
@@ -37,4 +55,5 @@ public class ConsoleLogHandler extends Handler {
 
     public void flush() {
     }
+    */
 }

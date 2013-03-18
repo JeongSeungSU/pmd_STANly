@@ -10,7 +10,7 @@ public class DepthOfInheritanceTree extends AbstractJavaRule {
 	{	
 		/*ASTPackageDeclaration a;
 		a = node.getPackageDeclaration();
-		System.out.println(a.getPackageNameImage());*/
+		//System.out.println(a.getPackageNameImage());*/
 		return super.visit(node,data);
 	}
 	public Object visit(ASTClassOrInterfaceDeclaration node, Object data)

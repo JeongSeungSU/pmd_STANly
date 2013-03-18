@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
+
 public class DomainRelationList {
 	private List<DomainRelation> RelationList;
 	
@@ -41,7 +42,7 @@ public class DomainRelationList {
 		relation.setSourceNode(sourceNode);
 		relation.setTargetNode(targetNode);
 		
-		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
+		////System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
 			//					"-> \t Target : " + relation.getTarget());
 		RelationList.add(0,relation);
 		return relation;

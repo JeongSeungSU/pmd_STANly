@@ -24,7 +24,7 @@ public class CountMetrics extends AbstractCalculator {
 	public void calcMetric(Stack<ElementNode> entryStack, ASTCompilationUnit node, Object data)
 	{
 		//if(entryStack.peek().getFullName().equals("net.sourceforge.pmd.lang.java.rule.matrics"))
-		//	System.out.println("");
+		//	//System.out.println("");
 		//ElementNode packageEntry = entryStack.peek();
 		/*for(ElementNode classEntry:packageEntry.getChildren())
 		{
@@ -39,7 +39,7 @@ public class CountMetrics extends AbstractCalculator {
 				((PackageDomain) packageEntry).metric.addNumberOfMethods(numberOfFields);
 			}
 		}*/
-		//System.out.println(((PackageDomain) packageEntry).metric.getClassesPerClass() + " " +
+		////System.out.println(((PackageDomain) packageEntry).metric.getClassesPerClass() + " " +
 		//					((PackageDomain) packageEntry).metric.getMethodsPerClass() + " " +
 		//					((PackageDomain) packageEntry).metric.getFieldsPerClass());
 	}
@@ -69,7 +69,7 @@ public class CountMetrics extends AbstractCalculator {
 			if(entryStack.size() != 0)
 				((LibraryDomain)entryStack.peek()).metric.addUnits(1);
 			
-				//System.out.println(((PackageDomain)entryStack.peek()).getFullName() + " has " + ((PackageDomain)entryStack.peek()).metric.getUnits());
+				////System.out.println(((PackageDomain)entryStack.peek()).getFullName() + " has " + ((PackageDomain)entryStack.peek()).metric.getUnits());
 			for(ElementNode n:nodeList)
 				entryStack.push(n);
 		}
@@ -84,7 +84,7 @@ public class CountMetrics extends AbstractCalculator {
 		if(entryStack.size() != 0)
 		{
 			((ClassDomain)entryStack.peek()).metric.addClasses(1);
-			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getClasses());
+			////System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getClasses());
 			while(entryStack.size() > 0 && entryStack.peek().getType() != ElementNodeType.PACKAGE)
 				nodeList.add(0,entryStack.pop());
 			nodeList.add(0,entryStack.pop());
@@ -129,7 +129,7 @@ public class CountMetrics extends AbstractCalculator {
 		{
 			ClassDomain classEntry = (ClassDomain)entryStack.pop();
 			classEntry.metric.addMethods(1);
-			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getMethods());
+			////System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getMethods());
 			
 			if(entryStack.peek() instanceof PackageDomain)
 				((PackageDomain)entryStack.peek()).metric.addNumberOfMethods(1);
@@ -158,7 +158,7 @@ public class CountMetrics extends AbstractCalculator {
 		{
 			ClassDomain classEntry = (ClassDomain)entryStack.pop();
 			classEntry.metric.addFields(1);
-			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getFields());
+			////System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getFields());
 			
 			//if(entryStack.peek() instanceof PackageDomain)
 				//((PackageDomain)entryStack.peek()).metric.addNumberOfFields(1);

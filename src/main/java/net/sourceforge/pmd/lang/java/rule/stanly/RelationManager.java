@@ -213,7 +213,7 @@ public class RelationManager {
 			return;
 		ASTClassOrInterfaceType ci = node.getFirstChildOfType(ASTClassOrInterfaceType.class);
 		// if(!(elementnode instanceof MethodDomain)) return;
-		// System.out.println(.getImage());
+		// //System.out.println(.getImage());
 		if (ci == null)
 			return;
 		RelationList.AddRelation(Relations.REFERENCES, elementnode.getFullName(),

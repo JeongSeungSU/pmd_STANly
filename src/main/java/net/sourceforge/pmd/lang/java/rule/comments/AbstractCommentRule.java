@@ -159,7 +159,7 @@ public abstract class AbstractCommentRule extends AbstractJavaRule {
 			itemsByLineNumber.put(methodDecl.getBeginLine(), methodDecl);
 		}
 		
-		System.out.println("Items:" + itemsByLineNumber);
+		//System.out.println("Items:" + itemsByLineNumber);
 
         return itemsByLineNumber;
     }

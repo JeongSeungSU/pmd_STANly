@@ -18,7 +18,7 @@ public class NumberOfInterface extends AbstractJavaRule{
 		
 	
 		Object obj = super.visit(node, data);
-			System.out.println("인터페이스 갯수: "+count);
+			//System.out.println("인터페이스 갯수: "+count);
 		return obj;
 	}
 

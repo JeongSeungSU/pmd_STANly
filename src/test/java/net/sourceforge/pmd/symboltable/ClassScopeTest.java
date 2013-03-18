@@ -215,8 +215,8 @@ public class ClassScopeTest extends STBBaseTst {
         MethodNameDeclaration mnd = (MethodNameDeclaration) entry.getKey();
         if (mnd.getNode().getBeginLine() == 2) {
             List usages = (List) entry.getValue();
-            System.out.println(usages.size());
-            System.out.println(mnd);
+            //System.out.println(usages.size());
+            //System.out.println(mnd);
             mnd = (MethodNameDeclaration) i.next();
         }
     }

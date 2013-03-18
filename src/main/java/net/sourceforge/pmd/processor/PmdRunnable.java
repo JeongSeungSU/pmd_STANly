@@ -6,11 +6,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PMD;
+import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PMDException;
 import net.sourceforge.pmd.Report;
 import net.sourceforge.pmd.RuleContext;
@@ -19,8 +17,13 @@ import net.sourceforge.pmd.RuleSets;
 import net.sourceforge.pmd.renderers.Renderer;
 import net.sourceforge.pmd.util.datasource.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
 public class PmdRunnable extends PMD implements Callable<Report> {
 
+	//private static final Log LOG = LogFactory.getLog(PmdRunnable.class);
 	private static final Logger LOG = Logger.getLogger(PmdRunnable.class.getName());
 
 	private final ExecutorService executor;
@@ -48,7 +51,7 @@ public class PmdRunnable extends PMD implements Callable<Report> {
 
 	private void addErrorAndShutdown(Report report, Exception e, String errorMessage) {
 		// unexpected exception: log and stop executor service
-		LOG.log(Level.FINE, errorMessage, e);
+		LOG.error(errorMessage, e);
 		addError(report, e, fileName);
 		executor.shutdownNow();
 	}
@@ -61,8 +64,8 @@ public class PmdRunnable extends PMD implements Callable<Report> {
 
 		Report report = setupReport(rs, ctx, fileName);
 		
-		if (LOG.isLoggable(Level.FINE)) {
-			LOG.fine("Processing " + ctx.getSourceCodeFilename());
+		if (LOG.isDebugEnabled()) {
+			LOG.info("Processing " + ctx.getSourceCodeFilename());
 		}
 		for (Renderer r : renderers) {
 			r.startFileAnalysis(dataSource);
@@ -74,7 +77,7 @@ public class PmdRunnable extends PMD implements Callable<Report> {
 			ctx.setLanguageVersion(null);
 			this.getSourceCodeProcessor().processSourceCode(stream, rs, ctx);
 		} catch (PMDException pmde) {
-			LOG.log(Level.FINE, "Error while processing file", pmde.getCause());
+			LOG.warn("Error while processing file", pmde.getCause());
 			addError(report, pmde, fileName);
 		} catch (IOException ioe) {
 			addErrorAndShutdown(report, ioe, "IOException during processing");

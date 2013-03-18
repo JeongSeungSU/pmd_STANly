@@ -21,7 +21,7 @@ public class NumberOfClasses  extends AbstractJavaRule{
 		
 	
 		Object obj = super.visit(node, data);
-			System.out.println("클래수 갯수: "+count);
+			//System.out.println("클래수 갯수: "+count);
 		return obj;
 	}
 

@@ -21,6 +21,25 @@ import org.apache.tools.ant.Task;
  * @author Wouter Zelle
  */
 public class AntLogHandler extends Handler {
+
+	@Override
+	public void publish(LogRecord logrecord) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void flush() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void close() throws SecurityException {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
     private Task antTask;
 
     private static final Formatter FORMATTER = new PmdLogFormatter();
@@ -61,4 +80,6 @@ public class AntLogHandler extends Handler {
 
     public void flush() {
     }
+    */
+	
 }

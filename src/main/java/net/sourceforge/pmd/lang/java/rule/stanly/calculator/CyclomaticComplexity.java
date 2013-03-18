@@ -143,7 +143,7 @@ public class CyclomaticComplexity extends AbstractCalculator {
 		{
 			ClassDomain classEntry = (ClassDomain)entryStack.pop();
 			classEntry.metric.addWMC(methodEntry.metric.getCC());
-			//System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getMethods());
+			////System.out.println(((ClassDomain)entryStack.peek()).getFullName() + " has " + ((ClassDomain)entryStack.peek()).metric.getMethods());
 			
 			if(entryStack.peek() instanceof PackageDomain)
 				((PackageDomain)entryStack.peek()).metric.addCC(methodEntry.metric.getCC());

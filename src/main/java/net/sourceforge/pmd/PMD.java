@@ -15,8 +15,16 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import net.sourceforge.pmd.benchmark.Benchmark;
 import net.sourceforge.pmd.benchmark.Benchmarker;
@@ -30,6 +38,7 @@ import net.sourceforge.pmd.lang.LanguageVersionDiscoverer;
 import net.sourceforge.pmd.lang.LanguageVersionHandler;
 import net.sourceforge.pmd.lang.Parser;
 import net.sourceforge.pmd.lang.ParserOptions;
+import net.sourceforge.pmd.lang.java.rule.stanly.StanlyControler;
 import net.sourceforge.pmd.processor.MonoThreadProcessor;
 import net.sourceforge.pmd.processor.MultiThreadProcessor;
 import net.sourceforge.pmd.renderers.Renderer;
@@ -48,7 +57,9 @@ import net.sourceforge.pmd.util.log.ScopedLogHandlersManager;
  */
 public class PMD {
 
-	private static final Logger LOG = Logger.getLogger(PMD.class.getName());
+
+	//private static final Log LOG = LogFactory.getLog(PMD.class);
+	private static final Logger LOG = Logger.getLogger(PMD.class);
 
 	public static final String EOL = System.getProperty("line.separator", "\n");
 	public static final String SUPPRESS_MARKER = "NOPMD";
@@ -102,7 +113,7 @@ public class PMD {
     	ruleSets.removeDysfunctionalRules(brokenRules);
 	    
 	    for (Rule rule : brokenRules) {
-	    	 LOG.log(Level.WARNING, "Removed misconfigured rule: " + rule.getName() + "  cause: " + rule.dysfunctionReason());	
+	    	 LOG.warn("Removed misconfigured rule: " + rule.getName() + "  cause: " + rule.dysfunctionReason());	
 	    }
 	    
 	    return brokenRules;
@@ -167,7 +178,8 @@ public class PMD {
 		List<DataSource> files = getApplicableFiles(configuration, languages);
 
 		long reportStart = System.nanoTime();
-		try {			
+		try {	
+			
 			Renderer renderer = configuration.createRenderer();
 			List<Renderer> renderers = new LinkedList<Renderer>();
 			renderers.add(renderer);
@@ -176,22 +188,25 @@ public class PMD {
 			renderer.start();
 
 			Benchmarker.mark(Benchmark.Reporting, System.nanoTime() - reportStart, 0);
-
+			
 			RuleContext ctx = new RuleContext();
 
 			processFiles(configuration, ruleSetFactory, files, ctx, renderers);
+			//processFiles(configuration, ruleSetFactory, files, ctx, null);
 
+			
 			reportStart = System.nanoTime();
 			renderer.end();
 			renderer.flush();
+			
 		} catch (Exception e) {
 			String message = e.getMessage();
 			if (message != null) {
-				LOG.severe(message);
+				LOG.info((message));
 			} else {
-				LOG.log(Level.SEVERE, "Exception during processing", e);
+				LOG.info("Exception during processing", e);
 			}
-			LOG.log(Level.FINE, "Exception during processing", e);
+			LOG.info("Exception during processing", e);
 			LOG.info(PMDCommandLineInterface.buildUsageText());
 		} finally {
 			Benchmarker.mark(Benchmark.Reporting, System.nanoTime() - reportStart, 0);
@@ -328,7 +343,7 @@ public class PMD {
 			LanguageVersion version = discoverer.getDefaultLanguageVersion(language);
 			if (RuleSet.applies(rule, version)) {
 				languages.add(language);
-				LOG.fine("Using " + language.getShortName() + 
+				LOG.info("Using " + language.getShortName() + 
 						" version: " + version.getShortName());
 			}
 		}
@@ -343,6 +358,7 @@ public class PMD {
      * @param args
      */
     public static void main(String[] args) {
+    	//DOMConfigurator.configure("/Stanly/src/main/resources/log4j.xml");
     	PMDCommandLineInterface.run(args);
     }
     
@@ -351,26 +367,39 @@ public class PMD {
      * @param args String[]
      * @return int
      */
-    public static int run(String[] args) { 
+    public static int run(String[] args) {
     	int status = 0;
 		long start = System.nanoTime();
 		final PMDParameters params = PMDCommandLineInterface.extractParameters(new PMDParameters(), args, "pmd");
 		final PMDConfiguration configuration = PMDParameters.transformParametersIntoConfiguration(params);
+		
 	
-		final Level logLevel = params.isDebug() ? Level.FINER : Level.INFO;
+		
+		//로그 설정 부분 일단 없앤다.
+		/*
+		final Level logLevel = params.isDebug() ? Level.DEBUG : Level.INFO;
 		final Handler logHandler = new ConsoleLogHandler();
 		final ScopedLogHandlersManager logHandlerManager = new ScopedLogHandlersManager(logLevel, logHandler);
-		final Level oldLogLevel = LOG.getLevel();
+		final Priority oldLogLevel = LOG.getLevel();
 		LOG.setLevel(logLevel); //Need to do this, since the static logger has already been initialized at this point
+		*/
+		/*String layout = "%d %-5p [%t] %-17c{2} (%13F:%L) %3x - %m%n";
+		PatternLayout patternlayout = new PatternLayout(layout);
+		ConsoleAppender appender = new ConsoleAppender(patternlayout);
+		LOG.addAppender(appender);*/
+		//LOG.setLevel(Level.INFO);
+
+
+		
 		try {
 		    PMD.doPMD(configuration);
 		} catch (Exception e) {
 			PMDCommandLineInterface.buildUsageText();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			status = ERROR_STATUS;
 		} finally {
-		    logHandlerManager.close();
-		    LOG.setLevel(oldLogLevel);
+		    //logHandlerManager.close();
+		    //LOG.setLevel(oldLogLevel);
 		    if (params.isBenchmark()) {
 				long end = System.nanoTime();
 				Benchmarker.mark(Benchmark.TotalPMD, end - start, 0);
@@ -395,7 +424,7 @@ public class PMD {
     			properties.load(stream);
     			pmdVersion = properties.getProperty("version");
         	} catch (IOException e) {
-        		LOG.log(Level.FINE, "Couldn't determine version of PMD", e);
+        		LOG.debug("Couldn't determine version of PMD", e);
         	}
 		}
     	if (pmdVersion == null) {

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
 import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodParsingData;
 import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodTokenizeData;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
@@ -24,6 +28,9 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ProjectDomain;
 
 public class AfterRelations {
+	
+	//protected final Log LOG = LogFactory.getLog(getClass());
+	protected static final Logger LOG = Logger.getLogger(AfterRelations.class);
 	private static ProjectDomain projectNode = null;
 	private RelationManager manager = null;
 	private List<AbstractAfterCalculator> calculators = null;
@@ -52,7 +59,8 @@ public class AfterRelations {
 	
 	public void analysisAnother(){
 		// TODO Auto-generated method stub
-		//System.out.println("Relation 계산 시작");
+		////System.out.println("Relation 계산 시작");
+		LOG.info("Relation 계산 시작");
 		FindTarget();
 
 		//Managing Hierarchical Data in MySQL
@@ -67,23 +75,24 @@ public class AfterRelations {
 		manager.getDomainRelationList().addAll(CallOrAccessList.GetList());
 		
 		RemoveNullTargetRelations();
-		//System.out.println("Relation 계산 끝");
+		////System.out.println("Relation 계산 끝");
+		LOG.info("Relation 계산 끝");
 		
 		
 		
-		
+	
 		//데이터 검증
 		
 		DataVerification(manager.getDomainRelationList());
 		
 		/*		
-		System.out.println("데이터 검증 시작");
+		//System.out.println("데이터 검증 시작");
 		DataVerificationtest(manager.getDomainRelationList(),projectNode);
-		System.out.println("데이터 검증 끝");
+		//System.out.println("데이터 검증 끝");
 		*/
 		
 		
-		//System.out.println("metric 계산 시작");
+		////System.out.println("metric 계산 시작");
 		for(AbstractAfterCalculator calculator:calculators)
 			calculator.calcMetric(projectNode);
 	}
@@ -117,11 +126,11 @@ public class AfterRelations {
 		
 		if(node.getRelationSources().size() != TargetList.size())
 		{
-			//System.out.println(node.getFullName() + " 가 Target인 List 수 이상 ");
+			////System.out.println(node.getFullName() + " 가 Target인 List 수 이상 ");
 		}
 		if(node.getRelationTargets().size() != SourceList.size())
 		{
-			//System.out.println(node.getFullName() + " 가 Source인 List 수 이상 ");
+			////System.out.println(node.getFullName() + " 가 Source인 List 수 이상 ");
 		}
 		
 		for(ElementNode childnode : node.getChildren())
@@ -138,7 +147,7 @@ public class AfterRelations {
 		{
 			//sourceString = domainRelation.get(i).getSource();
 			//if(relation.getSource().equals("org.simpleframework.xml.convert.AnnotationStrategy.write"))
-			//	System.out.println("");
+			//	//System.out.println("");
 			
 			targetString = relation.getTarget();
 			sourceNode = relation.getSourceNode();
@@ -174,7 +183,7 @@ public class AfterRelations {
 				targetNode.AddRelationSource(relation);
 			}*/
 		}
-		//System.out.println("Number of Relations : " + domainRelation.size());
+		////System.out.println("Number of Relations : " + domainRelation.size());
 	}
 	public void makePackageSet() {
 		// TODO Auto-generated method stub
@@ -457,7 +466,7 @@ public class AfterRelations {
 				List<ElementNode> ClassNode = SearchNodeNameClassOrInterface(ClassName);
 				
 				if( ClassNode.size() > 1)
-				{}//System.out.println("문제있다. ACCESS부분이다. 같은 이름의 클래스가 2개 ㅠㅠ");
+				{}////System.out.println("문제있다. ACCESS부분이다. 같은 이름의 클래스가 2개 ㅠㅠ");
 				else if(ClassNode.size() == 0)
 					return "unknown";
 				

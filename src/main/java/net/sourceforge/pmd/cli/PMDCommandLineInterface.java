@@ -36,8 +36,8 @@ public class PMDCommandLineInterface {
 				System.exit(0);
 			}
 		} catch (ParameterException e) {
-			System.out.println(buildUsageText());
-			System.out.println(e.getMessage());
+			////System.out.println(buildUsageText());
+			////System.out.println(e.getMessage());
 		}
 		return arguments;
 	}
@@ -116,7 +116,7 @@ public class PMDCommandLineInterface {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println(PMDCommandLineInterface.buildUsageText());
+		////System.out.println(PMDCommandLineInterface.buildUsageText());
 	}
 
 	public static String jarName() {

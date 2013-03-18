@@ -88,7 +88,7 @@ public class Benchmarker {
         boolean parseOnly = findBooleanSwitch(args, "--parse-only");
 
         if (debug) {
-            System.out.println("Using " +language.getName() + " " + languageVersion.getVersion());
+            ////System.out.println("Using " +language.getName() + " " + languageVersion.getVersion());
         }
         if (parseOnly) {
         	Parser parser = PMD.parserFor(languageVersion, null);
@@ -96,7 +96,7 @@ public class Benchmarker {
         } else {
             String ruleset = findOptionalStringValue(args, "--ruleset", "");
             if (debug) {
-        		System.out.println("Checking directory " + srcDir);
+        		////System.out.println("Checking directory " + srcDir);
             }
             Set<RuleDuration> results = new TreeSet<RuleDuration>();
             RuleSetFactory factory = new RuleSetFactory();
@@ -135,7 +135,7 @@ public class Benchmarker {
         if (debug) {
         	long end = System.currentTimeMillis();
         	long elapsed = end - start;
-        	System.out.println("That took " + elapsed + " ms");
+        	////System.out.println("That took " + elapsed + " ms");
         }
     }
 
@@ -152,7 +152,7 @@ public class Benchmarker {
 
         for (Rule rule: ruleSet.getRules()) {
             if (debug) {
-            	System.out.println("Starting " + rule.getName());
+            	////System.out.println("Starting " + rule.getName());
             }
 
             RuleSet working = new RuleSet();
@@ -175,7 +175,7 @@ public class Benchmarker {
             long elapsed = end - start;
             results.add(new RuleDuration(elapsed, rule));
             if (debug) {
-            	System.out.println("Done timing " + rule.getName() + "; elapsed time was " + elapsed);
+            	////System.out.println("Done timing " + rule.getName() + "; elapsed time was " + elapsed);
             }
         }
     }

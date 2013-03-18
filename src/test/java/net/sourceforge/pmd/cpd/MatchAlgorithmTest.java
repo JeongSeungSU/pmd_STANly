@@ -24,10 +24,10 @@ public class MatchAlgorithmTest {
 
     public static final String LINE_1 = "public class Foo { ";
     public static final String LINE_2 = " public void bar() {";
-    public static final String LINE_3 = "  System.out.println(\"hello\");";
-    public static final String LINE_4 = "  System.out.println(\"hello\");";
+    public static final String LINE_3 = "  //System.out.println(\"hello\");";
+    public static final String LINE_4 = "  //System.out.println(\"hello\");";
     public static final String LINE_5 = "  int i = 5";
-    public static final String LINE_6 = "  System.out.print(\"hello\");";
+    public static final String LINE_6 = "  //System.out.print(\"hello\");";
     public static final String LINE_7 = " }";
     public static final String LINE_8 = "}";
 

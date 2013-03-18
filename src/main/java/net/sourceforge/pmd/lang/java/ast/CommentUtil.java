@@ -148,7 +148,7 @@ public final class CommentUtil {
 		Collection<String> tags = javadocTagsIn(args[0]).keySet();
 
 		for (String tag : tags) {
-			System.out.println( tag );
+			//System.out.println( tag );
 		}
 	}
 }

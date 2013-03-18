@@ -110,9 +110,9 @@ public class UsageNodeVisitor extends NodeVisitorAdapter {
 	private final Options options = new Options();
 
 	public Object visit(UsageGraph usageGraph, Object data) {
-		System.out.println("----------------------------------------");
+		//System.out.println("----------------------------------------");
 		super.visit(usageGraph, data);
-		System.out.println("----------------------------------------");
+		//System.out.println("----------------------------------------");
 		return data;
 	}
 
@@ -123,7 +123,7 @@ public class UsageNodeVisitor extends NodeVisitorAdapter {
 			log = false;
 		}
 		if (log) {
-			System.out.println("--- " + classNode.getName() + " ---");
+			//System.out.println("--- " + classNode.getName() + " ---");
 			return super.visit(classNode, data);
 		} else {
 			return data;
@@ -145,7 +145,7 @@ public class UsageNodeVisitor extends NodeVisitorAdapter {
 				}
 			}
 			if (log) {
-				System.out.println("\t" + fieldNode.toStringLong());
+				//System.out.println("\t" + fieldNode.toStringLong());
 			}
 		}
 		return super.visit(fieldNode, data);
@@ -173,7 +173,7 @@ public class UsageNodeVisitor extends NodeVisitorAdapter {
 				}
 			}
 			if (log) {
-				System.out.println("\t" + constructorNode.toStringLong());
+				//System.out.println("\t" + constructorNode.toStringLong());
 			}
 		}
 		return super.visit(constructorNode, data);
@@ -215,17 +215,17 @@ public class UsageNodeVisitor extends NodeVisitorAdapter {
 				}
 			}
 			if (log) {
-				System.out.println("\t" + methodNode.toStringLong());
+				//System.out.println("\t" + methodNode.toStringLong());
 			}
 		}
 		return super.visit(methodNode, data);
 	}
 
 	private void ignore(String description, ClassNode classNode) {
-		System.out.println("Ignoring " + description + ": " + classNode.getName());
+		//System.out.println("Ignoring " + description + ": " + classNode.getName());
 	}
 
 	private void ignore(String description, MemberNode memberNode) {
-		System.out.println("Ignoring " + description + ": " + memberNode.toStringLong());
+		//System.out.println("Ignoring " + description + ": " + memberNode.toStringLong());
 	}
 }

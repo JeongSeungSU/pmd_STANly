@@ -46,7 +46,7 @@ public class Linker {
 		} else if (x == 1) {
 		    this.computeIf(sc.getFirstIndex(), sc.getLastIndex());
 		} else {
-		    System.out.println("Error - computePaths 1");
+		    //System.out.println("Error - computePaths 1");
 		}
 		break;
 

@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +25,7 @@ import net.sourceforge.pmd.lang.rule.properties.factories.PropertyDescriptorUtil
 import net.sourceforge.pmd.util.ResourceLoader;
 import net.sourceforge.pmd.util.StringUtil;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,6 +39,7 @@ import org.xml.sax.SAXException;
  */
 public class RuleSetFactory {
 
+	//private static final Log LOG = LogFactory.getLog(RuleSetFactory.class);
 	private static final Logger LOG = Logger.getLogger(RuleSetFactory.class.getName());
 
 	private ClassLoader classLoader = RuleSetFactory.class.getClassLoader();
@@ -454,15 +455,15 @@ public class RuleSetFactory {
 		if (warnDeprecated && referencedRule.isDeprecated()) {
 			if (referencedRule instanceof RuleReference) {
 				RuleReference ruleReference = (RuleReference) referencedRule;
-				LOG.warning("Use Rule name " + ruleReference.getRuleSetReference().getRuleSetFileName() + "/"
+				LOG.warn("Use Rule name " + ruleReference.getRuleSetReference().getRuleSetFileName() + "/"
 						+ ruleReference.getName() + " instead of the deprecated Rule name " + otherRuleSetReferenceId
 						+ ". Future versions of PMD will remove support for this deprecated Rule name usage.");
 			} else if (referencedRule instanceof MockRule) {
-				LOG.warning("Discontinue using Rule name " + otherRuleSetReferenceId
+				LOG.warn("Discontinue using Rule name " + otherRuleSetReferenceId
 						+ " as it has been removed from PMD and no longer functions."
 						+ " Future versions of PMD will remove support for this Rule.");
 			} else {
-				LOG.warning("Discontinue using Rule name " + otherRuleSetReferenceId
+				LOG.warn("Discontinue using Rule name " + otherRuleSetReferenceId
 						+ " as it is scheduled for removal from PMD."
 						+ " Future versions of PMD will remove support for this Rule.");
 			}
@@ -625,7 +626,7 @@ public class RuleSetFactory {
 		for (Map.Entry<String, Boolean> entry : valueKeys.entrySet()) {
 			String valueStr = propertyElement.getAttribute(entry.getKey());
 			if (entry.getValue() && StringUtil.isEmpty(valueStr)) {
-				System.out.println("Missing required value for: " + entry.getKey());	// debug pt  TODO
+				//System.out.println("Missing required value for: " + entry.getKey());	// debug pt  TODO
 			}
 			values.put(entry.getKey(), valueStr);
 		}
@@ -637,7 +638,7 @@ public class RuleSetFactory {
 			setValue(rule, desc, strValue);
 
 		} catch (Exception ex) {
-			System.out.println("oops");		// debug pt  TODO
+			//System.out.println("oops");		// debug pt  TODO
 		}
 	}
 

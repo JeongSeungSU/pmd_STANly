@@ -7,11 +7,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PMD;
+import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PMDException;
 import net.sourceforge.pmd.Report;
 import net.sourceforge.pmd.RuleContext;
@@ -20,6 +18,11 @@ import net.sourceforge.pmd.RuleSets;
 import net.sourceforge.pmd.SourceCodeProcessor;
 import net.sourceforge.pmd.renderers.Renderer;
 import net.sourceforge.pmd.util.datasource.DataSource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 /**
  * @author Romain Pelisse <belaran@gmail.com>
@@ -31,6 +34,7 @@ public final class MonoThreadProcessor extends AbstractPMDProcessor {
 		super(configuration);
 	}
 
+	//private static final Log LOG = LogFactory.getLog(MonoThreadProcessor.class);
 	private static final Logger LOG = Logger.getLogger(MonoThreadProcessor.class.getName());
 
 	public void processFiles(RuleSetFactory ruleSetFactory, List<DataSource> files,
@@ -46,8 +50,8 @@ public final class MonoThreadProcessor extends AbstractPMDProcessor {
 					
 			Report report = PMD.setupReport(rs, ctx, niceFileName);
 			
-			if (LOG.isLoggable(Level.FINE)) {
-				LOG.fine("Processing " + ctx.getSourceCodeFilename());
+			if (LOG.isDebugEnabled()) {
+				LOG.info("Processing " + ctx.getSourceCodeFilename());
 			}
 			rs.start(ctx);
 
@@ -60,7 +64,7 @@ public final class MonoThreadProcessor extends AbstractPMDProcessor {
 				ctx.setLanguageVersion(null);
 				processor.processSourceCode(stream, rs, ctx);
 			} catch (PMDException pmde) {
-				LOG.log(Level.FINE, "Error while processing file", pmde.getCause());
+				LOG.error( "Error while processing file", pmde.getCause());
 
 				report.addError(new Report.ProcessingError(pmde.getMessage(), niceFileName));
 			} catch (IOException ioe) {
@@ -77,7 +81,7 @@ public final class MonoThreadProcessor extends AbstractPMDProcessor {
 	}
 
 	private void addError(Report report, String msg, Exception ex, String fileName) {
-		LOG.log(Level.FINE,	msg, ex);
+		LOG.info(msg, ex);
 		report.addError(
 				new Report.ProcessingError(ex.getMessage(),
 				fileName)

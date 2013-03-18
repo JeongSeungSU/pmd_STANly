@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
@@ -23,6 +27,9 @@ import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnlaysis;
 import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodResult;
 
 public class ProjectTree extends AbstractJavaRule {
+	
+	//protected final Log LOG = LogFactory.getLog(ProjectTree.class);
+	protected static final Logger LOG = Logger.getLogger(ProjectTree.class);
 	private List<AbstractCalculator> calculators = null;
 	private static ProjectDomain projectNode = null;
 	private static Stack<ElementNode> entryStack = new Stack<ElementNode>();
@@ -67,7 +74,7 @@ public class ProjectTree extends AbstractJavaRule {
 			afterRelation.makePackageSet();
 			afterRelation.analysisAnother();
 			afterRelation.analysisunknown();
-			//System.out.println("metric 계산끝");
+			////System.out.println("metric 계산끝");
 			
 			StanlyControler.setRootNode(projectNode);
 			StanlyControler.setRelationList(manager.getDomainRelationList());
@@ -78,8 +85,14 @@ public class ProjectTree extends AbstractJavaRule {
 		LibraryDomain currentLibraryNode = null;
 		PackageDomain currentPackageNode = null;
 		
+		
 		String folderName = ((RuleContext)data).getSourceCodeFilename();
 		String RootPath = StanlyControler.getRootPath();
+		if(RootPath.charAt(RootPath.length()-1) == '/' ||
+		   RootPath.charAt(RootPath.length()-1) == '\\')
+		{
+			RootPath = RootPath.substring(0,RootPath.length()-1);
+		}
 		folderName = folderName.substring(RootPath.length()+1, folderName.length());
 		ASTPackageDeclaration apd = node.getPackageDeclaration();
 		char Sperate;
@@ -115,7 +128,7 @@ public class ProjectTree extends AbstractJavaRule {
 		}
 		if(currentLibraryNode == null)
 		{
-			//System.out.println("new folder node : " + folderName);
+			////System.out.println("new folder node : " + folderName);
 			currentLibraryNode = (LibraryDomain)projectNode.addChildren(ElementNodeType.LIBRARY, folderName);
 		}
 		
@@ -129,7 +142,7 @@ public class ProjectTree extends AbstractJavaRule {
 		}
 		if(currentPackageNode == null)
 		{
-			//System.out.println("    new package node : " + packageName);			
+			LOG.info("    new package node : " + packageName);			
 			currentPackageNode = (PackageDomain)currentLibraryNode.addChildren(ElementNodeType.PACKAGE,packageName);
 		}
 		
@@ -142,10 +155,10 @@ public class ProjectTree extends AbstractJavaRule {
 			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
 		entryStack.pop();
-		//System.out.println(currentPackageNode.metric.getCC() + "     " +currentPackageNode.metric.getAverageCC());
+		////System.out.println(currentPackageNode.metric.getCC() + "     " +currentPackageNode.metric.getAverageCC());
 		//Gson gson = new Gson();
 		//String temp = gson.toJson(topNode);
-		////System.out.println(temp);
+		//////System.out.println(temp);
 		return data;
 	}
 	
@@ -157,12 +170,12 @@ public class ProjectTree extends AbstractJavaRule {
 		if(node.isInterface())
 		{
 			thisNode = parent.addChildren(ElementNodeType.INTERFACE, name);
-			//System.out.println("        new interface node : " + name);
+			////System.out.println("        new interface node : " + name);
 		}
 		else	
 		{
 			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
-			//System.out.println("        new class node : " + name);
+			////System.out.println("        new class node : " + name);
 		}
 		manager.AddRelation(node, thisNode);
 		
@@ -174,7 +187,8 @@ public class ProjectTree extends AbstractJavaRule {
 			calculator.calcMetric(entryStack,node,data);
 		entryStack.pop();
 		
-		//System.out.println("        new class node : " + name + " " + ((ClassDomain)thisNode).metric.getLOC());
+		
+		////System.out.println("        new class node : " + name + " " + ((ClassDomain)thisNode).metric.getLOC());
 		return data;
 	}
 	
@@ -187,7 +201,7 @@ public class ProjectTree extends AbstractJavaRule {
 			String name = node.getNthParent(1).getFirstChildOfType(ASTClassOrInterfaceType.class).getImage();
 			
 			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
-			//System.out.println("            new instace class node : " + name);
+			////System.out.println("            new instace class node : " + name);
 			
 		
 			entryStack.push(thisNode);
@@ -208,7 +222,7 @@ public class ProjectTree extends AbstractJavaRule {
 		ElementNode parent = entryStack.peek();
 		String name = node.getImage();
 
-		//System.out.println("        new enum node : " + name);
+		////System.out.println("        new enum node : " + name);
 		
 		
 		thisNode = parent.addChildren(ElementNodeType.ENUM, name);
@@ -228,7 +242,7 @@ public class ProjectTree extends AbstractJavaRule {
 		ElementNode parent = entryStack.peek();
 		String name = node.getImage();
 
-		//System.out.println("        new enum node : " + name);
+		////System.out.println("        new enum node : " + name);
 		
 		
 		thisNode = parent.addChildren(ElementNodeType.ANNOTATION, name);
@@ -251,7 +265,7 @@ public class ProjectTree extends AbstractJavaRule {
 			String name = varNode.getFirstChildOfType(ASTVariableDeclaratorId.class).getImage();
 			thisNode = parent.addChildren(ElementNodeType.FIELD, name);
 			manager.AddRelation(node, thisNode);
-			//System.out.println("            new field node : " + name);
+			////System.out.println("            new field node : " + name);
 
 			entryStack.push(thisNode);
 			super.visit(node, data);
@@ -297,7 +311,7 @@ public class ProjectTree extends AbstractJavaRule {
 			if(template != null)
 				parameterName = addTemplateParameters(parameterName,template);
 			enode.parameters.add(parameterName);
-			//System.out.println("                " + parameterName);
+			////System.out.println("                " + parameterName);
 		}
 	}
 		
@@ -308,7 +322,7 @@ public class ProjectTree extends AbstractJavaRule {
 		String name = entryStack.peek().getName();
 		
 		thisNode = parent.addChildren(ElementNodeType.CONSTRUCTOR, name);
-		//System.out.println("            new constructor node : " + name);
+		////System.out.println("            new constructor node : " + name);
 	
 		
 		addParameters((MethodDomain)thisNode,node.getParameters(),data);
@@ -330,9 +344,9 @@ public class ProjectTree extends AbstractJavaRule {
 		String name = node.getMethodName();
 	
 		//if(name.equals("tableModelFrom"))
-		//	//System.out.println();
+		//	////System.out.println();
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
-		//System.out.println("            new method node : " + name);
+		////System.out.println("            new method node : " + name);
 	
 		//return type 받기
 		MethodResult result = null;
@@ -349,7 +363,7 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		addParameters((MethodDomain)thisNode,node.getFirstDescendantOfType(ASTFormalParameters.class),data);
 		//if(thisNode.getFullName().equals("net.sourceforge.pmd.lang.java.rule.stanly.ProjectTree.visit"))
-		//	System.out.println("");//YHC
+		//	//System.out.println("");//YHC
 		manager.AddRelation(node,thisNode);
 		
 		entryStack.push(thisNode);
@@ -366,7 +380,7 @@ public class ProjectTree extends AbstractJavaRule {
 		String name = "()";
 		
 		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
-		//System.out.println("            new initializer node : " + thisNode.getFullName());
+		////System.out.println("            new initializer node : " + thisNode.getFullName());
 		
 		entryStack.push(thisNode);
 		super.visit(node, data);

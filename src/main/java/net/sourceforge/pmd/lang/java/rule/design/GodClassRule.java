@@ -97,7 +97,7 @@ public class GodClassRule extends AbstractJavaRule {
 //            .append("WMC=").append(wmcCounter).append(", ")
 //            .append("ATFD=").append(atfdCounter).append(", ")
 //            .append("TCC=").append(tcc);
-//        System.out.println(debug.toString());
+//        //System.out.println(debug.toString());
 
         if (wmcCounter >= WMC_VERY_HIGH
             && atfdCounter > FEW_THRESHOLD

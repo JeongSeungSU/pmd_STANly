@@ -13,8 +13,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 
 import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PMD;
@@ -324,13 +322,13 @@ public class PMDTask extends Task {
 
 	@Override
 	public void execute() throws BuildException {
-		validate();
-		final Handler antLogHandler = new AntLogHandler(this);
-		final ScopedLogHandlersManager logManager = new ScopedLogHandlersManager(Level.FINEST, antLogHandler);
+		//validate();
+		//final Handler antLogHandler = new AntLogHandler(this);
+		//final ScopedLogHandlersManager logManager = new ScopedLogHandlersManager(Level.FINEST, antLogHandler);
 		try {
 			doTask();
 		} finally {
-			logManager.close();
+			//logManager.close();
 		}
 	}
 

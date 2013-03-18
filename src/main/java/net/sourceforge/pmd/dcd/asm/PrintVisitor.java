@@ -31,8 +31,8 @@ public class PrintVisitor {
 
 	private void println(int level, String s) {
 		for (int i = 0; i < level; i++) {
-			System.out.print(INDENT);
+			//System.out.print(INDENT);
 		}
-		System.out.println(s);
+		//System.out.println(s);
 	}
 }

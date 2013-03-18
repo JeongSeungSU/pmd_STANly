@@ -25,11 +25,11 @@ public class UselessAssignment extends AbstractJavaRule implements Executable {
         List f = n1.getFlow();
         for (Iterator i = f.iterator(); i.hasNext();) {
             DataFlowNode dfan = (DataFlowNode)i.next();
-            System.out.println(dfan);
+            //System.out.println(dfan);
             List va = dfan.getVariableAccess();
             for (Iterator j = va.iterator(); j.hasNext();) {
                 VariableAccess o = (VariableAccess)j.next();
-                System.out.println(o);
+                //System.out.println(o);
             }
         }
 */
@@ -56,16 +56,16 @@ public class UselessAssignment extends AbstractJavaRule implements Executable {
 
     public void execute(CurrentPath path) {
         Map<String, Usage> hash = new HashMap<String, Usage>();
-        //System.out.println("path size is " + path.size());
+        ////System.out.println("path size is " + path.size());
         for (Iterator<DataFlowNode> i = path.iterator(); i.hasNext();) {
-            //System.out.println("i = " + i);
+            ////System.out.println("i = " + i);
             DataFlowNode inode = i.next();
             if (inode.getVariableAccess() == null) {
                 continue;
             }
             for (int j = 0; j < inode.getVariableAccess().size(); j++) {
                 VariableAccess va = inode.getVariableAccess().get(j);
-                //System.out.println("inode = " + inode + ", va = " + va);
+                ////System.out.println("inode = " + inode + ", va = " + va);
                 Usage u = hash.get(va.getVariableName());
                 if (u != null) {
                     // At some point investigate and possibly reintroduce this line2 thing
@@ -74,7 +74,7 @@ public class UselessAssignment extends AbstractJavaRule implements Executable {
                     // DD - definition followed by another definition
                     // FIXME need to check for assignment as well!
                     if (va.isDefinition() && va.accessTypeMatches(u.accessType)) {
-                        //System.out.println(va.getVariableName() + ":" + u);
+                        ////System.out.println(va.getVariableName() + ":" + u);
                         addViolation(rc, u.node.getNode(), va.getVariableName());
                     }
 /*                        // UR - ??

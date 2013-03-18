@@ -148,7 +148,7 @@ public class SourceCodeProcessor {
 		acus.add(rootNode);
 		//culist.add(rootNode);
 		//if(culist.size() > 596)
-		//	System.out.println("Done");
+		//	//System.out.println("Done");
 		ruleSets.apply(acus, ctx, language);
 	}
 

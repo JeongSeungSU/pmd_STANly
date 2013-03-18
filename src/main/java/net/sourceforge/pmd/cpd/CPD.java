@@ -147,14 +147,14 @@ public class CPD {
             }
 
             if ( missingFiles ) {
-	            System.out.println("No " + "--files" + " value passed in");
+	            //System.out.println("No " + "--files" + " value passed in");
 	            showUsage();
 	            System.exit(MISSING_FILES);
             }
 
             cpd.go();
             if (cpd.getMatches().hasNext()) {
-                System.out.println(config.renderer().render(cpd.getMatches()));
+                //System.out.println(config.renderer().render(cpd.getMatches()));
                 System.exit(DUPLICATE_CODE_FOUND);
             }
         } catch (Exception e) {
@@ -163,14 +163,14 @@ public class CPD {
     }
 
     public static void showUsage() {
-        System.out.println("Usage:");
-        System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens xxx --files xxx [--language xxx] [--encoding xxx] [--format (xml|text|csv|vs)] [--skip-duplicate-files] ");
-        System.out.println("i.e: ");
-        System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens 100 --files c:\\jdk14\\src\\java ");
-        System.out.println("or: ");
-        System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens 100 --files /path/to/c/code --language c ");
-        System.out.println("or: ");
-        System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens 100 --encoding UTF-16LE --files /path/to/java/code --format xml");
+        //System.out.println("Usage:");
+        //System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens xxx --files xxx [--language xxx] [--encoding xxx] [--format (xml|text|csv|vs)] [--skip-duplicate-files] ");
+        //System.out.println("i.e: ");
+        //System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens 100 --files c:\\jdk14\\src\\java ");
+        //System.out.println("or: ");
+        //System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens 100 --files /path/to/c/code --language c ");
+        //System.out.println("or: ");
+        //System.out.println(" java net.sourceforge.pmd.cpd.CPD --minimum-tokens 100 --encoding UTF-16LE --files /path/to/java/code --format xml");
     }
 
 }

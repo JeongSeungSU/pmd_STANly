@@ -23,7 +23,7 @@ public class NumberOfStaticMethods extends AbstractJavaRule{
 		Object obj = super.visit(node, data);
 		while(!entryStack.empty())
 		{
-			System.out.println(entryStack.peek().getClassName()+"   : " +entryStack.peek().getCount());
+			//System.out.println(entryStack.peek().getClassName()+"   : " +entryStack.peek().getCount());
 			entryStack.pop();
 		}
     	return obj;

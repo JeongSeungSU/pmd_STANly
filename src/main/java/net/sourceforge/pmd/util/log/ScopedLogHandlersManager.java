@@ -5,7 +5,7 @@ package net.sourceforge.pmd.util.log;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *	@author Romain PELISSE, belaran@gmail.com
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  */
 public class ScopedLogHandlersManager {
-
+/*
 	private static final String PACKAGE_NAME = "net.sourceforge.pmd";
 
     @SuppressWarnings("PMD.LoggerIsNotStaticFinal")
@@ -23,6 +23,7 @@ public class ScopedLogHandlersManager {
     private Handler[] oldHandlers;
     private Handler[] newHandlers;
 
+    //로그 관련 관리 부분 일단 없앰...
     public ScopedLogHandlersManager(Level level, Handler... handlers) {
         newHandlers = handlers;
         logger = Logger.getLogger(PACKAGE_NAME);
@@ -36,6 +37,7 @@ public class ScopedLogHandlersManager {
         for (Handler handler : newHandlers) {
             logger.addHandler(handler);
         }
+        
     }
 
     public void close() {
@@ -46,5 +48,7 @@ public class ScopedLogHandlersManager {
             logger.addHandler(handler);
         }
         logger.setLevel(oldLogLevel);
+       
     }
+    */
 }

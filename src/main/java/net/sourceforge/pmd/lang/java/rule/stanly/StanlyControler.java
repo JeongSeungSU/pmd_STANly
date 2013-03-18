@@ -7,7 +7,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
+
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.Rule;
@@ -34,6 +39,8 @@ import net.sourceforge.pmd.util.datasource.DataSource;
 
 public class StanlyControler {
 
+	//private static final Log LOG = LogFactory.getLog(StanlyControler.class);
+	private static final Logger LOG = Logger.getLogger(StanlyControler.class);
 	static private List<DomainRelation> RelationList;
 	static private ElementNode	RootNode;
 	static private String RootPath = "";
@@ -72,6 +79,8 @@ public class StanlyControler {
 	
 	public static StanlyAnalysisData StartAnalysis(String Path)
 	{
+		LOG.info("Analysis Path : "+Path);
+		LOG.info("Start Analysis");
 		StanlyControler.setRootPath(Path);
 		PMDParameters pmdparameter = new PMDParameters();
 		PMDConfiguration configuration = transformParametersIntoConfiguration(pmdparameter,Path);
@@ -82,10 +91,11 @@ public class StanlyControler {
 		analysisdata.setRelationList(StanlyControler.getRelationList());
 		analysisdata.setRootNode(StanlyControler.getRootNode());
 		
+		LOG.info("End Analysis");
 		return analysisdata;
 	}
 	
-	public static void doPMD(PMDConfiguration configuration) {
+	private static void doPMD(PMDConfiguration configuration) {
 
 		// Load the RuleSets
 		long startLoadRules = System.nanoTime();
@@ -102,6 +112,7 @@ public class StanlyControler {
 
 		long reportStart = System.nanoTime();
 		try {			
+			
 			Renderer renderer = configuration.createRenderer();
 			List<Renderer> renderers = new LinkedList<Renderer>();
 			renderers.add(renderer);
@@ -110,20 +121,23 @@ public class StanlyControler {
 			renderer.start();
 
 			Benchmarker.mark(Benchmark.Reporting, System.nanoTime() - reportStart, 0);
-
+			
 			RuleContext ctx = new RuleContext();
 
 			processFiles(configuration, ruleSetFactory, files, ctx, renderers);
+			//processFiles(configuration, ruleSetFactory, files, ctx, null);
 
+			
 			reportStart = System.nanoTime();
 			renderer.end();
 			renderer.flush();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
 	}
 
-	public static void processFiles(final PMDConfiguration configuration,
+	private static void processFiles(final PMDConfiguration configuration,
 			final RuleSetFactory ruleSetFactory, final List<DataSource> files,
 			final RuleContext ctx, final List<Renderer> renderers) {
 
@@ -159,7 +173,7 @@ public class StanlyControler {
 	}
 	
 	
-	public static List<DataSource> getApplicableFiles(
+	private static List<DataSource> getApplicableFiles(
 			PMDConfiguration configuration, Set<Language> languages) {
 		long startFiles = System.nanoTime();
 		LanguageFilenameFilter fileSelector = new LanguageFilenameFilter(languages);
@@ -186,7 +200,7 @@ public class StanlyControler {
 		return languages;
 	}
 	
-	public static PMDConfiguration transformParametersIntoConfiguration(PMDParameters params,String path)
+	private static PMDConfiguration transformParametersIntoConfiguration(PMDParameters params,String path)
 	{
     	PMDConfiguration configuration = new PMDConfiguration();
     	configuration.setInputPaths(path);

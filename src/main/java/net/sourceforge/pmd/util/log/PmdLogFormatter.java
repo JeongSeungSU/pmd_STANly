@@ -5,9 +5,17 @@ import java.util.logging.LogRecord;
 
 public class PmdLogFormatter extends Formatter {
 
+	@Override
+	public String format(LogRecord logrecord) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
     @Override
     public String format(LogRecord record) {
         return formatMessage(record);
     }
 
+*/
 }

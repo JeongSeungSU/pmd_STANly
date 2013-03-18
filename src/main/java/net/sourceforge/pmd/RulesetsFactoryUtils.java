@@ -1,13 +1,15 @@
 package net.sourceforge.pmd;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.sourceforge.pmd.benchmark.Benchmark;
 import net.sourceforge.pmd.benchmark.Benchmarker;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
 public final class RulesetsFactoryUtils {
 
+	//private static final Log LOG = LogFactory.getLog(RulesetsFactoryUtils.class);
 	private static final Logger LOG = Logger.getLogger(RulesetsFactoryUtils.class.getName());
 
 	private RulesetsFactoryUtils() {}
@@ -22,7 +24,7 @@ public final class RulesetsFactoryUtils {
 			long endLoadRules = System.nanoTime();
 			Benchmarker.mark(Benchmark.LoadRules, endLoadRules - loadRuleStart, 0);
 		} catch (RuleSetNotFoundException rsnfe) {
-			LOG.log(Level.SEVERE, "Ruleset not found", rsnfe);
+			LOG.debug("Ruleset not found", rsnfe);
 			throw new IllegalArgumentException(rsnfe);
 		}
 		return ruleSets;
@@ -41,9 +43,9 @@ public final class RulesetsFactoryUtils {
 	 * @param rulesets     the RuleSets to print
 	 */
 	private static void printRuleNamesInDebug(RuleSets rulesets) {
-		if (LOG.isLoggable(Level.FINER)) {
+		if (LOG.isDebugEnabled()) {
 			for (Rule r : rulesets.getAllRules()) {
-				LOG.finer("Loaded rule " + r.getName());
+				LOG.debug("Loaded rule " + r.getName());
 			}
 		}
 	}

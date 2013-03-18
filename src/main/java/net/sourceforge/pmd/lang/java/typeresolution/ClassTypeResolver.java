@@ -8,8 +8,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTAdditiveExpression;
@@ -68,7 +70,8 @@ import net.sourceforge.pmd.lang.java.ast.TypeNode;
 
 public class ClassTypeResolver extends JavaParserVisitorAdapter {
 
-	private static final Logger LOG = Logger.getLogger(ClassTypeResolver.class.getName());
+	//private static final Log LOG = LogFactory.getLog(ClassTypeResolver.class);
+	private static final Logger LOG = Logger.getLogger(ClassTypeResolver.class);
 
 	private static final Map<String, Class<?>> PRIMITIVE_TYPES;
 	private static final Map<String, String> JAVA_LANG;
@@ -150,9 +153,9 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 				populateClassName(node, className);
 			}
 		} catch (ClassNotFoundException e) {
-			LOG.log(Level.FINE, "Could not find class " + className + ", due to: " + e.getClass().getName() + ": " + e.getMessage());
+			LOG.error( "Could not find class " + className + ", due to: " + e.getClass().getName() + ": " + e.getMessage());
 		} catch (LinkageError e) {
-			LOG.log(Level.WARNING, "Could not find class " + className + ", due to: " + e.getClass().getName() + ": " + e.getMessage());
+			LOG.error("Could not find class " + className + ", due to: " + e.getClass().getName() + ": " + e.getMessage());
 		} finally {
 			populateImports(node);
 		}
@@ -651,7 +654,7 @@ public class ClassTypeResolver extends JavaParserVisitorAdapter {
 							if(pd != null)
 							{
 								qualifiedName = pd.getPackageNameImage() + "." + qualifiedName;
-								//System.out.println(qualifiedName);
+								////System.out.println(qualifiedName);
 							}
 						}
 					}

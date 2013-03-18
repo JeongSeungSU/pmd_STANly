@@ -49,7 +49,7 @@ public class Fat implements AbstractAfterCalculator{
 		{
 			strRel = new ArrayList<String>(relations.keySet());
 			Collections.sort(strRel);
-			System.out.println(strRel.size());
+			//System.out.println(strRel.size());
 		}*/
 	}
 	

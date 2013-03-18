@@ -35,7 +35,7 @@ public class TotalLinesOfCode extends AbstractStatisticalJavaRule{
 			addDataPoint(point);
 		}
 
-		//System.out.print(node.getClass().getName() +" : "+ numNodes + "\n" );
+		////System.out.print(node.getClass().getName() +" : "+ numNodes + "\n" );
 		return Integer.valueOf(numNodes);
 	}
 

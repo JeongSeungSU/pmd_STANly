@@ -15,7 +15,7 @@ import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.util.NumericConstants;
 
 public class MoreThanOneLoggerRule extends AbstractJavaRule {
-
+/*
     private static final Class<?> LOG4J_LOGGER;
 
     private static final Class<?> JAVA_LOGGER;
@@ -91,5 +91,5 @@ public class MoreThanOneLoggerRule extends AbstractJavaRule {
 
 	return super.visit(node, data);
     }
-
+*/
 }

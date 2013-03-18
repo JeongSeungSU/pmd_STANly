@@ -8,15 +8,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Stack;
 
 import net.sourceforge.pmd.PropertyDescriptor;
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.ast.Node;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
 import org.jaxen.Navigator;
@@ -38,6 +39,7 @@ import org.jaxen.saxpath.Axis;
  */
 public class JaxenXPathRuleQuery extends AbstractXPathRuleQuery {
 
+	//private static final Log LOG = LogFactory.getLog(JaxenXPathRuleQuery.class);
     private static final Logger LOG = Logger.getLogger(JaxenXPathRuleQuery.class.getName());
 
     private static enum InitializationStatus {
@@ -180,8 +182,8 @@ public class JaxenXPathRuleQuery extends AbstractXPathRuleQuery {
 	    // Use original XPath if we cannot use the RuleChain
 	    nodeNameToXPaths.clear();
 	    indexXPath(originalXPath, AST_ROOT);
-	    if (LOG.isLoggable(Level.FINE)) {
-		LOG.log(Level.FINE, "Unable to use RuleChain for for XPath: " + xpath);
+	    if (LOG.isDebugEnabled()) {
+		LOG.warn( "Unable to use RuleChain for for XPath: " + xpath);
 	    }
 	}
 

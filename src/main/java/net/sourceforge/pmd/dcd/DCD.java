@@ -141,17 +141,17 @@ public class DCD {
 		List<String> includeRegexes = Arrays.asList(new String[] { "net\\.sourceforge\\.pmd\\.dcd.*", "us\\..*" });
 		List<String> excludeRegexes = Arrays.asList(new String[] { "java\\..*", "javax\\..*", ".*\\.twa\\..*" });
 		Filter<String> classFilter = Filters.buildRegexFilterExcludeOverInclude(includeRegexes, excludeRegexes);
-		System.out.println("Class filter: " + classFilter);
+		//System.out.println("Class filter: " + classFilter);
 
 		// Index each of the "direct users"
 		UsageGraphBuilder builder = new UsageGraphBuilder(classFilter);
 		int total = 0;
 		for (String clazz : classes) {
-			System.out.println("indexing class: " + clazz);
+			//System.out.println("indexing class: " + clazz);
 			builder.index(clazz);
 			total++;
 			if (total % 20 == 0) {
-				System.out.println(total + " : " + total / ((System.currentTimeMillis() - start) / 1000.0));
+				//System.out.println(total + " : " + total / ((System.currentTimeMillis() - start) / 1000.0));
 			}
 		}
 
@@ -160,14 +160,14 @@ public class DCD {
 		boolean deadCode = true;
 		UsageGraph usageGraph = builder.getUsageGraph();
 		if (dump) {
-			System.out.println("--- Dump ---");
+			//System.out.println("--- Dump ---");
 			dump(usageGraph, true);
 		}
 		if (deadCode) {
-			System.out.println("--- Dead Code ---");
+			//System.out.println("--- Dead Code ---");
 			report(usageGraph, true);
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("Time: " + (end - start) / 1000.0);
+		//System.out.println("Time: " + (end - start) / 1000.0);
 	}
 }

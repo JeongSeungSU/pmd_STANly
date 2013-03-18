@@ -11,6 +11,6 @@ public class MethodAnalysisException extends Exception {
 
 	public void PrintCauseException()
 	{
-		//System.out.println(Error);
+		////System.out.println(Error);
 	}
 }

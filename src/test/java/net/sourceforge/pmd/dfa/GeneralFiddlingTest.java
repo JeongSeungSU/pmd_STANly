@@ -23,11 +23,11 @@ public class GeneralFiddlingTest extends ParserTst {
         List f = n.getFlow();
         for (Iterator i = f.iterator(); i.hasNext();) {
             DataFlowNode dfan = (DataFlowNode) i.next();
-            System.out.println(dfan);
+            //System.out.println(dfan);
             List va = dfan.getVariableAccess();
             for (Iterator j = va.iterator(); j.hasNext();) {
                 VariableAccess o = (VariableAccess) j.next();
-                System.out.println(o);
+                //System.out.println(o);
             }
         }
     }

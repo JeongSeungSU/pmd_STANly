@@ -80,7 +80,7 @@ public class CPDConfiguration extends AbstractConfiguration {
         try {
             return (Renderer) Class.forName(name).newInstance();
         } catch (Exception e) {
-            System.out.println("Can't find class '" + name + "', defaulting to SimpleRenderer.");
+            //System.out.println("Can't find class '" + name + "', defaulting to SimpleRenderer.");
         }
         return new SimpleRenderer();
     }
@@ -109,7 +109,7 @@ public class CPDConfiguration extends AbstractConfiguration {
                 return args[i + 1];
             }
         }
-        System.out.println("No " + name + " value passed in");
+        //System.out.println("No " + name + " value passed in");
         CPD.showUsage();
         System.exit(MISSING_REQUIRED_ARGUMENT);
         return "";

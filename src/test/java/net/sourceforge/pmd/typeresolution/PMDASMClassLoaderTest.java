@@ -133,7 +133,7 @@ public class PMDASMClassLoaderTest {
 
 	long usedBytesAfter = runtime.totalMemory() - runtime.freeMemory();
 
-	System.out.println((usedBytesAfter - usedBytesBefore)/(1024.0*1024.0) + " mb needed");
+	//System.out.println((usedBytesAfter - usedBytesBefore)/(1024.0*1024.0) + " mb needed");
     }
 
     public static junit.framework.Test suite() {

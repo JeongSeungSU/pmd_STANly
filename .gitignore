@@ -1,2 +1,5 @@
 *.class
 *.html
+.fatjar
+.settings/org.jboss.ide.eclipse.as.core.prefs
+settings.fatjar

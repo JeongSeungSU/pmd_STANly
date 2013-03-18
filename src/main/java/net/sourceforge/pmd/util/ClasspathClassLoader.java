@@ -10,8 +10,10 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * Create a ClassLoader which loads classes using a CLASSPATH like String.
@@ -22,6 +24,7 @@ import java.util.logging.Logger;
  */
 public class ClasspathClassLoader extends URLClassLoader {
 
+	//private static final Log LOG = LogFactory.getLog(ClasspathClassLoader.class);
     private static final Logger LOG = Logger.getLogger(ClasspathClassLoader.class.getName());
 
     public ClasspathClassLoader(String classpath, ClassLoader parent) throws IOException {
@@ -47,7 +50,7 @@ public class ClasspathClassLoader extends URLClassLoader {
         StringTokenizer toker = new StringTokenizer(classpath, File.pathSeparator);
         while (toker.hasMoreTokens()) {
             String token = toker.nextToken();
-            LOG.log(Level.FINE, "Adding classpath entry: <{0}>", token);
+            //LOG.log(Level.FINE, "Adding classpath entry: <{0}>", token);
             urls.add(createURLFromPath(token));
         }
     }
@@ -58,10 +61,10 @@ public class ClasspathClassLoader extends URLClassLoader {
             in = new BufferedReader(new InputStreamReader(fileURL.openStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                LOG.log(Level.FINE, "Read classpath entry line: <{0}>", line);
+                //LOG.log(Level.FINE, "Read classpath entry line: <{0}>", line);
                 line = line.trim();
                 if (line.length() > 0) {
-                    LOG.log(Level.FINE, "Adding classpath entry: <{0}>", line);
+                   // LOG.log(Level.FINE, "Adding classpath entry: <{0}>", line);
                     urls.add(createURLFromPath(line));
                 }
             }

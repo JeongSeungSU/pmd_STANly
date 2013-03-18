@@ -593,7 +593,7 @@ public class RuleSetFactoryTest {
 
 		// Load original XML
 //		String xml1 = readFullyToString(ResourceLoader.loadResourceAsStream(fileName));
-//		System.out.println("xml1: " + xml1);
+//		//System.out.println("xml1: " + xml1);
 
 		// Load the original RuleSet
 		RuleSet ruleSet1 = loadRuleSetByFileName(fileName);
@@ -604,7 +604,7 @@ public class RuleSetFactoryTest {
 		writer1.write(ruleSet1);
 		writer1.close();
 		String xml2 = new String(outputStream1.toByteArray());
-		// System.out.println("xml2: " + xml2);
+		// //System.out.println("xml2: " + xml2);
 
 		// Read RuleSet from XML, first time
 		RuleSetFactory ruleSetFactory = new RuleSetFactory();
@@ -619,7 +619,7 @@ public class RuleSetFactoryTest {
 		writer2.write(ruleSet2);
 		writer2.close();
 		String xml3 = new String(outputStream2.toByteArray());
-		// System.out.println("xml3: " + xml3);
+		// //System.out.println("xml3: " + xml3);
 
 		// Read RuleSet from XML, second time
 		RuleSet ruleSet3 = ruleSetFactory

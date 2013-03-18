@@ -134,7 +134,7 @@ public class JavaTokensTokenizerTest {
         Tokens tokens = new Tokens();
         t.tokenize(sourceCode, tokens);
         TokenEntry.getEOF();
-        System.out.println(sourceCode.getSlice(0,5));
+        //System.out.println(sourceCode.getSlice(0,5));
 
         assertEquals(6, tokens.size());
     }

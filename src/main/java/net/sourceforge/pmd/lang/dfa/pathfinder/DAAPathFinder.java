@@ -48,7 +48,7 @@ public class DAAPathFinder {
         boolean flag = true;
         do {
             i++;
-//            System.out.println("Building path from " + currentPath.getLast());
+//            //System.out.println("Building path from " + currentPath.getLast());
             phase2(flag);
             shim.execute(currentPath);
             flag = false;
@@ -206,7 +206,7 @@ public class DAAPathFinder {
     private void removeFromTree() {
         DefaultMutableTreeNode last = stack.getLastLeaf();
         if (last == null) {
-            System.out.println("removeFromTree - last == null");
+            //System.out.println("removeFromTree - last == null");
             return;
         }
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) last.getParent();

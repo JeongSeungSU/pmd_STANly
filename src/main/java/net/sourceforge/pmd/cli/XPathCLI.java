@@ -58,7 +58,7 @@ public class XPathCLI {
             if (StringUtil.isNotEmpty(rv.getVariableName())) {
                 sb.append("; variable name '" + rv.getVariableName() + "'");
             }
-            System.out.println(sb.toString());
+            ////System.out.println(sb.toString());
         }
     }
 }

@@ -8,19 +8,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sourceforge.pmd.benchmark.Benchmark;
 import net.sourceforge.pmd.benchmark.Benchmarker;
 import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.lang.ast.Node;
+import net.sourceforge.pmd.lang.java.rule.stanly.StanlyControler;
 import net.sourceforge.pmd.lang.rule.RuleReference;
 import net.sourceforge.pmd.util.CollectionUtil;
 import net.sourceforge.pmd.util.StringUtil;
 import net.sourceforge.pmd.util.filter.Filter;
 import net.sourceforge.pmd.util.filter.Filters;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * This class represents a collection of rules along with some optional filter
@@ -31,6 +34,7 @@ import net.sourceforge.pmd.util.filter.Filters;
 //FUTURE Implement Cloneable and clone()
 public class RuleSet {
 
+	//private static final Log LOG = LogFactory.getLog(RuleSet.class);
     private static final Logger LOG = Logger.getLogger(RuleSet.class.getName());
 
 	private List<Rule> rules = new ArrayList<Rule>();
@@ -221,7 +225,8 @@ public class RuleSet {
             } catch (ThreadDeath td) {
                 throw td;
             } catch (Throwable t) {
-                LOG.log(Level.WARNING, "Exception applying rule " + rule.getName() + ", continuing with next rule", t);
+            	//룰셋 에러들어오면 요기서 처리...
+                LOG.warn("Exception applying rule " + rule.getName() + ", continuing with next rule", t);
             }
 		}
 	}

@@ -81,10 +81,10 @@ public class CLITest {
 		String filename = TEST_OUPUT_DIRECTORY + testname + ".txt";
 		long start = System.currentTimeMillis();
 		createTestOutputFile(filename);
-		System.out.println("Start running test " + testname);
+		//System.out.println("Start running test " + testname);
 		runPMDWith(args);
 		checkStatusCode();
-		System.out.println("Test finished successfully after " + (System.currentTimeMillis() - start) + "ms.");
+		//System.out.println("Test finished successfully after " + (System.currentTimeMillis() - start) + "ms.");
 		return filename;
 	}
 

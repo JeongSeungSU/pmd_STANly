@@ -11,7 +11,7 @@ public class Search {
 
     public Search(NameOccurrence occ) {
         if (TRACE) {
-            System.out.println("new search for " + (occ.isMethodOrConstructorInvocation() ? "method" : "variable") + " " + occ);
+            //System.out.println("new search for " + (occ.isMethodOrConstructorInvocation() ? "method" : "variable") + " " + occ);
         }
         this.occ = occ;
     }
@@ -19,14 +19,14 @@ public class Search {
     public void execute() {
         decl = searchUpward(occ, occ.getLocation().getScope());
         if (TRACE) {
-            System.out.println("found " + decl);
+            //System.out.println("found " + decl);
         }
     }
 
     public void execute(Scope startingScope) {
         decl = searchUpward(occ, startingScope);
         if (TRACE) {
-            System.out.println("found " + decl);
+            //System.out.println("found " + decl);
         }
     }
 
@@ -36,17 +36,17 @@ public class Search {
 
     private NameDeclaration searchUpward(NameOccurrence nameOccurrence, Scope scope) {
         if (TRACE) {
-            System.out.println(" checking scope " + scope + " for name occurrence " + nameOccurrence);
+            //System.out.println(" checking scope " + scope + " for name occurrence " + nameOccurrence);
         }
         if (!scope.contains(nameOccurrence) && scope.getParent() != null) {
             if (TRACE) {
-                System.out.println(" moving up from " + scope + " to " + scope.getParent());
+                //System.out.println(" moving up from " + scope + " to " + scope.getParent());
             }
             return searchUpward(nameOccurrence, scope.getParent());
         }
         if (scope.contains(nameOccurrence)) {
             if (TRACE) {
-                System.out.println(" found it!");
+                //System.out.println(" found it!");
             }
             return scope.addVariableNameOccurrence(nameOccurrence);
         }

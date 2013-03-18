@@ -112,7 +112,8 @@ public abstract class AbstractRenderer extends AbstractPropertySource implements
     	} catch (IOException e) {
     		throw new IllegalStateException(e);
     	} finally {
-    		IOUtil.closeQuietly(writer);
+    		//여기서 writer를 날려버린다... ㅠㅠ
+    		//IOUtil.closeQuietly(writer);
     	}
     }
 }

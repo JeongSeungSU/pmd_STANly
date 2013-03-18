@@ -78,7 +78,7 @@ public class AcceptanceTest extends STBBaseTst {
     @Test
     public void testFieldFinder() {
         parseCode(TEST_FIELD);
-//        System.out.println(TEST_FIELD);
+//        //System.out.println(TEST_FIELD);
 
         ASTVariableDeclaratorId declaration = acu.findDescendantsOfType(ASTVariableDeclaratorId.class).get(1);
         assertEquals(3, declaration.getBeginLine());
@@ -87,13 +87,13 @@ public class AcceptanceTest extends STBBaseTst {
         NameOccurrence no = declaration.getUsages().get(0);
         JavaNode location = no.getLocation();
         assertEquals(6, location.getBeginLine());
-//        System.out.println("variable " + declaration.getImage() + " is used here: " + location.getImage());
+//        //System.out.println("variable " + declaration.getImage() + " is used here: " + location.getImage());
     }
 
     @Test
     public void testDemo() {
         parseCode(TEST_DEMO);
-//        System.out.println(TEST_DEMO);
+//        //System.out.println(TEST_DEMO);
         ASTMethodDeclaration node = acu.findDescendantsOfType(ASTMethodDeclaration.class).get(0);
         Scope s = node.getScope();
         Map<VariableNameDeclaration, List<NameOccurrence>> m = s.getVariableDeclarations();
@@ -107,10 +107,10 @@ public class AcceptanceTest extends STBBaseTst {
             int beginLine = o.getLocation().getBeginLine();
             assertEquals(3, beginLine);
 
-//            System.out.println("Variable: " + d.getImage());
-//            System.out.println("Type: " + d.getTypeImage());
-//            System.out.println("Usages: " + u.size());
-//            System.out.println("Used in line " + beginLine);
+//            //System.out.println("Variable: " + d.getImage());
+//            //System.out.println("Type: " + d.getTypeImage());
+//            //System.out.println("Usages: " + u.size());
+//            //System.out.println("Used in line " + beginLine);
         }
     }
 

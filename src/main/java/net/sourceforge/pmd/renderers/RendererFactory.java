@@ -10,9 +10,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 import net.sourceforge.pmd.PropertyDescriptor;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * This class handles the creation of Renderers.
@@ -20,6 +23,7 @@ import net.sourceforge.pmd.PropertyDescriptor;
  */
 public class RendererFactory {
 
+	//private static final Log LOG = LogFactory.getLog(RendererFactory.class);
     private static final Logger LOG = Logger.getLogger(RendererFactory.class.getName());
 
     public static final Map<String, Class<? extends Renderer>> REPORT_FORMAT_TO_RENDERER;
@@ -53,7 +57,7 @@ public class RendererFactory {
 	Renderer renderer;
 	try {
 	    if (constructor.getParameterTypes().length > 0) {
-		LOG.warning("The renderer uses a deprecated mechanism to use the properties. Please define the needed properties with this.definePropertyDescriptor(..).");
+		LOG.warn("The renderer uses a deprecated mechanism to use the properties. Please define the needed properties with this.definePropertyDescriptor(..).");
 		renderer = constructor.newInstance(properties);
 	    } else {
 		renderer = constructor.newInstance();
@@ -78,7 +82,7 @@ public class RendererFactory {
 	}
 	// Warn about legacy report format usages
 	if (REPORT_FORMAT_TO_RENDERER.containsKey(reportFormat) && !reportFormat.equals(renderer.getName())) {
-	    LOG.warning("Report format '" + reportFormat + "' is deprecated, and has been replaced with '"
+	    LOG.warn("Report format '" + reportFormat + "' is deprecated, and has been replaced with '"
 		    + renderer.getName()
 		    + "'. Future versions of PMD will remove support for this deprecated Report format usage.");
 	}

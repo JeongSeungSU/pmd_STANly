@@ -76,21 +76,21 @@ public class ClassLoaderUtil {
 	    throws NoSuchMethodException {
 	// Scan the type hierarchy just like Class.getMethod(String, Class[])
 	// using Class.getDeclaredMethod(String, Class[])
-	// System.out.println("type: " + type);
-	// System.out.println("name: " + name);
+	// //System.out.println("type: " + type);
+	// //System.out.println("name: " + name);
 	// System.out
 	// .println("parameterTypes: " + Arrays.toString(parameterTypes));
 	try {
-	    // System.out.println("Checking getDeclaredMethod");
+	    // //System.out.println("Checking getDeclaredMethod");
 	    // for (Method m : type.getDeclaredMethods()) {
-	    // System.out.println("\t" + m);
+	    // //System.out.println("\t" + m);
 	    // }
 	    return type.getDeclaredMethod(name, parameterTypes);
 	} catch (NoSuchMethodException e) {
 	    try {
 		// Try the super classes
 		if (type.getSuperclass() != null) {
-		    // System.out.println("Checking super: "
+		    // //System.out.println("Checking super: "
 		    // + type.getSuperclass());
 		    return myGetMethod(type.getSuperclass(), name, parameterTypes);
 		}
@@ -100,7 +100,7 @@ public class ClassLoaderUtil {
 	    // Try the super interfaces
 	    for (Class<?> superInterface : type.getInterfaces()) {
 		try {
-		    // System.out.println("Checking super interface: "
+		    // //System.out.println("Checking super interface: "
 		    // + superInterface);
 		    return myGetMethod(superInterface, name, parameterTypes);
 		} catch (NoSuchMethodException e3) {

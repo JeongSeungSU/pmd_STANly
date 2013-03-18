@@ -22,19 +22,19 @@ class Superclass {
 
 class Outer {
 	Outer() {
-		System.out.println("Outer constructor");
+		//System.out.println("Outer constructor");
 	}
 	
 	class Inner {
 		Inner() {
-			System.out.println("Inner constructor");
+			//System.out.println("Inner constructor");
 		}
 	}
 }
 class Child extends Outer.Inner {
 	Child(Outer o) {
 		o.super();
-		System.out.println("Child constructor");
+		//System.out.println("Child constructor");
 	}
 }
 

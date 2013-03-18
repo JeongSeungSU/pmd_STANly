@@ -16,7 +16,7 @@ public class SymbolTableTestRule extends AbstractJavaRule {
         for(ASTVariableDeclaratorId declaration: node.findDescendantsOfType(ASTVariableDeclaratorId.class)) {
             for (NameOccurrence no: declaration.getUsages()) {
                 Node location = no.getLocation();
-                System.out.println(declaration.getImage() + " is used here: " + location.getImage());
+                //System.out.println(declaration.getImage() + " is used here: " + location.getImage());
             }
         }
         return data;
