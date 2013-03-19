@@ -7,9 +7,10 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
-import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
-import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.AbstractASTAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelationList;
 
 public class ResultTypeAnalysisNode extends AbstractASTAnalysisNode {
 

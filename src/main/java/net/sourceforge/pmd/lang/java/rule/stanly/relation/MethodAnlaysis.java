@@ -38,10 +38,35 @@ import net.sourceforge.pmd.lang.java.ast.ASTShiftExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
 import net.sourceforge.pmd.lang.java.ast.ASTUnaryExpression;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
-import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelation;
-import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
-import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.AbstractASTAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.AdditiveExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.AndExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.ArgumentsAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.AssignmentOperatorAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.CastExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.ClassOrInterfaceTypeAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.ConditionalExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelationList;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.EnumDeclarationAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.EqualityExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.ExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.InclusiveOrExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.LiteralAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.MemberSelectorAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.MultiplicativeExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.NameAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PostfixExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PreDecrementExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PreIncrementExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PrimaryExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PrimaryPrefixAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PrimarySuffixAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.PrimitiveTypeAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.ShiftExpressionAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.TypeArgumentAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.UnaryExpressionAnalysisNode;
 
 /**
  * 

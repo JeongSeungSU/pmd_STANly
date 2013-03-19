@@ -5,8 +5,9 @@ import java.util.Map;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTResource;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
-import net.sourceforge.pmd.lang.java.rule.stanly.DomainRelationList;
-import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.AbstractASTAnalysisNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelationList;
 
 public class ResourceAnalysisNode extends AbstractASTAnalysisNode {
 
