@@ -5,6 +5,13 @@ import java.util.List;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelation;
 
+/**
+ * 최종적으로 분석된 결과값
+ * ElementNode의 RootNode => ProjectNode 와
+ * RelationList를 가지고 있는 class
+ * @since 2013. 3. 20.오전 1:06:37
+ * @author JeongSeungsu
+ */
 public class StanlyAnalysisData {
 	private List<DomainRelation> RelationList;
 	private ElementNode	RootNode;

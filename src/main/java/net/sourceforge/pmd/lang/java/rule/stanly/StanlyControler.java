@@ -39,6 +39,11 @@ import net.sourceforge.pmd.util.IOUtil;
 import net.sourceforge.pmd.util.SystemUtils;
 import net.sourceforge.pmd.util.datasource.DataSource;
 
+/**
+ * 외부에서 사용할시 사용될 Interface 모음
+ * @since 2013. 3. 20.오전 12:42:40
+ * @author JeongSeungsu
+ */
 public class StanlyControler {
 
 	//private static final Log LOG = LogFactory.getLog(StanlyControler.class);
@@ -79,6 +84,13 @@ public class StanlyControler {
 		RootNode 	 = null;
 	}
 	
+	/**
+	 * 소스가 들어 있는 Path 값만 넣어주면 알아서 분석하고 최종 결과를 리턴함..
+	 * @since 2013. 3. 20.오전 12:43:37
+	 * @author JeongSeungsu
+	 * @param Path
+	 * @return 분석된 ElementNode의 RootNode와 RealtionList가 리턴된다.
+	 */
 	public static StanlyAnalysisData StartAnalysis(String Path)
 	{
 		LOG.info("Analysis Path : "+Path);

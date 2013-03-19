@@ -19,6 +19,15 @@ public final class MacroFunctions {
 		else
 			return false;
 	}
+	/**
+	 * 정규표현식이 아닌 단순 스트링 데이터에서 replacefirst해주는 함수..
+	 * @since 2013. 3. 20.오전 12:46:08
+	 * @author JeongSeungsu
+	 * @param source
+	 * @param change
+	 * @param changed
+	 * @return 
+	 */
 	final public static String NotRegularExpressionReplaceFirst(String source,String change, String changed)
 	{
 		String res = "";

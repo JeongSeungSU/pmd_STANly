@@ -7,7 +7,17 @@ import java.util.Stack;
 import org.apache.tools.ant.taskdefs.Tar;
 import org.apache.tools.ant.types.selectors.TypeSelector;
 
+/**
+ * 예) net.sourceforge.pmd.lang.java.rule.stanly.Util.stringparser 
+ * -> [net,sourceforge,pmd,lang,java,rule,stanly,Util,stringparser]처럼 tokenize 된 데이터를 가짐..
+ * 일반화 할 필요가 있음...Type따라 그리고 ,나 <따라서...
+ * @since 2013. 3. 20.오전 12:49:58
+ * @author JeongSeungsu
+ */
 public class StringParsingData {
+	/**
+	 * Tokenize된 데이터 List
+	 */
 	List<StringTokenizeData> MethodTokenizedDataList;
 	String TypeSeperate = "StanlyTypeIndicate";
 	
@@ -22,6 +32,12 @@ public class StringParsingData {
 		MakeTokenizedData(data);
 	}
 	
+	/**
+	 * 현재 가지고 있는 데이터를 Tokenize 한다.
+	 * @since 2013. 3. 20.오전 12:51:24
+	 * @author JeongSeungsu
+	 * @param Target
+	 */
 	public void MakeTokenizedData(String Target)
 	{
 		StringTokenizeData nowdata = new StringTokenizeData("", "");
@@ -64,6 +80,15 @@ public class StringParsingData {
 		InitArgumentOrTypeTokenizedData(nowdata);
 
 	}
+ 	/**
+ 	 * String A = pmd.lang.java.rule.stanly.Util.stringparser;
+ 	 * String B = stanly.Util.stringparser;
+ 	 * 일때 A와 B를 비교해서SUB에 위치하면 true 리턴
+ 	 * @since 2013. 3. 20.오전 12:51:45
+ 	 * @author JeongSeungsu
+ 	 * @param data
+ 	 * @return
+ 	 */
  	public boolean CompareMatchingFullnameEndSubname(StringParsingData data)
  	{
  		StringParsingData bigsizedata = null;
@@ -92,6 +117,12 @@ public class StringParsingData {
  		return IsMatching;
  		
  	}
+	/**
+	 * (A,B,C) 또는 <T,CB> 이런 데이터를 다시 Tokenie 시켜주는 함수..
+	 * @since 2013. 3. 20.오전 12:52:32
+	 * @author JeongSeungsu
+	 * @param data
+	 */
 	private void InitArgumentOrTypeTokenizedData(StringTokenizeData data)
 	{
 		for(String typeargument :data.TypeArgument)

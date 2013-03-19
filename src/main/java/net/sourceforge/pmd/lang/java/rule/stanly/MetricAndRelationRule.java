@@ -26,9 +26,13 @@ import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.CouplingBetweenObjects;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.CyclomaticComplexity;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.LinesOfCode;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.AfterRelations;
 import net.sourceforge.pmd.lang.java.rule.stanly.relation.RelationManager;
 
+/**
+ * Metric 정보와 서로간의 Relation을 뽑아내는 Rule
+ * @since 2013. 3. 20.오전 12:45:16
+ * @author JeongSeungsu
+ */
 public class MetricAndRelationRule extends AbstractJavaRule {
 	
 	//protected final Log LOG = LogFactory.getLog(ProjectTree.class);

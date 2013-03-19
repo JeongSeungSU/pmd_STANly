@@ -1,4 +1,4 @@
-package net.sourceforge.pmd.lang.java.rule.stanly.relation;
+package net.sourceforge.pmd.lang.java.rule.stanly;
 
 
 import java.util.ArrayList;
@@ -30,7 +30,13 @@ import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculato
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.PackagetSetAverage;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.ResponseForClass;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.Tangled;
+import net.sourceforge.pmd.lang.java.rule.stanly.relation.RelationManager;
 
+/**
+ * 모든 ElementNodeTree 생성 후에 뽑을 수 있는 Relation들 
+ * @since 2013. 3. 20.오전 12:59:12
+ * @author JeongSeungsu
+ */
 public class AfterRelations {
 	
 	//protected final Log LOG = LogFactory.getLog(getClass());
