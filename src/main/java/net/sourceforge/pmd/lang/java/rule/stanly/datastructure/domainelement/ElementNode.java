@@ -3,8 +3,8 @@ package net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodParsingData;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelation;
+import net.sourceforge.pmd.lang.java.rule.stanly.Util.stringparser.StringParsingData;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelation;
 
 
 
@@ -154,48 +154,9 @@ public abstract class ElementNode {
 		ChildrenCount++;
 		return newNode;
 	}
-	public ElementNode addChildren(ElementNodeType type, String name)
+	private void findchildnodetomatching(StringParsingData targetdata, List<ElementNode> nodelist)
 	{
-		ElementNode newNode = null;
-		switch(type)
-		{
-			case PROJECT:
-				newNode = new ProjectDomain(this,type,name);
-				break;
-			case LIBRARY: 
-				newNode = new LibraryDomain(this,type,name);
-				break;
-			case PACKAGESET:
-				newNode = new PackageSetDomain(this,type,name);
-				break;
-			case PACKAGE:
-				newNode = new PackageDomain(this,type,name);
-				break;
-			case CLASS:
-			case INTERFACE:
-			case ENUM:
-			case ANNOTATION:
-				newNode = new ClassDomain(this,type,name);
-				break;
-			case FIELD:
-				newNode = new FieldDomain(this,type,name);
-				break;
-			case METHOD:
-			case CONSTRUCTOR:
-				newNode = new MethodDomain(this,type,name);
-				break;
-		}
-		
-		if(newNode != null)
-			addChildren(newNode);
-		//else
-		//	return null;
-		
-		return newNode;
-	}
-	private void findchildnodetomatching(MethodParsingData targetdata, List<ElementNode> nodelist)
-	{
-		MethodParsingData sourcedata = new MethodParsingData(getFullName());
+		StringParsingData sourcedata = new StringParsingData(getFullName());
 		
 		if(sourcedata.CompareMatchingFullnameEndSubname(targetdata))
 			nodelist.add(this);

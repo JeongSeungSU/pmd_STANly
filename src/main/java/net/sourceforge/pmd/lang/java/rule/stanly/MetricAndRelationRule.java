@@ -12,20 +12,21 @@ import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNodeFactory;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.LibraryDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ProjectDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.RelationResult;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.RelationAnalyst;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.exception.RelationAnalysisException;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.CouplingBetweenObjects;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.CyclomaticComplexity;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.LinesOfCode;
 import net.sourceforge.pmd.lang.java.rule.stanly.relation.AfterRelations;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnalysisException;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodAnlaysis;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.MethodResult;
 import net.sourceforge.pmd.lang.java.rule.stanly.relation.RelationManager;
 
 public class MetricAndRelationRule extends AbstractJavaRule {
@@ -131,7 +132,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		if(currentLibraryNode == null)
 		{
 			////System.out.println("new folder node : " + folderName);
-			currentLibraryNode = (LibraryDomain)projectNode.addChildren(ElementNodeType.LIBRARY, folderName);
+			currentLibraryNode = (LibraryDomain) ElementNodeFactory.CreateElementNode(projectNode, ElementNodeType.LIBRARY, folderName);
+			projectNode.addChildren(currentLibraryNode);
 		}
 		
 		for(ElementNode a : currentLibraryNode.getChildren())
@@ -144,8 +146,9 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		}
 		if(currentPackageNode == null)
 		{
-			LOG.info("    new package node : " + packageName);			
-			currentPackageNode = (PackageDomain)currentLibraryNode.addChildren(ElementNodeType.PACKAGE,packageName);
+			LOG.info("    new package node : " + packageName);	
+			currentPackageNode = (PackageDomain) ElementNodeFactory.CreateElementNode(currentLibraryNode, ElementNodeType.PACKAGE, packageName);
+			currentLibraryNode.addChildren(currentPackageNode);
 		}
 		
 		entryStack.push(currentLibraryNode);
@@ -171,12 +174,14 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		String name = node.getImage();
 		if(node.isInterface())
 		{
-			thisNode = parent.addChildren(ElementNodeType.INTERFACE, name);
+			thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.INTERFACE, name);
+			parent.addChildren(thisNode);
 			////System.out.println("        new interface node : " + name);
 		}
 		else	
 		{
-			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
+			thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.CLASS, name);
+			parent.addChildren(thisNode);
 			////System.out.println("        new class node : " + name);
 		}
 		manager.AddRelation(node, thisNode);
@@ -202,7 +207,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 			ElementNode parent = entryStack.peek();
 			String name = node.getNthParent(1).getFirstChildOfType(ASTClassOrInterfaceType.class).getImage();
 			
-			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
+			thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.CLASS, name);
+			parent.addChildren(thisNode);
 			////System.out.println("            new instace class node : " + name);
 			
 		
@@ -227,7 +233,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		////System.out.println("        new enum node : " + name);
 		
 		
-		thisNode = parent.addChildren(ElementNodeType.ENUM, name);
+		thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.ENUM, name);
+		parent.addChildren(thisNode);
 		entryStack.push(thisNode);
 		super.visit(node,data);
 		for(AbstractCalculator calculator: calculators)
@@ -247,7 +254,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		////System.out.println("        new enum node : " + name);
 		
 		
-		thisNode = parent.addChildren(ElementNodeType.ANNOTATION, name);
+		thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.ANNOTATION, name);
+		parent.addChildren(thisNode);
 		
 		entryStack.push(thisNode);		
 		super.visit(node, data);
@@ -265,7 +273,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		for(ASTVariableDeclarator varNode:varList)
 		{
 			String name = varNode.getFirstChildOfType(ASTVariableDeclaratorId.class).getImage();
-			thisNode = parent.addChildren(ElementNodeType.FIELD, name);
+			thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.FIELD, name);
+			parent.addChildren(thisNode);
 			manager.AddRelation(node, thisNode);
 			////System.out.println("            new field node : " + name);
 
@@ -323,7 +332,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		ElementNode parent = entryStack.peek();
 		String name = entryStack.peek().getName();
 		
-		thisNode = parent.addChildren(ElementNodeType.CONSTRUCTOR, name);
+		thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.CONSTRUCTOR, name);
+		parent.addChildren(thisNode);
 		////System.out.println("            new constructor node : " + name);
 	
 		
@@ -347,19 +357,20 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 	
 		//if(name.equals("tableModelFrom"))
 		//	////System.out.println();
-		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
+		thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.METHOD, name);
+		parent.addChildren(thisNode);
 		////System.out.println("            new method node : " + name);
 	
 		//return type 받기
-		MethodResult result = null;
+		RelationResult result = null;
 		try
 		{
-			MethodAnlaysis analysis = new MethodAnlaysis(null);
+			RelationAnalyst analysis = new RelationAnalyst(null);
 			result = analysis.ProcessMethodCallAndAccess((AbstractJavaNode) node.getFirstChildOfType(ASTResultType.class), thisNode);
 		}
-		catch(MethodAnalysisException e)
+		catch(RelationAnalysisException e)
 		{
-			e.PrintCauseException();
+			LOG.error(e.getMessage(),e);
 		}
 		((MethodDomain)thisNode).returntype =  result.TypeName;
 		
@@ -381,7 +392,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		ElementNode parent = entryStack.peek();
 		String name = "()";
 		
-		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
+		thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.METHOD, name);
+		parent.addChildren(thisNode);
 		////System.out.println("            new initializer node : " + thisNode.getFullName());
 		
 		entryStack.push(thisNode);
@@ -401,7 +413,8 @@ public class MetricAndRelationRule extends AbstractJavaRule {
 		ElementNode parent = entryStack.peek();
 		String name = node.getImage();
 
-		thisNode = parent.addChildren(ElementNodeType.METHOD, name);
+		thisNode = ElementNodeFactory.CreateElementNode(parent, ElementNodeType.METHOD, name);
+		parent.addChildren(thisNode);
 		
 		//manager.AddRelation(node,thisNode);
 		

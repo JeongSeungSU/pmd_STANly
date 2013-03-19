@@ -9,7 +9,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.Ele
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ProjectDomain;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelation;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelation;
 
 public class Tangled implements AbstractAfterCalculator {
 	public void calcMetric(ProjectDomain node)

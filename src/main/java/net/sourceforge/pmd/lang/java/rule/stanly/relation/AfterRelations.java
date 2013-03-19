@@ -9,13 +9,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
-import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodParsingData;
-import net.sourceforge.pmd.lang.java.rule.stanly.Parsingdatastructure.MethodTokenizeData;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
+import net.sourceforge.pmd.lang.java.rule.stanly.Util.stringparser.StringParsingData;
+import net.sourceforge.pmd.lang.java.rule.stanly.Util.stringparser.StringTokenizeData;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNodeFactory;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.MethodDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ProjectDomain;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelation;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelationList;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.Relations;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.AbstractAfterCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.ComponentDepandency;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.Coupling;
@@ -26,8 +30,6 @@ import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculato
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.PackagetSetAverage;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.ResponseForClass;
 import net.sourceforge.pmd.lang.java.rule.stanly.metriccalculator.aftercalculator.Tangled;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelation;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelationList;
 
 public class AfterRelations {
 	
@@ -79,8 +81,6 @@ public class AfterRelations {
 		RemoveNullTargetRelations();
 		////System.out.println("Relation 계산 끝");
 		LOG.info("Relation 계산 끝");
-		
-		
 		
 	
 		//데이터 검증
@@ -187,7 +187,7 @@ public class AfterRelations {
 		}
 		////System.out.println("Number of Relations : " + domainRelation.size());
 	}
-	public void makePackageSet() {
+	public void makePackageSet(){
 		// TODO Auto-generated method stub
 		for(ElementNode libd:projectNode.getChildren())
 			makePackageSet(libd);
@@ -195,7 +195,6 @@ public class AfterRelations {
 	}
 	public void makePackageSet(ElementNode node)
 	{
-
 		if(node.getChildren().size() == 0)	return;
 		boolean newFlag = false;
 		ElementNode newNode = null;
@@ -223,7 +222,8 @@ public class AfterRelations {
 			packageSetNames.add(mergeStrArray(minStr));
 		for(String packageSetName:packageSetNames)
 		{
-			newNode = node.addChildren(ElementNodeType.PACKAGESET, packageSetName);
+			newNode = ElementNodeFactory.CreateElementNode( node ,ElementNodeType.PACKAGESET, packageSetName); 
+			node.addChildren(newNode);
 			for(int i=0;i<node.getChildren().size();i++)
 			{
 				ElementNode child = node.getChildren().get(i); 
@@ -262,7 +262,7 @@ public class AfterRelations {
 
 			targetString = relation.getTarget();
 
-			MethodParsingData data = new MethodParsingData();
+			StringParsingData data = new StringParsingData();
 			data.MakeTokenizedData(targetString);
 
 			//요기서 찾는다.
@@ -271,13 +271,13 @@ public class AfterRelations {
 	}
  
  	//제작중
- 	private String FindCallOrAccessTargetNode(DomainRelation relation,MethodParsingData data)
+ 	private String FindCallOrAccessTargetNode(DomainRelation relation,StringParsingData data)
  	{
  		String ReturnData = "unknown";
  		for(int index = 0 ; index < data.Size(); index++)
  		{
- 			MethodTokenizeData prevtokendata = data.GetTokenizeData(index-1);
- 			MethodTokenizeData tokendata = data.GetTokenizeData(index);
+ 			StringTokenizeData prevtokendata = data.GetTokenizeData(index-1);
+ 			StringTokenizeData tokendata = data.GetTokenizeData(index);
  			
  			//arguemnt가 있다면 메서드이다.
  			if(tokendata.Argument.size() != 0)
@@ -309,13 +309,13 @@ public class AfterRelations {
 					return "unknown";
 				else if (ClassList.size() > 1) 
 				{
-					MethodParsingData parsedata = null;
+					StringParsingData parsedata = null;
 					String UpperName = "";
 					if(MethodClassType.equals(""))
 						UpperName = data.GetContentTokenData(0, index);
 					else
 					{
-						parsedata = new MethodParsingData();
+						parsedata = new StringParsingData();
 						parsedata.MakeTokenizedData(MethodClassType);
 						UpperName = parsedata.GetContentTokenData(0, parsedata.Size());
 					}
@@ -372,7 +372,7 @@ public class AfterRelations {
 				if (nodeList.size() > 1) 
 				{
 					List<String> convertargumentlist = new ArrayList<String>();
-					for(MethodParsingData argument : tokendata.ArgumentTokenizeList)
+					for(StringParsingData argument : tokendata.ArgumentTokenizeList)
 						convertargumentlist.add(FindCallOrAccessTargetNode(relation,argument));
 
 					//////////////argument비교
@@ -410,7 +410,7 @@ public class AfterRelations {
 				{
 					CallOrAccessList.AddRelation(Relations.CALLS, relation.getSource() , nodeList.get(0).getFullName() , relation.getSourceNode(), nodeList.get(0));
 					
-					MethodParsingData parsingdata = new MethodParsingData();
+					StringParsingData parsingdata = new StringParsingData();
 					String ReturnType = ((MethodDomain)nodeList.get(0)).returntype;
 					parsingdata.MakeTokenizedData(ReturnType);
 					tokendata.Content = parsingdata.GetTokenizeData(parsingdata.Size()-1).Content;
@@ -431,10 +431,10 @@ public class AfterRelations {
  				if(tokendata.Content.equals(""))
  					return tokendata.Type;
  				
- 				MethodParsingData typeparsingdata = new MethodParsingData();
+ 				StringParsingData typeparsingdata = new StringParsingData();
  				typeparsingdata.MakeTokenizedData(tokendata.Type);
  				
- 				MethodTokenizeData typetokenizedata = typeparsingdata.GetTokenizeData(typeparsingdata.Size()-1);
+ 				StringTokenizeData typetokenizedata = typeparsingdata.GetTokenizeData(typeparsingdata.Size()-1);
  				
  				String Datatype = typetokenizedata.Content;
  				String ClassName = "";
@@ -510,8 +510,8 @@ public class AfterRelations {
 			//unknown이나 null이면 무조건 통과
 			if(!analysisarguments.get(i).equals("unknown") || !analysisarguments.get(i).equals("null"))
 			{
-				MethodParsingData methodargumentdata = new MethodParsingData(methodargument.get(i));
-				MethodParsingData analysisargumentsdata = new MethodParsingData(analysisarguments.get(i));
+				StringParsingData methodargumentdata = new StringParsingData(methodargument.get(i));
+				StringParsingData analysisargumentsdata = new StringParsingData(analysisarguments.get(i));
 				if(!methodargumentdata.CompareMatchingFullnameEndSubname(analysisargumentsdata))
 					return false;
 			}

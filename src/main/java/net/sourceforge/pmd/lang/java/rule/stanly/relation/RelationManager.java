@@ -21,23 +21,29 @@ import net.sourceforge.pmd.lang.java.ast.ASTTypeArgument;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArguments;
 import net.sourceforge.pmd.lang.java.rule.stanly.Util.MacroFunctions;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ElementNode;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelation;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelationList;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelation;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelationList;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.RelationAnalyst;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.Relations;
 
+/**
+ * Relation관리..
+ * 여기서 모든 Relation을 뽑고 또한 관리
+ * @since 2013. 3. 19.오후 10:20:50
+ * @author JeongSeungsu
+ */
 public class RelationManager {
 		
 	private DomainRelationList 	 RelationList;
-	private MethodAnlaysis		 RelationChainManager;
+	private RelationAnalyst		 RelationChainManager;
 	
 	public RelationManager() {
-		//Array? Linked?
-		//DomainRelationList = new LinkedList<DomainRelation>();
-		RelationList = new DomainRelationList();
-		RelationChainManager 	= new MethodAnlaysis(RelationList); 
+		RelationList 			= new DomainRelationList();
+		RelationChainManager 	= new RelationAnalyst(RelationList); 
 	}
 	
 	/**
-	 * 도메인 리스트 얻어오..
+	 * 도메인 리스트 얻어오기..
 	 * @since 2013. 2. 13.오 4:37:55
 	 * @author YangHyunchul
 	 * @param 

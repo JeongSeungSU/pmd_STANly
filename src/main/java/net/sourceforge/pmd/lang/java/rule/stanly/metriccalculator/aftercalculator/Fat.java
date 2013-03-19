@@ -9,7 +9,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.Lib
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.PackageDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.PackageSetDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.domainelement.ProjectDomain;
-import net.sourceforge.pmd.lang.java.rule.stanly.relation.analysisnode.DomainRelation;
+import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.DomainRelation;
 
 public class Fat implements AbstractAfterCalculator{
 	

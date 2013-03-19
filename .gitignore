@@ -3,3 +3,4 @@
 .fatjar
 .settings/org.jboss.ide.eclipse.as.core.prefs
 settings.fatjar
+target/classes/META-INF/MANIFEST.MF
