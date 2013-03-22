@@ -1,5 +1,7 @@
 package net.sourceforge.pmd.lang.java.rule.stanly.aftercalculator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +23,9 @@ public class Tangled implements AbstractAfterCalculator {
 	{		
 		Map<String,Integer> relations = getChilrenRelation(node,node);
 		Set<String> set = relations.keySet();
-		
+		ArrayList<String> list = new ArrayList<String>();
+		list.addAll(set);
+		Collections.sort(list);
 		int totalCount = 0;
 		int tangleCount = 0;
 		Iterator<String> it = set.iterator();
@@ -65,11 +69,42 @@ public class Tangled implements AbstractAfterCalculator {
 		Map<String,Integer> relations = new HashMap<String,Integer>();
 		for(ElementNode child:node.getChildren())
 		{
-			srcSplit = child.getFullName().split("\\.");			
+			//srcSplit = child.getFullName().split("\\.");			
 			for(DomainRelation rel:child.getRelationTargets())
 			{
 				if(!rel.getTargetNode().isAncestor(ancestor))	continue;
-				tarSplit = rel.getTargetNode().getFullName().split("\\.");
+				if(rel.getSourceNode().getPackageName().equals(rel.getTargetNode().getPackageName()))	continue;
+				
+				String tarStr,srcStr;
+				int len = ancestor.getFullName().split("\\.").length;
+				if(rel.getSourceNode().getPackageName().equals(ancestor.getFullName()))
+				{
+					srcSplit = ancestor.getFullName().split("\\.");
+					srcStr = srcSplit[srcSplit.length-1];
+				}
+				else
+				{
+					srcSplit = rel.getSourceNode().getPackageName().split("\\.");
+					srcStr = srcSplit[len];
+				}
+				if(rel.getTargetNode().getPackageName().equals(ancestor.getFullName()))
+				{
+					tarSplit = ancestor.getFullName().split("\\.");
+					tarStr = tarSplit[tarSplit.length-1];
+				}
+				else
+				{
+					tarSplit = rel.getTargetNode().getPackageName().split("\\.");
+					tarStr = tarSplit[len];
+				}
+				String key = srcStr + ">" + tarStr;
+				Integer value = 0;
+				if(relations.containsKey(key))
+					value = relations.get(key);
+				value++;
+				relations.put(key,value);
+				
+				/*tarSplit = rel.getTargetNode().getFullName().split("\\.");
 				if(ancSplit.length < srcSplit.length && ancSplit.length < tarSplit.length && 
 					!srcSplit[ancSplit.length].equals(tarSplit[ancSplit.length]))
 				{
@@ -79,11 +114,23 @@ public class Tangled implements AbstractAfterCalculator {
 						value = relations.get(key);
 					value++;
 					relations.put(key,value);
-				}
+				}*/
 			}
 			if(child.getChildren().size() > 0)
-				relations.putAll(getChilrenRelation(ancestor,child));
+			{
+				Map<String,Integer> childrel = getChilrenRelation(ancestor,child);
+				Set<String> childset = childrel.keySet();
+				for(String key:childset)
+				{
+					if(relations.containsKey(key))
+						relations.put(key,relations.get(key)+childrel.get(key));
+					else
+						relations.put(key,childrel.get(key));
+				}
+			}
 		}
 		return relations;
 	}
 }
+
+	
