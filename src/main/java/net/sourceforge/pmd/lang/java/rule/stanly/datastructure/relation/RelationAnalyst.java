@@ -73,7 +73,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.analysis
 import net.sourceforge.pmd.lang.java.rule.stanly.datastructure.relation.exception.RelationAnalysisException;
 
 /**
- * 모든 Relation처리 및 관리 
+ * 모든 Relation처리 및 관리
  * @since 2013. 2. 14.오전 1:59:14
  * @author JeongSeungsu
  */
@@ -161,6 +161,15 @@ public class RelationAnalyst {
 		ASTParserNodeList.put(ASTResource.class.toString(), new ResourceAnalysisNode(RelationList,processedPrimaryExpression,this));
 	}
 	
+
+	public String TypeSperateApplyer(String Type)
+	{
+		return ReturnTypeSperator + Type + ReturnTypeSperator;
+	}
+	public String GetUnknownTypeName()
+	{
+		return UnknownTypeName;
+	}
 	/**
 	 * ASTclass에 따라서 매칭되는 처리 analysisnode를 찾으러 감
 	 * @since 2013. 3. 19.오후 10:05:12
@@ -181,14 +190,15 @@ public class RelationAnalyst {
 		
 		return ASTParserNodeList.get(nodename);
 	}
-	public String TypeSperateApplyer(String Type)
-	{
-		return ReturnTypeSperator + Type + ReturnTypeSperator;
-	}
-	public String GetUnknownTypeName()
-	{
-		return UnknownTypeName;
-	}
+	/**
+	 * 채인룰에 따른 다른 메서드 필요한 다른 오브젝트 호출
+	 * @since 2013. 3. 23.오전 2:23:50
+	 * @author JeongSeungsu
+	 * @param node
+	 * @param sourcenode
+	 * @return
+	 * @throws RelationAnalysisException
+	 */
 	public RelationResult ProcessMethodCallAndAccess(AbstractJavaNode node, ElementNode sourcenode) throws RelationAnalysisException
 	{
 		AbstractASTAnalysisNode parsernode = MacthingASTParserNode(node);
@@ -197,7 +207,7 @@ public class RelationAnalyst {
 	}
 	
 	/**
-	 * MethodDeclaration내부 모든 것을 파싱... 
+	 * MethodDeclaration내부 모든 것을 파싱...
 	 * @since 2013. 3. 19.오후 10:06:19
 	 * @author JeongSeungsu
 	 * @param method

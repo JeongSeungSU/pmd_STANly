@@ -91,19 +91,15 @@ public class StringParsingData {
  	 */
  	public boolean CompareMatchingFullnameEndSubname(StringParsingData data)
  	{
- 		StringParsingData bigsizedata = null;
- 		StringParsingData smallsizedata = null;
+ 		StringParsingData bigsizedata = this;
+ 		StringParsingData smallsizedata = data;
  		
- 		if(this.Size() > data.Size())
- 		{
- 			bigsizedata 	= this;
- 			smallsizedata 	= data;
- 		}
- 		else
+ 		if(this.Size() <= data.Size())
  		{
  			bigsizedata 	= data;
  			smallsizedata 	= this;
  		}
+ 		
  		boolean IsMatching = true;
  		for(int smallindex = smallsizedata.Size()-1 ; smallindex >= 0  ; smallindex--)
  		{
@@ -117,6 +113,71 @@ public class StringParsingData {
  		return IsMatching;
  		
  	}
+	public String GetContentTokenData(int start,int end )
+	{
+		String UpperName = "";
+		for(int i = start; i < end; i++)
+			UpperName += this.GetTokenizeData(i).Content + ".";
+		
+		UpperName = UpperName.substring(0,UpperName.length()-1);
+		return UpperName;
+	}
+	
+	public StringTokenizeData GetTokenizeData(int index)
+	{
+		if(index < 0 || index > MethodTokenizedDataList.size() - 1)
+			return null;
+		return MethodTokenizedDataList.get(index);
+	}
+	
+	public int Size()
+	{
+		return MethodTokenizedDataList.size();
+	}
+	
+	
+	public List<String> DotSeparator(String stringdata)
+	{
+		String nowString = "";
+		List<String> StringList= new ArrayList<String>(); 
+		int result;
+		
+		for(int i =0 ; i < stringdata.length(); i++)
+		{
+			switch(stringdata.charAt(i))
+			{
+				case 'S':
+					if(DetermineTypeSeperat(stringdata,i) > i)
+					{
+						int start = DetermineTypeSeperat(stringdata,i);
+						result = TypeMode(stringdata,start);
+						nowString += stringdata.substring(i, result + TypeSeperate.length());
+						i = result + TypeSeperate.length() - 1;
+					}
+					else nowString += stringdata.charAt(i);
+					break;
+				case '<':
+					result = ArgumentOrTypeMode(stringdata,i, '<', '>');
+					nowString += stringdata.substring(i, result+1);
+					i = result;
+					break;
+				case '(':
+					result = ArgumentOrTypeMode(stringdata,i, '(', ')');
+					nowString += stringdata.substring(i, result+1);
+					i = result;
+					break;
+				case ',':
+					StringList.add(nowString);
+					nowString = "";
+					continue;
+				default:
+					nowString += stringdata.charAt(i);
+			}
+		}
+		StringList.add(nowString);
+		
+		return StringList;
+	}
 	/**
 	 * (A,B,C) 또는 <T,CB> 이런 데이터를 다시 Tokenie 시켜주는 함수..
 	 * @since 2013. 3. 20.오전 12:52:32
@@ -138,15 +199,6 @@ public class StringParsingData {
 			argumentdata.MakeTokenizedData(argument);
 			data.ArgumentTokenizeList.add(argumentdata);
 		}
-	}
-	public String GetContentTokenData(int start,int end )
-	{
-		String UpperName = "";
-		for(int i = start; i < end; i++)
-			UpperName += this.GetTokenizeData(i).Content + ".";
-		
-		UpperName = UpperName.substring(0,UpperName.length()-1);
-		return UpperName;
 	}
 	private int ArgumentOrTypeMode(String Target, int nowpos, char start, char end)
 	{
@@ -207,63 +259,5 @@ public class StringParsingData {
 		MethodTokenizedDataList.add(data);
 	}
 	
-	public StringTokenizeData GetTokenizeData(int index)
-	{
-		if(index < 0 || index > MethodTokenizedDataList.size() - 1)
-			return null;
-		return MethodTokenizedDataList.get(index);
-	}
-	
-	public int Size()
-	{
-		return MethodTokenizedDataList.size();
-	}
-	
-	
-	public List<String> DotSeparator(String stringdata)
-	{
-		String nowString = "";
-		List<String> StringList= new ArrayList<String>(); 
-		int result;
-		
-		for(int i =0 ; i < stringdata.length(); i++)
-		{
-			switch(stringdata.charAt(i))
-			{
-				case 'S':
-					if(DetermineTypeSeperat(stringdata,i) > i)
-					{
-						int start = DetermineTypeSeperat(stringdata,i);
-						result = TypeMode(stringdata,start);
-						if(result + TypeSeperate.length() > stringdata.length())
-						{
-							int z =0;
-						}
-						nowString += stringdata.substring(i, result + TypeSeperate.length());
-						i = result + TypeSeperate.length() - 1;
-					}
-					else nowString += stringdata.charAt(i);
-					break;
-				case '<':
-					result = ArgumentOrTypeMode(stringdata,i, '<', '>');
-					nowString += stringdata.substring(i, result+1);
-					i = result;
-					break;
-				case '(':
-					result = ArgumentOrTypeMode(stringdata,i, '(', ')');
-					nowString += stringdata.substring(i, result+1);
-					i = result;
-					break;
-				case ',':
-					StringList.add(nowString);
-					nowString = "";
-					continue;
-				default:
-					nowString += stringdata.charAt(i);
-			}
-		}
-		StringList.add(nowString);
-		
-		return StringList;
-	}
+
 }

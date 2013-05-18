@@ -424,7 +424,6 @@ public class AfterRelations {
 				}
 				else
 				{
-					
 					//암것도 안함
 				}
 			}
