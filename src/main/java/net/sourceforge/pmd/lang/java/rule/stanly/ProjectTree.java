@@ -71,7 +71,17 @@ public class ProjectTree extends AbstractJavaRule {
 			
 			StanlyControler.setRootNode(projectNode);
 			StanlyControler.setRelationList(manager.getDomainRelationList());
-			
+			StanlyControler.setCompositionList(manager.CaculateDomainCompositionList());
+		/*
+			for(DomainComposition composition : StanlyControler.getCompositionList())
+			{
+				System.out.println("soruceID : " + composition.getSourceID());
+				System.out.println("targetID : " + composition.getTargetID());
+				System.out.println("count    : " + composition.getRelationCount());
+				System.out.println("type     : " + composition.getDelegateType());
+				System.out.println("");
+			}
+			*/
 			return data;
 		}
 		

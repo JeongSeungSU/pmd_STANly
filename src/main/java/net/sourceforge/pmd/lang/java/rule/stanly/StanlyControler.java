@@ -35,6 +35,8 @@ import net.sourceforge.pmd.util.datasource.DataSource;
 public class StanlyControler {
 
 	static private List<DomainRelation> RelationList;
+	static private List<DomainComposition> CompositionList;
+	
 	static private ElementNode	RootNode;
 	static private String RootPath = "";
 	
@@ -47,6 +49,14 @@ public class StanlyControler {
 		RootPath = rootPath;
 	}
 
+	public static List<DomainComposition> getCompositionList() {
+		return CompositionList;
+	}
+
+	public static void setCompositionList(List<DomainComposition> compositionList) {
+		CompositionList = compositionList;
+	}
+	
 	public static List<DomainRelation> getRelationList() {
 		return RelationList;
 	}
@@ -68,6 +78,7 @@ public class StanlyControler {
 	{
 		RelationList = null;
 		RootNode 	 = null;
+		CompositionList = null;
 	}
 	
 	public static StanlyAnalysisData StartAnalysis(String Path)
@@ -79,6 +90,7 @@ public class StanlyControler {
 		doPMD(configuration);
 		
 		StanlyAnalysisData analysisdata = new StanlyAnalysisData();
+		analysisdata.setCompositionList(StanlyControler.getCompositionList());
 		analysisdata.setRelationList(StanlyControler.getRelationList());
 		analysisdata.setRootNode(StanlyControler.getRootNode());
 		

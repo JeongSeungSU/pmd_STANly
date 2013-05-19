@@ -6,6 +6,7 @@ import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 
 public class StanlyAnalysisData {
 	private List<DomainRelation> RelationList;
+	private List<DomainComposition> CompositionList;
 	private ElementNode	RootNode;
 	
 	
@@ -26,6 +27,14 @@ public class StanlyAnalysisData {
 	}
 	public void setRootNode(ElementNode rootNode) {
 		RootNode = rootNode;
+	}
+
+	public List<DomainComposition> getCompositionList() {
+		return CompositionList;
+	}
+
+	public void setCompositionList(List<DomainComposition> compositionList) {
+		CompositionList = compositionList;
 	}
 	
 	
