@@ -46,7 +46,8 @@ public class Tangled implements AbstractAfterCalculator {
 		}
 		tangleCount /= 2; // 2번 카운팅 되므로 나누기 2를 해준다.
 		
-		node.metric.setTangled(totalCount == 0 ? 0 : tangleCount / totalCount);
+		node.metric.setTangled(totalCount == 0 ? 0 : (float)tangleCount / (float)totalCount);
+		System.out.println(node.getFullName() + " " + node.metric.getTangled());
 	}
 	
 	private void visitChildren(ElementNode node)
