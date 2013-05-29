@@ -3,6 +3,9 @@ package net.sourceforge.pmd.lang.java.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.lang.ast.Node;
+
 public class ViolationController {
 	static private List<Violation> violationList;
 	
@@ -18,10 +21,15 @@ public class ViolationController {
 	
 	static public void addViolation(Violation e)
 	{
+		if(violationList == null)
+			violationList = new ArrayList<Violation>();
 		violationList.add(e);
 	}
-	static public void AddViolation(int type, String path,String name,String line, String msg)
+	static public void AddViolation(int type, Object data, Node node, String message)
 	{
-		Violation v = new Violation(type,path,name,line,msg);
+		String path = ((RuleContext)data).getSourceCodeFilename();
+    	int line = node.getBeginLine();
+		Violation v = new Violation(type,path,line,message);
+		addViolation(v);
 	}
 }
