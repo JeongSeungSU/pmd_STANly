@@ -1,6 +1,11 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import net.sourceforge.pmd.lang.java.ast.ASTBlock;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
@@ -44,6 +49,95 @@ public class RelationManager {
 	 */
 	public List<DomainRelation >getDomainRelationList(){
 		return RelationList.GetList();
+	}
+	
+	/**
+	 * 여기서 도메인 컴포지션 계산 및 모든것을 다함... 아 
+	 * @since 2013. 5. 19.오전 4:36:37
+	 * @author JeongSeungsu
+	 * @return
+	 */
+	public List<DomainComposition> CaculateDomainCompositionList()
+	{
+		HashMap<DomainCompositionKey ,DomainComposition> CompositionMap = new HashMap<DomainCompositionKey , DomainComposition>();
+		ElementNode sourcenode;
+		ElementNode targetnode;
+		Stack<ElementNode> sourcestack = new Stack<ElementNode>();
+		Stack<ElementNode> targetstack = new Stack<ElementNode>();
+		
+		for(Iterator<DomainRelation> it = getDomainRelationList().iterator() ; it.hasNext() ;)
+		{
+			DomainRelation relation = it.next();
+			
+			sourcenode = relation.getSourceNode();
+			targetnode = relation.getTargetNode();
+			
+			sourcestack.clear();
+			targetstack.clear();
+			
+			ElementNode tmpsource = sourcenode;
+			while(tmpsource != null)
+			{
+				sourcestack.push(tmpsource);
+				tmpsource = tmpsource.getParent();
+			}
+			ElementNode tmptarget = targetnode;
+			while(tmptarget != null)
+			{
+				targetstack.push(tmptarget);
+				tmptarget = tmptarget.getParent();
+			}
+			
+			boolean iscontinue = false;
+			while(true)
+			{
+				if(sourcestack.empty() || targetstack.empty() )
+				{
+					//it.remove(); 지울까 말까 고민해보자
+					iscontinue = true;
+					break;
+				}
+				if( sourcestack.peek() == targetstack.peek() )
+				{
+					sourcestack.pop();
+					targetstack.pop();
+				}
+				else 
+					break;
+			}
+			
+			if(iscontinue)
+				continue;
+			
+			DomainCompositionKey compositionkey = new DomainCompositionKey();
+			compositionkey.setSourceID(sourcestack.peek().getLeftSideValue());
+			compositionkey.setTargetID(targetstack.peek().getLeftSideValue());
+			
+			DomainComposition composition;
+			
+			if(CompositionMap.containsKey(compositionkey))
+			{
+				composition = CompositionMap.get(compositionkey);
+			}
+			else
+			{
+				composition = new DomainComposition();
+				composition.setSourceID(compositionkey.getSourceID());
+				composition.setTargetID(compositionkey.getTargetID());
+				
+				CompositionMap.put(compositionkey, composition);
+			}
+			
+			composition.AddtionRelationCount();
+			
+			if(relation.getRelation() == Relations.EXTENDS || 
+			   relation.getRelation() == Relations.IMPLEMENTS)
+			{
+				composition.setDelegateType(relation.getRelation());
+			}	
+		}
+		
+		return new ArrayList<DomainComposition>(CompositionMap.values());
 	}
 	
 	public void AddRelation(Relations relationkind,String source, String target,ElementNode sourceNode,ElementNode targetNode)

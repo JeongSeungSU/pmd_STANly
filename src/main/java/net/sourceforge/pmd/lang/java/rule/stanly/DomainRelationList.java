@@ -43,7 +43,10 @@ public class DomainRelationList {
 		
 		//System.out.println("Source : "+relation.getSource()+" -> \t "+ relation.getRelation().toString() + 
 			//					"-> \t Target : " + relation.getTarget());
+		
 		RelationList.add(0,relation);
+		
+		//요기서 DomainComposition을 추가함
 		return relation;
 	}
 }
