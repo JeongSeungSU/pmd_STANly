@@ -30,6 +30,7 @@ public class ViolationController {
 		String path = ((RuleContext)data).getSourceCodeFilename();
     	int line = node.getBeginLine();
 		Violation v = new Violation(type,path,line,message);
+		//System.out.println(path + ":" + line + "\t\t" + message);
 		addViolation(v);
 	}
 }
