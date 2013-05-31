@@ -17,6 +17,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTConditionalExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTConditionalOrExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTEnumDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTEqualityExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTExclusiveOrExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTInclusiveOrExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTLiteral;
@@ -90,6 +91,8 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTMemberSelector.class.toString(), new MemberSelectorAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//ASTResultType
 		ASTParserNodeList.put(ASTResultType.class.toString(), new ResultTypeAnalysisNode(RelationList,processedPrimaryExpression,this));
+		//ASTExclusiveOrExpression
+		ASTParserNodeList.put(ASTExclusiveOrExpression.class.toString(), new ExclusiveOrExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
 		
 		//argumentList아래것들...
 		//PreDecrementExpression
@@ -122,6 +125,7 @@ public class MethodAnlaysis {
 		ASTParserNodeList.put(ASTInclusiveOrExpression.class.toString(), new InclusiveOrExpressionAnalysisNode(RelationList,processedPrimaryExpression,this));
 		//ASTResource
 		ASTParserNodeList.put(ASTResource.class.toString(), new ResourceAnalysisNode(RelationList,processedPrimaryExpression,this));
+	
 	}
 	
 	private AbstractASTAnalysisNode MacthingASTParserNode(AbstractJavaNode node) throws MethodAnalysisException
