@@ -6,6 +6,8 @@ import net.sourceforge.pmd.Rule;
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.RuleViolation;
 import net.sourceforge.pmd.lang.ast.Node;
+import net.sourceforge.pmd.lang.java.rule.Violation;
+import net.sourceforge.pmd.lang.java.rule.ViolationController;
 import net.sourceforge.pmd.util.StringUtil;
 
 public abstract class AbstractRuleViolationFactory implements RuleViolationFactory {
@@ -28,7 +30,17 @@ public abstract class AbstractRuleViolationFactory implements RuleViolationFacto
 		
 		String formattedMessage = cleanup(message, args);
 		
-		ruleContext.getReport().addRuleViolation(createRuleViolation(rule, ruleContext, node, formattedMessage));
+		if(rule.getRuleSetName().equals("Naming"))
+		{
+			ViolationController.AddViolation(Violation.NAMING, ruleContext, node, formattedMessage);
+		}
+		else if(rule.getRuleSetName().equals("Basic") || rule.getRuleSetName().equals("Unnecessary") || rule.getRuleSetName().equals("Empty Code"))
+		{
+			ViolationController.AddViolation(Violation.BASIC, ruleContext, node, formattedMessage);
+		}
+		else		
+			ruleContext.getReport().addRuleViolation(createRuleViolation(rule, ruleContext, node, formattedMessage));
+
 	}
 
 	public void addViolation(RuleContext ruleContext, Rule rule, Node node,	String message, int beginLine, int endLine, Object[] args) {

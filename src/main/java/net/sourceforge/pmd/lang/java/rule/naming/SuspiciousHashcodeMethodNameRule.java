@@ -5,6 +5,8 @@ import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimitiveType;
 import net.sourceforge.pmd.lang.java.ast.ASTResultType;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.Violation;
+import net.sourceforge.pmd.lang.java.rule.ViolationController;
 import net.sourceforge.pmd.lang.ast.Node;
 
 public class SuspiciousHashcodeMethodNameRule extends AbstractJavaRule {
@@ -28,7 +30,8 @@ public class SuspiciousHashcodeMethodNameRule extends AbstractJavaRule {
                 && type.jjtGetNumChildren() != 0) {
             Node t = type.jjtGetChild(0).jjtGetChild(0);
             if (t instanceof ASTPrimitiveType && "int".equals(t.getImage())) {
-                addViolation(data, node);
+                //addViolation(data, node);
+            	ViolationController.AddViolation(Violation.NAMING, data, node, "Suspicious hashcode method name");
                 return data;
             }
         }

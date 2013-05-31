@@ -14,6 +14,8 @@ import net.sourceforge.pmd.lang.java.ast.ASTLocalVariableDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclarator;
 import net.sourceforge.pmd.lang.java.ast.ASTVariableDeclaratorId;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.Violation;
+import net.sourceforge.pmd.lang.java.rule.ViolationController;
 import net.sourceforge.pmd.lang.rule.properties.BooleanProperty;
 import net.sourceforge.pmd.lang.rule.properties.StringMultiProperty;
 import net.sourceforge.pmd.util.CollectionUtil;
@@ -160,25 +162,26 @@ public class VariableNamingConventionsRule extends AbstractJavaRule {
 	// Static finals should be uppercase
 	if (isStatic && isFinal) {
 	    if (!varName.equals(varName.toUpperCase())) {
-		addViolationWithMessage(data, variableDeclaratorId,
-			"Variables that are final and static should be all capitals, ''{0}'' is not all capitals.",
-			new Object[] { varName });
+		//addViolationWithMessage(data, variableDeclaratorId,
+		//	"Variables that are final and static should be all capitals, ''{0}'' is not all capitals.",
+		//	new Object[] { varName });
+	    	ViolationController.AddViolation(Violation.NAMING, data, variableDeclaratorId, "Variables that are final and static should be all capitals, ''{0}'' is not all capitals.");
 	    }
 	    return data;
 	} else if (!isFinal) {
 	    String normalizedVarName = normalizeVariableName(varName, prefixes, suffixes);
 
 	    if (normalizedVarName.indexOf('_') >= 0) {
-		addViolationWithMessage(
-			data,
-			variableDeclaratorId,
-			"Only variables that are final should contain underscores (except for underscores in standard prefix/suffix), ''{0}'' is not final.",
-			new Object[] { varName });
+		//addViolationWithMessage(data,variableDeclaratorId,
+		//	"Only variables that are final should contain underscores (except for underscores in standard prefix/suffix), ''{0}'' is not final.",
+		//	new Object[] { varName });
+	    	ViolationController.AddViolation(Violation.NAMING, data, variableDeclaratorId, "Only variables that are final should contain underscores (except for underscores in standard prefix/suffix), ''{0}'' is not final.");
 	    }
 	    if (Character.isUpperCase(varName.charAt(0))) {
-		addViolationWithMessage(data, variableDeclaratorId,
-			"Variables should start with a lowercase character, ''{0}'' starts with uppercase character.",
-			new Object[] { varName });
+		//addViolationWithMessage(data, variableDeclaratorId,
+		//	"Variables should start with a lowercase character, ''{0}'' starts with uppercase character.",
+		//	new Object[] { varName });
+	    	ViolationController.AddViolation(Violation.NAMING, data, variableDeclaratorId, "Variables should start with a lowercase character, ''{0}'' starts with uppercase character.");
 	    }
 	}
 	return data;

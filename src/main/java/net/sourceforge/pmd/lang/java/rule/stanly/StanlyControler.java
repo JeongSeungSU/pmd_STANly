@@ -209,7 +209,7 @@ public class StanlyControler {
     	configuration.setReportFile(params.getReportfile());
     	configuration.setReportProperties(params.getProperties());
     	configuration.setReportShortNames(params.isShortnames());
-    	configuration.setRuleSets("java-stanly");
+    	configuration.setRuleSets("java-stanly,java-basic,java-naming");
     	configuration.setShowSuppressedViolations(params.isShowsuppressed());
     	configuration.setSourceEncoding(params.getEncoding());
     	configuration.setStressTest(params.isStress());

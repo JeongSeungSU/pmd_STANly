@@ -14,6 +14,8 @@ import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.Violation;
+import net.sourceforge.pmd.lang.java.rule.ViolationController;
 
 public class AvoidFieldNameMatchingMethodNameRule extends AbstractJavaRule {
 
@@ -45,7 +47,8 @@ public class AvoidFieldNameMatchingMethodNameRule extends AbstractJavaRule {
         for (ASTFieldDeclaration field : fields) {
             String varName = field.getVariableName().toLowerCase();
             if (methodNames.contains(varName)) {
-                addViolation(data, field, field.getVariableName());
+                //addViolation(data, field, field.getVariableName());
+                ViolationController.AddViolation(Violation.NAMING, data, node, "Avoid field name matching method name");
             }
         }
         return super.visit(node, data);

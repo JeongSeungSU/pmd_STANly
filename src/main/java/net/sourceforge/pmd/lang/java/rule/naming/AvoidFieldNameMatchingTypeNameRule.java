@@ -6,6 +6,8 @@ package net.sourceforge.pmd.lang.java.rule.naming;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.Violation;
+import net.sourceforge.pmd.lang.java.rule.ViolationController;
 
 public class AvoidFieldNameMatchingTypeNameRule extends AbstractJavaRule {
 
@@ -20,6 +22,7 @@ public class AvoidFieldNameMatchingTypeNameRule extends AbstractJavaRule {
         ASTClassOrInterfaceDeclaration cl = node.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
         if (cl != null && node.getVariableName().equalsIgnoreCase(cl.getImage())) {
             addViolation(data, node);
+            ViolationController.AddViolation(Violation.NAMING, data, node, "Avoid field name matching type name");
         }
         return data;
     }
