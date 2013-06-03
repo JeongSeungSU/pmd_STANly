@@ -29,19 +29,28 @@ public class Violation {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	public int getDomainLeftValue() {
+		return domainLeftValue;
+	}
+	public void setDomainLeftValue(int domainLeftValue) {
+		this.domainLeftValue = domainLeftValue;
+	}
 	private String sourcePath;
 	private int sourceLine;
 	private String message;
+	private int domainLeftValue;
+	
 	
 	Violation()
 	{
 		
 	}
-	Violation(int type,String path,int line,String msg)
+	Violation(int type,String path,int line,String msg,int domainleftvalue)
 	{
 		violationType = type;
 		sourcePath = path;
 		sourceLine = line;
 		message = msg;
+		domainLeftValue = domainleftvalue;
 	}
 }

@@ -1,17 +1,20 @@
 package net.sourceforge.pmd.lang.java.rule.stanly;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.java.ast.*;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.ViolationController;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.AbstractCalculator;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CountMetrics;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CouplingBetweenObjects;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.CyclomaticComplexity;
 import net.sourceforge.pmd.lang.java.rule.stanly.calculator.LinesOfCode;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.LibraryDomain;
@@ -46,7 +49,10 @@ public class ProjectTree extends AbstractJavaRule {
 			manager = new RelationManager();
 		}
 		if(projectNode == null)
+		{
 			projectNode = new ProjectDomain(ElementNodeType.PROJECT,"Project");
+			StanlyControler.setRootNode(projectNode);
+		}
 	}
 	
 	public static ProjectDomain getProjectNode() {
@@ -69,9 +75,9 @@ public class ProjectTree extends AbstractJavaRule {
 			afterRelation.analysisunknown();
 			System.out.println("metric 계산끝");
 			
-			StanlyControler.setRootNode(projectNode);
 			StanlyControler.setRelationList(manager.getDomainRelationList());
 			StanlyControler.setCompositionList(manager.CaculateDomainCompositionList());
+			ViolationController.AfterCalculate();
 		/*
 			for(DomainComposition composition : StanlyControler.getCompositionList())
 			{
@@ -167,11 +173,13 @@ public class ProjectTree extends AbstractJavaRule {
 		if(node.isInterface())
 		{
 			thisNode = parent.addChildren(ElementNodeType.INTERFACE, name);
+			((ClassDomain)thisNode).path = ((RuleContext)data).getSourceCodeFilename();
 			//System.out.println("        new interface node : " + name);
 		}
 		else	
 		{
 			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
+			((ClassDomain)thisNode).path = ((RuleContext)data).getSourceCodeFilename();
 			//System.out.println("        new class node : " + name);
 		}
 		manager.AddRelation(node, thisNode);
@@ -197,6 +205,7 @@ public class ProjectTree extends AbstractJavaRule {
 			String name = node.getNthParent(1).getFirstChildOfType(ASTClassOrInterfaceType.class).getImage();
 			
 			thisNode = parent.addChildren(ElementNodeType.CLASS, name);
+			((ClassDomain)thisNode).path = ((RuleContext)data).getSourceCodeFilename();
 			//System.out.println("            new instace class node : " + name);
 			
 		
@@ -222,6 +231,8 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		
 		thisNode = parent.addChildren(ElementNodeType.ENUM, name);
+		((ClassDomain)thisNode).path = ((RuleContext)data).getSourceCodeFilename();
+		
 		entryStack.push(thisNode);
 		super.visit(node,data);
 		for(AbstractCalculator calculator: calculators)
@@ -242,6 +253,7 @@ public class ProjectTree extends AbstractJavaRule {
 		
 		
 		thisNode = parent.addChildren(ElementNodeType.ANNOTATION, name);
+		((ClassDomain)thisNode).path = ((RuleContext)data).getSourceCodeFilename();
 		
 		entryStack.push(thisNode);		
 		super.visit(node, data);

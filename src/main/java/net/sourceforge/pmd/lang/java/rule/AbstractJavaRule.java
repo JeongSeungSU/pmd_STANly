@@ -3,12 +3,14 @@
  */
 package net.sourceforge.pmd.lang.java.rule;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.*;
+import net.sourceforge.pmd.lang.java.rule.stanly.StanlyControler;
 import net.sourceforge.pmd.lang.rule.AbstractRule;
 import net.sourceforge.pmd.lang.rule.ImmutableLanguage;
 

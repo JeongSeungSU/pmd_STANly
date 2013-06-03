@@ -3,6 +3,7 @@ package net.sourceforge.pmd.lang.java.rule.stanly;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,11 @@ import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.LanguageFilenameFilter;
 import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.lang.LanguageVersionDiscoverer;
+import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
+import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ClassDomain;
 import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNode;
+import net.sourceforge.pmd.lang.java.rule.stanly.element.ElementNodeType;
 import net.sourceforge.pmd.processor.MonoThreadProcessor;
 import net.sourceforge.pmd.processor.MultiThreadProcessor;
 import net.sourceforge.pmd.renderers.Renderer;
@@ -36,6 +41,8 @@ public class StanlyControler {
 
 	static private List<DomainRelation> RelationList;
 	static private List<DomainComposition> CompositionList;
+	
+	static public HashMap<Object , AbstractJavaNode> map = new HashMap<Object,AbstractJavaNode>();
 	
 	static private ElementNode	RootNode;
 	static private String RootPath = "";
@@ -79,6 +86,25 @@ public class StanlyControler {
 		RelationList = null;
 		RootNode 	 = null;
 		CompositionList = null;
+	}
+	
+	public static ElementNode SearchMatchingClassPath(String Path,ElementNode node)
+	{
+		if( (node.getType() == ElementNodeType.CLASS) 	   || 
+			(node.getType() == ElementNodeType.INTERFACE)  ||
+			(node.getType() == ElementNodeType.ENUM) )
+			{
+				if(((ClassDomain)node).path.equals(Path))
+					return node;
+			}
+					
+		for(ElementNode tmp : node.getChildren())
+		{
+			ElementNode tmp2 = SearchMatchingClassPath(Path, tmp);
+			if(tmp2 != null)
+				return tmp2;
+		}
+		return null;
 	}
 	
 	public static StanlyAnalysisData StartAnalysis(String Path)
