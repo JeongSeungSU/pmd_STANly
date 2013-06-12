@@ -38,8 +38,8 @@ public abstract class AbstractRuleViolationFactory implements RuleViolationFacto
 		{
 			ViolationController.AddViolation(Violation.BASIC, ruleContext, node, formattedMessage);
 		}
-		else		
-			ruleContext.getReport().addRuleViolation(createRuleViolation(rule, ruleContext, node, formattedMessage));
+		
+		ruleContext.getReport().addRuleViolation(createRuleViolation(rule, ruleContext, node, formattedMessage));
 
 	}
 

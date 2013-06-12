@@ -65,6 +65,8 @@ public class ViolationController {
 			elementnode = TopLevelClassDomain(elementnode);
 			
 			violation.setDomainLeftValue(elementnode.getLeftSideValue());
+			if( violation.getDomainLeftValue() == -1)
+				System.out.println("왓더퍽");
 		}
 	}
 }

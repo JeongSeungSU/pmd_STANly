@@ -73,6 +73,9 @@ public class Tangled implements AbstractAfterCalculator {
 			//srcSplit = child.getFullName().split("\\.");			
 			for(DomainRelation rel:child.getRelationTargets())
 			{
+				try{
+					
+				
 				if(!rel.getTargetNode().isAncestor(ancestor))	continue;
 				if(rel.getSourceNode().getPackageName().equals(rel.getTargetNode().getPackageName()))	continue;
 				
@@ -116,6 +119,11 @@ public class Tangled implements AbstractAfterCalculator {
 					value++;
 					relations.put(key,value);
 				}*/
+				}
+				catch(Exception e)
+				{
+					continue;
+				}
 			}
 			if(child.getChildren().size() > 0)
 			{

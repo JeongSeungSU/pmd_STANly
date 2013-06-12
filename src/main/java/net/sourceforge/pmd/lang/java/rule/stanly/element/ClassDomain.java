@@ -7,6 +7,7 @@ public class ClassDomain extends ElementNode {
 	public ClassMetric metric;
 	public String path;
 	
+	
 	public ClassDomain(ElementNode parent, ElementNodeType type, String name) {
 		super(parent,type, name);
 		// TODO Auto-generated constructor stub
